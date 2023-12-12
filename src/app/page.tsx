@@ -1,8 +1,14 @@
 import Link from 'next/link';
+import { Metadata } from 'next/types';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import TooltipComponent from '~/components/ui/tooltip';
 import { cn } from '~/lib/utils';
+
+export const metadata: Metadata = {
+    title: 'E-booking | Login',
+    description: 'Login into your E-booking account',
+};
 
 export default function Login() {
     return (

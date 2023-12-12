@@ -1,6 +1,12 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import RegisterForm from '~/components/forms/register-form';
 import { cn } from '~/lib/utils';
+
+export const metadata: Metadata = {
+    title: 'E-booking | Register',
+    description: 'Register into E-booking account',
+};
 
 export default function Register() {
     return (
@@ -9,7 +15,7 @@ export default function Register() {
                 Registration
             </h1>
 
-            <div className="w-full   flex flex-col gap-3 max-w-[400px]">
+            <div className="w-full flex flex-col gap-3 max-w-[400px]">
                 <RegisterForm />
                 <div className="px-10 mt-5 flex w-full">
                     <Link
