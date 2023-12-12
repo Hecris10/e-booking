@@ -74,3 +74,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+.background-gradient{
+  background: linear-gradient(203deg, #00536E 16.58%, #007DA5 47.14%)
+}
+
+
+.input-standard{
+border: 1px solid #ABABAB;
+border-radius: 10px;
+@apply w-full bg-white px-[10px] py-[7px];
+color: #B8B8B8;
+font-family: Montserrat;
+font-size: 15px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+input:focus{
+  color: black
+}
+
+
+
+main{
+  @apply w-full;
+  height: calc(100vh - 112px);
+}
