@@ -1,13 +1,16 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { emailValidation } from '~/lib/utils';
+import { addUserLocalStorage, userExistsLocalStorage } from '~/services/user-service';
 import { ErrorMessage } from '../error-message';
 import { Button } from '../ui/button';
+import DatePicker from '../ui/date-picker';
 import { Input } from '../ui/input';
 import { SelectComponent, SelectItemType } from '../ui/select';
-interface IRegister {
+export interface IUserRegister {
     name: string;
     phone: string;
     email: string;
@@ -41,11 +44,26 @@ const RegisterForm = (): ReactElement => {
         register,
         handleSubmit,
         watch,
+        clearErrors,
         setValue,
+        setError,
         formState: { errors, isLoading },
-    } = useForm<IRegister>();
+    } = useForm<IUserRegister>();
+    const router = useRouter();
+    const onSubmit = async (data: IUserRegister) => {
+        const isUserRegistered = await userExistsLocalStorage(data.email);
+        if (isUserRegistered) {
+            setError('email', {
+                type: 'manual',
+                message: 'User already registered',
+            });
+            return;
+        }
 
-    const onSubmit = (data: IRegister) => {};
+        addUserLocalStorage(data);
+        router.push('/');
+        clearErrors();
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -87,19 +105,19 @@ const RegisterForm = (): ReactElement => {
                     name="email"
                 />
                 {errors.email?.type === 'required' && <ErrorMessage name="Required field" />}
+                {errors.email?.type === 'manual' && (
+                    <ErrorMessage name={errors.email.message || 'User already registered'} />
+                )}
                 {errors.email?.type === 'validate' && (
                     <ErrorMessage name="Email should be in name@email.com format" />
                 )}
             </div>
             <div className="form-element">
-                <Input
+                <DatePicker
                     {...register('birthDate', {
                         required: true,
                     })}
-                    placeholder="Data de Nascimento"
-                    className="input-standard"
-                    type="date"
-                    name="birthDate"
+                    onChange={(date) => setValue('birthDate', date?.toISOString() || '')}
                 />
                 {errors.birthDate?.type === 'required' && <ErrorMessage name="Required field" />}
             </div>
