@@ -1,6 +1,5 @@
 import { IUserRegister } from '~/components/forms/register-form';
-
-export interface IUser {
+export interface UserView {
     id: number;
     name: string;
     phone: string;
@@ -9,6 +8,8 @@ export interface IUser {
     gender: string;
     country: string;
     state: string;
+}
+export interface IUser extends UserView {
     password: string;
     confirmPassword: string;
 }
@@ -51,17 +52,33 @@ export async function findUserByEmailLocalStorage(
     return users.find((user) => user.email === emailOrPhone || user.phone);
 }
 
-export type LoginReturnType = { sucess: true; user: IUser } | { sucess: false };
+export type LoginReturnType = { sucess: true; user: UserView } | { sucess: false };
 
 export async function loginLocalStorage(
     emailOrPhone: string,
     password: string
 ): Promise<LoginReturnType> {
     const user = await findUserByEmailLocalStorage(emailOrPhone);
+
     if (user) {
+        if (user.password !== password) {
+            return {
+                sucess: false,
+            };
+        }
+        const userAuth: UserView = {
+            id: user.id,
+            name: user.name,
+            phone: user.phone,
+            email: user.email,
+            birthDate: user.birthDate,
+            gender: user?.gender,
+            country: user.country,
+            state: user.state,
+        };
         return {
-            sucess: user.password === password,
-            user,
+            sucess: true,
+            user: userAuth,
         };
     }
     return {

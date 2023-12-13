@@ -1,20 +1,12 @@
 'use client';
 
-import { useSetAtom } from 'jotai';
-import { useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '~/components/error-message';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import TooltipComponent from '~/components/ui/tooltip';
-import {
-    BookingStatus,
-    getBookingsByUserByStatusLocalStorage,
-    getBookingsByUserIdLocalStorage,
-} from '~/services/booking-service';
-import { getPlacesLocalStorage } from '~/services/place-service';
-import { IStates, setStatesAtom, userAtom } from '~/services/state-atoms';
+import { authUserAction } from '~/services/server-actions/auth-user-actions';
 import { loginLocalStorage } from '~/services/user-service';
 
 export interface IUserLogin {
@@ -30,35 +22,12 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
         handleSubmit,
         formState: { errors },
     } = useForm<IUserLogin>();
-    const setUser = useSetAtom(userAtom);
-    const setGlobalStates = useSetAtom(setStatesAtom);
-    const router = useRouter();
+
     const onSubmit = async (data: IUserLogin) => {
         const hasLogged = await loginLocalStorage(data.emailOrPhone, data.password);
         if (hasLogged.sucess) {
             const { user } = hasLogged;
-            setUser(user);
-            const allBookings = await getBookingsByUserIdLocalStorage(user.id);
-            const currentBookings = await getBookingsByUserByStatusLocalStorage(
-                user.id,
-                BookingStatus.Confirmed
-            );
-            const canceledBookings = await getBookingsByUserByStatusLocalStorage(
-                user.id,
-                BookingStatus.Canceled
-            );
-            const places = await getPlacesLocalStorage();
-            const globalStates: IStates = {
-                user,
-                allBookings,
-                currentBookings,
-                canceledBookings,
-                places,
-            };
-
-            setGlobalStates(globalStates);
-
-            router.push('/app');
+            await authUserAction(user);
         } else {
             setError('emailOrPhone', {
                 type: 'manual',

@@ -19,8 +19,6 @@ const NavBar = () => {
         }
     }, [isLoading, user]);
 
-    console.log('user', isLoading);
-
     const userInitials =
         user?.name
             .split(' ')

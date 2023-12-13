@@ -15,3 +15,5 @@ export function emailValidation(email: string): boolean {
 export function formatTextToTitleCase(text: string): string {
     return text.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase());
 }
+
+//

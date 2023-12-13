@@ -27,7 +27,7 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
         return () => {
             cleanGlobalStates();
         };
-    }, [globalStates, cleanGlobalStates]);
+    }, [cleanGlobalStates]);
 
     return (
         <section className="w-full bg-gray rounded-md max-w-[800px]">
