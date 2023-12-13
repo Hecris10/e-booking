@@ -1,5 +1,5 @@
 import AppCardNavigation, { AppTabs } from '~/components/app-card-navigation';
-import { PageProps } from '../../../.next/types/app/layout';
+import { PageProps } from '~/lib/global-types';
 
 function matchTab(tab: AppTabs): AppTabs {
     if (tab !== 'current' && tab !== 'history' && tab !== 'cancelled') {
