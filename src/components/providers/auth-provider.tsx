@@ -13,7 +13,7 @@ import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
 import { IStates, cleanStatesAtom, setStatesAtom } from '~/services/state-atoms';
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [isInitialized, setIsInitialized] = useState(false);
+    const [isAuthenticated, setIsAuthenticaed] = useState(false);
     const router = useRouter();
     const pathName = usePathname();
     const setGlobalStates = useSetAtom(setStatesAtom);
@@ -44,15 +44,14 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                     places,
                 };
                 setGlobalStates(globalStates);
-                setIsInitialized(true);
+                setIsAuthenticaed(true);
             }
         };
         auth();
-
         return () => {
             cleanGlobalStates();
         };
-    }, [pathName, router, setGlobalStates, cleanGlobalStates]);
+    }, [router, setGlobalStates, cleanGlobalStates]);
 
     return <>{children}</>;
 }

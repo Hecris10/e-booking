@@ -1,7 +1,4 @@
 'use client';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useEffect } from 'react';
-import { cleanStatesAtom, getStatesAtom } from '~/services/state-atoms';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CurrentBookings from './current-bookings';
 
@@ -20,14 +17,14 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
     // const redirectUrl = (tab: AppTabs) => {
     //     return `/app?tab=${tab}`;
     // };
-    const globalStates = useAtomValue(getStatesAtom);
-    const cleanGlobalStates = useSetAtom(cleanStatesAtom);
 
-    useEffect(() => {
-        return () => {
-            cleanGlobalStates();
-        };
-    }, [cleanGlobalStates]);
+    // const cleanGlobalStates = useSetAtom(cleanStatesAtom);
+
+    // useEffect(() => {
+    //     return () => {
+    //         cleanGlobalStates();
+    //     };
+    // }, [cleanGlobalStates]);
 
     return (
         <section className="w-full bg-gray rounded-md max-w-[800px]">

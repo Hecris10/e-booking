@@ -1,14 +1,18 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { Metadata } from 'next/types';
 import LoginForm from '~/components/forms/login-form';
 import { cn } from '~/lib/utils';
+import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
 
 export const metadata: Metadata = {
     title: 'E-booking | Login',
     description: 'Login into your E-booking account',
 };
 
-export default function Login() {
+export default async function Login() {
+    const isAuth = await isUserAuthAction();
+    if (isAuth.sucess) redirect('/app');
     return (
         <div className="background-gradient px-6 flex flex-col  items-center w-full h-full gap-5">
             <h1 className="text-white text-center mt-5 leading-normal text-[20px] font-[700]">

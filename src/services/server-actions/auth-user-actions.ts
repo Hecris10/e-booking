@@ -18,7 +18,6 @@ export async function authUserAction(user: UserView) {
 
 export async function isUserAuthAction(): Promise<LoginReturnType> {
     const cookieStore = cookies();
-    const tokenKey = process.env.NEXT_PUBLIC_TOKEN_KEY || '';
     const userStr = cookieStore.get('e-booking-token')?.value;
 
     if (!userStr) {
