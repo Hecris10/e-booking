@@ -1,12 +1,75 @@
 export interface IPlace {
     id: string;
     name: string;
-    type: string;
+    type: PlaceType;
     description: string;
     amenities: string[];
     pricePerNight: number;
     blockedDates: string[]; // Assuming date format is string for simplicity
 }
+
+export enum PlaceType {
+    House = 'house',
+    Apartment = 'apartment',
+    Hotel = 'hotel',
+}
+
+export const places: IPlace[] = [
+    {
+        id: '1',
+        name: 'House 1',
+        type: PlaceType.House,
+        description: 'House 1 description',
+        amenities: ['wifi', 'kitchen'],
+        pricePerNight: 100,
+        blockedDates: ['2021-01-01', '2021-01-02'],
+    },
+    {
+        id: '2',
+        name: 'House 2',
+        type: PlaceType.House,
+        description: 'House 2 description',
+        amenities: ['wifi', 'kitchen'],
+        pricePerNight: 200,
+        blockedDates: ['2021-01-03', '2021-01-04'],
+    },
+    {
+        id: '3',
+        name: 'Apartment 1',
+        type: PlaceType.Apartment,
+        description: 'Apartment 1 description',
+        amenities: ['wifi', 'kitchen'],
+        pricePerNight: 300,
+        blockedDates: ['2021-01-05', '2021-01-06'],
+    },
+    {
+        id: '4',
+        name: 'Apartment 2',
+        type: PlaceType.Apartment,
+        description: 'Apartment 2 description',
+        amenities: ['wifi', 'kitchen'],
+        pricePerNight: 400,
+        blockedDates: ['2021-01-07', '2021-01-08'],
+    },
+    {
+        id: '5',
+        name: 'Hotel 1',
+        type: PlaceType.Hotel,
+        description: 'Hotel 1 description',
+        amenities: ['wifi', 'kitchen'],
+        pricePerNight: 500,
+        blockedDates: ['2021-01-09', '2021-01-10'],
+    },
+    {
+        id: '6',
+        name: 'Hotel 2',
+        type: PlaceType.Hotel,
+        description: 'Hotel 2 description',
+        amenities: ['wifi', 'kitchen'],
+        pricePerNight: 600,
+        blockedDates: ['2021-01-11', '2021-01-12'],
+    },
+];
 
 export function getPlacesLocalStorage(): IPlace[] {
     const places = localStorage.getItem('places');

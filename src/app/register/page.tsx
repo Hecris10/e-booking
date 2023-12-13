@@ -22,7 +22,7 @@ export default function Register() {
                         title="Login"
                         className={cn(
                             'hover:scale-105 active:scale-90',
-                            'bg-yellow text-lightblue  text-md rounded-xl  w-full text-center p-1 font-extrabold text-[20px]'
+                            'bg-yellow text-lightblue text-md rounded-xl w-full text-center p-1 font-extrabold text-[20px]'
                         )}
                         href={'/login'}>
                         Voltar para login

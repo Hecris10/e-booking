@@ -8,7 +8,7 @@ import { ErrorMessage } from '~/components/error-message';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import TooltipComponent from '~/components/ui/tooltip';
-import { UserAtom } from '~/services/state-atoms';
+import { userAtom } from '~/services/state-atoms';
 import { loginLocalStorage } from '~/services/user-service';
 
 export interface IUserLogin {
@@ -24,7 +24,7 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
         handleSubmit,
         formState: { errors },
     } = useForm<IUserLogin>();
-    const setUser = useSetAtom(UserAtom);
+    const setUser = useSetAtom(userAtom);
     const router = useRouter();
     const onSubmit = async (data: IUserLogin) => {
         const hasLogged = await loginLocalStorage(data.emailOrPhone, data.password);

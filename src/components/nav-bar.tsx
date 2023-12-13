@@ -2,12 +2,12 @@
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { formatTextToTitleCase } from '~/lib/utils';
-import { UserAtom } from '~/services/state-atoms';
+import { userAtom } from '~/services/state-atoms';
 import { UserAvatar } from './ui/avatar';
 import { Skeleton } from './ui/skeleton';
 
 const NavBar = () => {
-    const user = useAtomValue(UserAtom);
+    const user = useAtomValue(userAtom);
 
     const [isLoading, setLoading] = useState(true);
 

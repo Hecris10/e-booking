@@ -1,11 +1,62 @@
-interface IBooking {
+export interface IBooking {
     id: string;
     userId: string;
     placeId: string;
-    status: string;
+    status: BookingStatus;
     startDate: string; // Assuming date format is string for simplicity
     endDate: string; // Assuming date format is string for simplicity
 }
+
+export enum BookingStatus {
+    Pending = 'Pending',
+    Confirmed = 'Confirmed',
+    Canceled = 'Canceled',
+    Completed = 'Completed',
+    Archived = 'Archived',
+}
+
+export const bookings: IBooking[] = [
+    {
+        id: '1',
+        userId: '1',
+        placeId: '1',
+        status: BookingStatus.Confirmed,
+        startDate: '2021-01-01',
+        endDate: '2021-01-03',
+    },
+    {
+        id: '2',
+        userId: '1',
+        placeId: '2',
+        status: BookingStatus.Pending,
+        startDate: '2021-01-04',
+        endDate: '2021-01-06',
+    },
+    {
+        id: '3',
+        userId: '1',
+        placeId: '3',
+        status: BookingStatus.Completed,
+        startDate: '2021-01-07',
+        endDate: '2021-01-09',
+    },
+    {
+        id: '4',
+        userId: '1',
+        placeId: '4',
+        status: BookingStatus.Canceled,
+        startDate: '2021-01-10',
+        endDate: '2021-01-12',
+    },
+    {
+        id: '5',
+        userId: '1',
+        placeId: '5',
+        status: BookingStatus.Archived,
+        startDate: '2021-01-13',
+        endDate: '2021-01-15',
+    },
+];
 
 export function getBookingsLocalStorage(): IBooking[] {
     const bookings = localStorage.getItem('bookings');
