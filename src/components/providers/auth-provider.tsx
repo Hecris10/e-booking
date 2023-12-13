@@ -10,13 +10,14 @@ import {
 } from '~/services/booking-service';
 import { getPlacesLocalStorage } from '~/services/place-service';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
-import { IStates, setStatesAtom } from '~/services/state-atoms';
+import { IStates, cleanStatesAtom, setStatesAtom } from '~/services/state-atoms';
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
     const [isInitialized, setIsInitialized] = useState(false);
     const router = useRouter();
     const pathName = usePathname();
     const setGlobalStates = useSetAtom(setStatesAtom);
+    const cleanGlobalStates = useSetAtom(cleanStatesAtom);
 
     useEffect(() => {
         const auth = async () => {
@@ -47,7 +48,11 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             }
         };
         auth();
-    }, [pathName, router, setGlobalStates]);
+
+        return () => {
+            cleanGlobalStates();
+        };
+    }, [pathName, router, setGlobalStates, cleanGlobalStates]);
 
     return <>{children}</>;
 }
