@@ -92,17 +92,17 @@ export function getBookingLocalStorage(bookingId: string) {
     return bookings.find((b) => b.id === bookingId);
 }
 
-export function getBookingsByUserIdLocalStorage(userId: string, dateRange?: Date[]) {
-    const bookings = getBookingsLocalStorage();
+export async function getBookingsByUserIdLocalStorage(userId: number, dateRange?: Date[]) {
+    const bookings = await getBookingsLocalStorage();
     return bookings.filter(
         (b) =>
-            b.userId === userId &&
+            b.userId === userId.toString() &&
             (!dateRange ||
                 (new Date(b.startDate) >= dateRange[0] && new Date(b.endDate) <= dateRange[1]))
     );
 }
 
-export function getBookingsByUserByStatusLocalStorage(userId: string, status: BookingStatus) {
-    const bookings = getBookingsLocalStorage();
-    return bookings.filter((b) => b.userId === userId && b.status === status);
+export async function getBookingsByUserByStatusLocalStorage(userId: number, status: BookingStatus) {
+    const bookings = await getBookingsLocalStorage();
+    return bookings.filter((b) => b.userId === userId.toString() && b.status === status);
 }

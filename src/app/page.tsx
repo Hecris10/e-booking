@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next/types';
-import LoginForm from '~/components/forms/login/login-form';
+import LoginForm from '~/components/forms/login-form';
 import { cn } from '~/lib/utils';
 
 export const metadata: Metadata = {
