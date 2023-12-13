@@ -1,4 +1,4 @@
-import AppCardNavigation, { AppTabs } from '~/components/app-card-navigation';
+import AppCardNavigation, { AppTabs } from '~/components/main-tabs/app-card-navigation';
 import { PageProps } from '~/lib/global-types';
 
 function matchTab(tab: AppTabs): AppTabs {

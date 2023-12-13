@@ -1,6 +1,7 @@
 'use client';
 import { redirect } from 'next/navigation';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import CurrentBookings from './current-bookings';
 
 export type AppTabs = 'current' | 'history' | 'cancelled';
 export interface AppTabListProps {
@@ -31,7 +32,9 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
                         </TabsTrigger>
                     ))}
                 </TabsList>
-                <TabsContent value="current">Current</TabsContent>
+                <TabsContent value="current">
+                    <CurrentBookings />
+                </TabsContent>
                 <TabsContent value="history">History</TabsContent>
                 <TabsContent value="cancelled">Cancelled</TabsContent>
             </Tabs>

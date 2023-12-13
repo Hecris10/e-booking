@@ -101,3 +101,8 @@ export function getBookingsByUserIdLocalStorage(userId: string, dateRange?: Date
                 (new Date(b.startDate) >= dateRange[0] && new Date(b.endDate) <= dateRange[1]))
     );
 }
+
+export function getBookingsByUserByStatusLocalStorage(userId: string, status: BookingStatus) {
+    const bookings = getBookingsLocalStorage();
+    return bookings.filter((b) => b.userId === userId && b.status === status);
+}

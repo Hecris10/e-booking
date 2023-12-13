@@ -5,4 +5,5 @@ import { IUser } from './user-service';
 
 export const userAtom = atom<IUser | undefined>(undefined);
 export const placesAtom = atom<IPlace[]>([]);
-export const bookingsAtom = atom<IBooking[]>([]);
+export const allBookingsAtom = atom<IBooking[]>([]);
+export const currentBookingsAtom = atom<IBooking[]>([]);
