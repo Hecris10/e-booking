@@ -60,7 +60,7 @@ const RegisterForm = (): ReactElement => {
             return;
         }
 
-        addUserLocalStorage(data);
+        await addUserLocalStorage(data);
         router.push('/');
         clearErrors();
     };

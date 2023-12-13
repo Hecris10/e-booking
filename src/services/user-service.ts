@@ -43,3 +43,28 @@ export async function userExistsLocalStorage(email: string): Promise<boolean> {
     const users = await getUsersLocalStorare();
     return users.some((user) => user.email === email);
 }
+
+export async function findUserByEmailLocalStorage(
+    emailOrPhone: string
+): Promise<IUser | undefined> {
+    const users = await getUsersLocalStorare();
+    return users.find((user) => user.email === emailOrPhone || user.phone);
+}
+
+export type LoginReturnType = { sucess: true; user: IUser } | { sucess: false };
+
+export async function loginLocalStorage(
+    emailOrPhone: string,
+    password: string
+): Promise<LoginReturnType> {
+    const user = await findUserByEmailLocalStorage(emailOrPhone);
+    if (user) {
+        return {
+            sucess: user.password === password,
+            user,
+        };
+    }
+    return {
+        sucess: false,
+    };
+}
