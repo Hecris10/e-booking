@@ -1,8 +1,10 @@
 'use client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import CanceledBookings from './canceled-bookings';
 import CurrentBookings from './current-bookings';
+import HistoryBookings from './history-bookings';
 
-export type AppTabs = 'current' | 'history' | 'cancelled';
+export type AppTabs = 'current' | 'history' | 'canceled';
 export interface AppTabListProps {
     tab: AppTabs;
     label: string;
@@ -10,7 +12,7 @@ export interface AppTabListProps {
 const tabs: AppTabListProps[] = [
     { tab: 'current', label: 'Current bookings' },
     { tab: 'history', label: 'History' },
-    { tab: 'cancelled', label: 'Cancelled' },
+    { tab: 'canceled', label: 'Canceled' },
 ];
 
 const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
@@ -27,11 +29,11 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
     // }, [cleanGlobalStates]);
 
     return (
-        <section className="w-full bg-gray rounded-md max-w-[800px]">
-            <Tabs defaultValue={tab} className="w-full px-10">
+        <section className="w-full bg-gray min-h-[40vh] rounded-md max-w-[800px]">
+            <Tabs defaultValue={tab} className="w-full px-2">
                 <TabsList className="w-full flex justify-between">
                     {tabs.map((t) => (
-                        <TabsTrigger key={t.tab} value={t.tab}>
+                        <TabsTrigger className="w-[150px]" key={t.tab} value={t.tab}>
                             {t.label}
                         </TabsTrigger>
                     ))}
@@ -39,8 +41,12 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
                 <TabsContent value="current">
                     <CurrentBookings />
                 </TabsContent>
-                <TabsContent value="history">History</TabsContent>
-                <TabsContent value="cancelled">Cancelled</TabsContent>
+                <TabsContent value="history">
+                    <HistoryBookings />
+                </TabsContent>
+                <TabsContent value="canceled">
+                    <CanceledBookings />
+                </TabsContent>
             </Tabs>
         </section>
     );

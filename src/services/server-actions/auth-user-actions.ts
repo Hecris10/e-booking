@@ -6,7 +6,7 @@ import { LoginReturnType, UserView } from '../user-service';
 export async function authUserAction(user: UserView) {
     const cookieStore = cookies();
     const userStr = JSON.stringify(user);
-    console.log('userStr', JSON.parse(userStr));
+
     cookieStore.set('e-booking-token', userStr, {
         path: '/',
         maxAge: 3600,

@@ -114,3 +114,8 @@ export function getPlacesByAmenityLocalStorage(amenity: string) {
     const places = getPlacesLocalStorage();
     return places.filter((p) => p.amenities.includes(amenity));
 }
+
+export function getBlockedDatesByPlaceIdLocalStorage(placeId: string) {
+    const place = getPlaceLocalStorage(placeId);
+    return place ? place.blockedDates : [];
+}

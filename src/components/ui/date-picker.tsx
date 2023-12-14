@@ -13,10 +13,12 @@ const DatePicker = ({
     onChange,
     defaultValue,
     placeHolder,
+    disabledDates,
 }: {
     onChange: (date: Date | undefined) => void;
     placeHolder?: string;
     defaultValue?: Date;
+    disabledDates?: Date[];
 }) => {
     const [date, setDate] = useState<Date | undefined>(defaultValue);
 
@@ -39,7 +41,13 @@ const DatePicker = ({
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={onSelect} initialFocus />
+                <Calendar
+                    disabled={disabledDates}
+                    mode="single"
+                    selected={date}
+                    onSelect={onSelect}
+                    initialFocus
+                />
             </PopoverContent>
         </Popover>
     );

@@ -1,20 +1,20 @@
 import { atom } from 'jotai';
-import { IBooking } from './booking-service';
+import { IBookingView } from './booking-service';
 import { IPlace } from './place-service';
 import { UserView } from './user-service';
 
 export const userAtom = atom<UserView | undefined>(undefined);
 export const placesAtom = atom<IPlace[]>([]);
-export const allBookingsAtom = atom<IBooking[]>([]);
-export const currentBookingsAtom = atom<IBooking[]>([]);
-export const canceledBookingsAtom = atom<IBooking[]>([]);
+export const allBookingsAtom = atom<IBookingView[]>([]);
+export const currentBookingsAtom = atom<IBookingView[]>([]);
+export const canceledBookingsAtom = atom<IBookingView[]>([]);
 
 export interface IStates {
     user: UserView | undefined;
     places: IPlace[];
-    allBookings: IBooking[];
-    currentBookings: IBooking[];
-    canceledBookings: IBooking[];
+    allBookings: IBookingView[];
+    currentBookings: IBookingView[];
+    canceledBookings: IBookingView[];
 }
 
 export const setStatesAtom = atom(null, (get, set, props: IStates) => {

@@ -1,3 +1,5 @@
+import { getPlacesLocalStorage } from './place-service';
+
 export interface IBooking {
     id: string;
     userId: string;
@@ -5,6 +7,11 @@ export interface IBooking {
     status: BookingStatus;
     startDate: string; // Assuming date format is string for simplicity
     endDate: string; // Assuming date format is string for simplicity
+}
+
+export interface IBookingView extends IBooking {
+    placeName: string;
+    placeAddress: string;
 }
 
 export enum BookingStatus {
@@ -105,4 +112,49 @@ export async function getBookingsByUserIdLocalStorage(userId: number, dateRange?
 export async function getBookingsByUserByStatusLocalStorage(userId: number, status: BookingStatus) {
     const bookings = await getBookingsLocalStorage();
     return bookings.filter((b) => b.userId === userId.toString() && b.status === status);
+}
+export async function getBookinsByUserLocalStorage(
+    userId: number,
+    dateRange?: Date[]
+): Promise<IBookingView[]> {
+    const bookings = await getBookingsByUserIdLocalStorage(userId, dateRange);
+    const places = await getPlacesLocalStorage();
+    return bookings.map((b) => {
+        const place = places.find((p) => p.id === b.placeId);
+        return {
+            ...b,
+            placeName: place?.name || '',
+            placeAddress: '',
+        };
+    });
+}
+
+export async function getBookinsByUserWithPlaceByStatusLocalStorage(
+    userId: number,
+    status: BookingStatus,
+    dateRange?: Date[]
+): Promise<IBookingView[]> {
+    const bookings = await getBookingsByUserByStatusLocalStorage(userId, status);
+    const places = await getPlacesLocalStorage();
+    return bookings.map((b) => {
+        const place = places.find((p) => p.id === b.placeId);
+        return {
+            ...b,
+            placeName: place?.name || '',
+            placeAddress: '',
+        };
+    });
+}
+
+export async function updateBookingDatesLocalStorage(
+    bookingId: string,
+    startDate: string,
+    endDate: string
+) {
+    const booking = await getBookingLocalStorage(bookingId);
+    if (booking) {
+        booking.startDate = startDate;
+        booking.endDate = endDate;
+        await updateBookingLocalStorage(booking);
+    }
 }

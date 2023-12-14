@@ -1,21 +1,20 @@
 'use client';
 
 import { useSetAtom } from 'jotai';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import {
     BookingStatus,
-    getBookingsByUserByStatusLocalStorage,
-    getBookingsByUserIdLocalStorage,
+    getBookinsByUserLocalStorage,
+    getBookinsByUserWithPlaceByStatusLocalStorage,
 } from '~/services/booking-service';
 import { getPlacesLocalStorage } from '~/services/place-service';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
 import { IStates, cleanStatesAtom, setStatesAtom } from '~/services/state-atoms';
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [isAuthenticated, setIsAuthenticaed] = useState(false);
+    // const [isAuthenticated, setIsAuthenticaed] = useState(false);
     const router = useRouter();
-    const pathName = usePathname();
     const setGlobalStates = useSetAtom(setStatesAtom);
     const cleanGlobalStates = useSetAtom(cleanStatesAtom);
 
@@ -26,12 +25,12 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 router.push('/');
             } else {
                 const { user } = isAuth;
-                const allBookings = await getBookingsByUserIdLocalStorage(user.id);
-                const currentBookings = await getBookingsByUserByStatusLocalStorage(
+                const allBookings = await getBookinsByUserLocalStorage(user.id);
+                const currentBookings = await getBookinsByUserWithPlaceByStatusLocalStorage(
                     user.id,
                     BookingStatus.Confirmed
                 );
-                const canceledBookings = await getBookingsByUserByStatusLocalStorage(
+                const canceledBookings = await getBookinsByUserWithPlaceByStatusLocalStorage(
                     user.id,
                     BookingStatus.Canceled
                 );
@@ -44,7 +43,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                     places,
                 };
                 setGlobalStates(globalStates);
-                setIsAuthenticaed(true);
+                // setIsAuthenticaed(true);
             }
         };
         auth();

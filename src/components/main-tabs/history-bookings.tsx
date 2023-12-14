@@ -1,20 +1,19 @@
 import { useAtomValue } from 'jotai';
 import { IBookingView } from '~/services/booking-service';
-import { currentBookingsAtom } from '~/services/state-atoms';
+import { allBookingsAtom } from '~/services/state-atoms';
 import BookingCard from './bookings/booking-card';
 
-const CurrentBookings = () => {
-    const currentBookings: IBookingView[] = useAtomValue(currentBookingsAtom);
-
-    console.log({ currentBookings });
+const HistoryBookings = () => {
+    const allBookings: IBookingView[] = useAtomValue(allBookingsAtom);
+    // filter for status === 'pending'
 
     return (
         <div className="flex flex-col gap-5 py-3">
-            {currentBookings.map((booking) => (
+            {allBookings.map((booking) => (
                 <BookingCard key={booking.id} booking={booking} />
             ))}
         </div>
     );
 };
 
-export default CurrentBookings;
+export default HistoryBookings;
