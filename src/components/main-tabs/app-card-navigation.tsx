@@ -55,7 +55,7 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
                         </TabsTrigger>
                     ))}
                 </TabsList>
-                <div className="h-[60vh] overflow-auto">
+                <div className="h-[60vh] mt-2 overflow-auto">
                     <TabsContent value="current">
                         <CurrentBookings />
                     </TabsContent>
