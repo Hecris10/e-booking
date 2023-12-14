@@ -3,13 +3,15 @@ import { IBookingView } from './booking-service';
 import { IPlace } from './place-service';
 import { UserView } from './user-service';
 
+export type CreateBookingAtomProp = 'select' | 'schedule' | 'confirm';
+
 export const userAtom = atom<UserView | undefined>(undefined);
 export const placesAtom = atom<IPlace[]>([]);
 export const allBookingsAtom = atom<IBookingView[]>([]);
 export const currentBookingsAtom = atom<IBookingView[]>([]);
 export const canceledBookingsAtom = atom<IBookingView[]>([]);
 export const selectedPlaceAtom = atom<IPlace | undefined>(undefined);
-
+export const createBookingTabPosAtom = atom<CreateBookingAtomProp>('select');
 export interface IStates {
     user: UserView | undefined;
     places: IPlace[];
@@ -48,4 +50,9 @@ export const getStatesAtom = atom((get) => {
         currentBookings,
         canceledBookings,
     };
+});
+
+export const setSelectPlaceAtom = atom(null, (get, set, place: IPlace) => {
+    set(selectedPlaceAtom, place);
+    set(createBookingTabPosAtom, 'schedule');
 });

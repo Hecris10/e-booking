@@ -1,25 +1,29 @@
+import { CreateBookingAtomProp } from '~/services/state-atoms';
 import { SelectPlace } from './create-book-select-place';
 
 interface CreateBookStepProps {
-    value: number;
+    value: CreateBookingAtomProp;
     element: React.ReactNode;
 }
 
 const CreateBookSteps: CreateBookStepProps[] = [
     {
-        value: 0,
+        value: 'select' as CreateBookingAtomProp,
         element: <SelectPlace />,
     },
     {
-        value: 1,
+        value: 'schedule',
         element: <div>Step 2</div>,
-    },
-    {
-        value: 2,
-        element: <div>Step 3</div>,
     },
 ];
 
-export function getCreateBookStep(value: number) {
-    return CreateBookSteps.find((s) => s.value === value);
+export function getCreateBookStep(value: CreateBookingAtomProp): React.ReactNode {
+    switch (value) {
+        case 'select':
+            return CreateBookSteps[0].element;
+        case 'schedule':
+            <></>;
+        default:
+            return <></>;
+    }
 }

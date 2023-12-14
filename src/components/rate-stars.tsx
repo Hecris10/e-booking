@@ -17,7 +17,6 @@ const RateStars = (props: RaceStarsProps) => {
             props.onSelect(rate + 1);
         }
     };
-    console.log('rate', rate);
 
     return (
         <div className="flex justify-center">

@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { SearchIcon } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { IPlace } from '~/services/place-service';
 import { placesAtom } from '~/services/state-atoms';
@@ -10,8 +10,11 @@ import PlaceCard from './place-card';
 export const SelectPlace = () => {
     const places: IPlace[] = useAtomValue(placesAtom);
     const inputRef = useRef<HTMLInputElement>(null);
+    const [seach, setSearch] = useState<string>('');
 
-    const filteredPlaces = places.filter((place) => place.name.includes(''));
+    const filteredPlaces = places.filter((place) =>
+        place.name.toLowerCase().includes(seach.toLowerCase())
+    );
 
     return (
         <section className={'flex w-full flex-col gap-2 border border-gray'}>
@@ -22,6 +25,7 @@ export const SelectPlace = () => {
                 />
                 <Input
                     ref={inputRef}
+                    onChange={(e) => setSearch(e.target.value)}
                     placeholder={'Search the best place for you...'}
                     className="pl-8 rounded-3xl"
                 />
