@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import JotaiProvider from '~/components/providers/jotai-provider';
+import { Toaster } from '~/components/ui/toaster';
 import { cn } from '~/lib/utils';
 import './globals.css';
 
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={cn(inter.className, 'w-full h-screen')}>
-                <JotaiProvider>{children}</JotaiProvider>
+                <JotaiProvider>
+                    {children} <Toaster />
+                </JotaiProvider>
             </body>
         </html>
     );
