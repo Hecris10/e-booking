@@ -1,10 +1,13 @@
 import { useAtomValue } from 'jotai';
-import { IBookingView } from '~/services/booking-service';
-import { canceledBookingsAtom } from '~/services/state-atoms';
+import { BookingStatus, IBookingView } from '~/services/booking-service';
+
+import { allBookingsAtom } from '~/services/state-atoms';
 import BookingCard from './bookings/booking-card';
 
 const CanceledBookings = () => {
-    const canceledBookings: IBookingView[] = useAtomValue(canceledBookingsAtom);
+    const canceledBookings: IBookingView[] = useAtomValue(allBookingsAtom).filter(
+        (b) => b.status === BookingStatus.Canceled
+    );
 
     return (
         <div className='className="flex h-full max-h-[80vh]  pb-4 overflow-auto flex-col gap-5"'>
