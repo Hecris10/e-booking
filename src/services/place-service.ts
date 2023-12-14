@@ -187,3 +187,36 @@ export async function getPlaceUnavailableDatesLocalStorage(
 
     return [];
 }
+
+export async function addBlockedDateLocalStorage({
+    placeId,
+    startDate,
+    endDate,
+}: {
+    placeId: string;
+    startDate: Date;
+    endDate: Date;
+}) {
+    console.log('addBlockedDateLocalStorage: ', placeId, startDate, endDate);
+    const place = getPlaceLocalStorage(placeId);
+    if (place) {
+        const newId = place.blockedDates.length + 1;
+        const newBlockedDate: IBlockDate = {
+            id: newId,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+        };
+        place.blockedDates.push(newBlockedDate);
+        updatePlaceLocalStorage(place);
+        return newId;
+    }
+}
+
+export async function removedBlockedDateLocalStorage(placeId: string, blockedDateId: number) {
+    const place = getPlaceLocalStorage(placeId);
+    if (place) {
+        const newBlockedDates = place.blockedDates.filter((b) => b.id !== blockedDateId);
+        place.blockedDates = newBlockedDates;
+        updatePlaceLocalStorage(place);
+    }
+}

@@ -167,3 +167,24 @@ export async function getBookingsByPlaceLocalStorage(placeId: string) {
     const bookings = await getBookingsLocalStorage();
     return bookings.filter((b) => b.placeId === placeId);
 }
+
+export interface IScheduleNewBooking {
+    userId: string;
+    placeId: string;
+    startDate: Date;
+    endDate: Date;
+}
+
+export async function scheduleBookingLocalStorage(data: IScheduleNewBooking): Promise<IBooking> {
+    const lasBookingId = await getBookingsLocalStorage().length;
+    const booking: IBooking = {
+        id: (lasBookingId + 1).toString(),
+        userId: data.userId,
+        placeId: data.placeId,
+        status: BookingStatus.Pending,
+        startDate: data.startDate.toISOString(),
+        endDate: data.endDate.toISOString(),
+    };
+    addBookingLocalStorage(booking);
+    return booking;
+}

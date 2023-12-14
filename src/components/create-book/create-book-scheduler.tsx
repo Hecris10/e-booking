@@ -2,12 +2,33 @@ import { useAtomValue, useSetAtom } from 'jotai/react';
 
 import { BookMarkedIcon, ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import PlaceImage from '~/../public/hotel.webp';
 import { cn, formatNumberToUSD } from '~/lib/utils';
-import { getPlaceUnavailableDatesLocalStorage } from '~/services/place-service';
-import { createBookingTabPosAtom, selectedPlaceAtom, userAtom } from '~/services/state-atoms';
+import { IScheduleNewBooking, scheduleBookingLocalStorage } from '~/services/booking-service';
+import {
+    addBlockedDateLocalStorage,
+    getPlaceUnavailableDatesLocalStorage,
+    removedBlockedDateLocalStorage,
+} from '~/services/place-service';
+import {
+    createBookingTabPosAtom,
+    selectedPlaceAtom,
+    updateBookingsAtom,
+    userAtom,
+} from '~/services/state-atoms';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '../ui/alert-dialog';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
@@ -18,9 +39,11 @@ import { toast } from '../ui/use-toast';
 const CreateBookScheduler = () => {
     const place = useAtomValue(selectedPlaceAtom);
     const setSelectedTab = useSetAtom(createBookingTabPosAtom);
+    const updateBookins = useSetAtom(updateBookingsAtom);
     const userId = useAtomValue(userAtom)?.id;
     const [period, setPeriod] = useState<DateRange | undefined>(undefined);
     const [blockedDates, setBlockedDates] = useState<Date[] | undefined>(undefined);
+    const blockedDateId = useRef<number>(0);
 
     // calculate total days from period
     const calculateRangeQuantity = () => {
@@ -37,21 +60,62 @@ const CreateBookScheduler = () => {
     const daysQuantity = calculateRangeQuantity();
     const total = place?.pricePerNight ? place.pricePerNight * daysQuantity : 0;
 
-    const handleSelect = (newPeriod: DateRange) => {
+    const handleSelect = async (newPeriod: DateRange) => {
+        if (!newPeriod || !newPeriod.from || !newPeriod.to) {
+            if (blockedDateId.current !== 0)
+                removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
+            blockedDateId.current = 0;
+            return setPeriod(newPeriod);
+        }
+
         if (blockedDates && newPeriod && newPeriod.from && newPeriod.to) {
             const blockedDateInRange = blockedDates.some(
                 (blockedDate) => blockedDate >= newPeriod.from! && blockedDate <= newPeriod.to!
             );
 
             if (!blockedDateInRange) {
+                if (newPeriod.from && newPeriod.to) {
+                    const blockedId = await addBlockedDateLocalStorage({
+                        placeId: place!.id.toString(),
+                        startDate: newPeriod.from,
+                        endDate: newPeriod.to,
+                    });
+                    blockedDateId.current = blockedId!;
+                } else {
+                    await removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
+                    blockedDateId.current = 0;
+                }
+
                 return setPeriod(newPeriod);
             }
-
             toast({
                 description: "You can't book in this period, please select another one.",
             });
         } else {
+            if (newPeriod.from && newPeriod.to)
+                await addBlockedDateLocalStorage({
+                    placeId: place!.id.toString(),
+                    startDate: newPeriod.from,
+                    endDate: newPeriod.to,
+                });
+            else if (blockedDateId.current)
+                await removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
+            blockedDateId.current = 0;
             setPeriod(newPeriod);
+        }
+    };
+
+    const handleBook = async () => {
+        if (period && period.from && period.to && userId && place) {
+            const reqBody: IScheduleNewBooking = {
+                userId: userId.toString(),
+                placeId: place.id,
+                startDate: period.from,
+                endDate: period.to,
+            };
+
+            await scheduleBookingLocalStorage(reqBody);
+            await updateBookins();
         }
     };
 
@@ -143,14 +207,84 @@ const CreateBookScheduler = () => {
                                 </Badge>
                             </div>
                         </div>
-                        <Button predefinition="login" className="mt-8" variant="default">
+                        {/* <Button predefinition="login" className="mt-8" variant="default">
                             <BookMarkedIcon className="mr-1 h-4 w-4 -translate-x-1" />
-                            Confirm
-                        </Button>
+                            Save
+                        </Button> */}
+                        {
+                            <ConfirmBookingModalDialog
+                                confirmAction={handleBook}
+                                endDate={period?.to}
+                                startDate={period?.from}
+                            />
+                        }
                     </div>
                 </div>
             </article>
         </>
+    );
+};
+
+const ConfirmBookingModalDialog = ({
+    startDate,
+    endDate,
+    confirmAction,
+}: {
+    startDate: Date | undefined;
+    endDate: Date | undefined;
+    confirmAction: () => void;
+}) => {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button predefinition="login" className="mt-8" variant="default">
+                    <BookMarkedIcon className="mr-1 h-4 w-4 -translate-x-1" />
+                    Save
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-blue-50">
+                {startDate && endDate ? (
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="text-black">Are sure?</AlertDialogTitle>
+                        <AlertDialogDescription className="italic">
+                            {`Attention: You have 24 hours before the start date ${startDate.toLocaleDateString()} to confirm your booking`}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                ) : (
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="text-black">
+                            You should select a start and an end date!!!
+                        </AlertDialogTitle>
+                        {/* <AlertDialogDescription className="italic">
+                            {`Attention: You have 24 hours before the start date ${startDate.toLocaleDateString()} to confirm your booking`}
+                            .
+                        </AlertDialogDescription> */}
+                    </AlertDialogHeader>
+                )}
+                <AlertDialogFooter>
+                    {startDate && endDate && (
+                        <AlertDialogCancel asChild>
+                            <Button
+                                className="bg-blue-50 border-none hover:border hover:border-gray hover:shadow-md"
+                                variant={'ghost'}>
+                                Cancel
+                            </Button>
+                        </AlertDialogCancel>
+                    )}
+                    {startDate && endDate ? (
+                        <AlertDialogAction
+                            onClick={confirmAction}
+                            className="bg-yellow text-lightblue">
+                            Continue
+                        </AlertDialogAction>
+                    ) : (
+                        <AlertDialogAction className="bg-yellow text-lightblue">
+                            Okay
+                        </AlertDialogAction>
+                    )}
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 };
 
