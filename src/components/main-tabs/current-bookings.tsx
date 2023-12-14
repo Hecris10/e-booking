@@ -6,8 +6,6 @@ import BookingCard from './bookings/booking-card';
 const CurrentBookings = () => {
     const currentBookings: IBookingView[] = useAtomValue(currentBookingsAtom);
 
-    console.log({ currentBookings });
-
     return (
         <div className="flex flex-col gap-5">
             {currentBookings.map((booking) => (

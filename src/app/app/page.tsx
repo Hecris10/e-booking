@@ -4,7 +4,7 @@ import { PageProps } from '~/lib/global-types';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
 
 function matchTab(tab: AppTabs): AppTabs {
-    if (tab !== 'current' && tab !== 'history' && tab !== 'cancelled') {
+    if (tab !== 'current' && tab !== 'history' && tab !== 'canceled') {
         return 'current';
     }
     return tab;
