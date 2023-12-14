@@ -16,4 +16,6 @@ export function formatTextToTitleCase(text: string): string {
     return text.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase());
 }
 
-//
+export function formatNumberToUSD(value: number): string {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+}

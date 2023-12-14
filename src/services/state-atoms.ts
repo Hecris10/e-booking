@@ -8,6 +8,7 @@ export const placesAtom = atom<IPlace[]>([]);
 export const allBookingsAtom = atom<IBookingView[]>([]);
 export const currentBookingsAtom = atom<IBookingView[]>([]);
 export const canceledBookingsAtom = atom<IBookingView[]>([]);
+export const selectedPlaceAtom = atom<IPlace | undefined>(undefined);
 
 export interface IStates {
     user: UserView | undefined;

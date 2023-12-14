@@ -9,7 +9,7 @@ const CurrentBookings = () => {
     console.log({ currentBookings });
 
     return (
-        <div className="flex flex-col gap-5 py-3">
+        <div className="flex flex-col gap-5">
             {currentBookings.map((booking) => (
                 <BookingCard key={booking.id} booking={booking} />
             ))}

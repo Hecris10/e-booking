@@ -14,7 +14,7 @@ export const SelectPlace = () => {
     const filteredPlaces = places.filter((place) => place.name.includes(''));
 
     return (
-        <section className={'flex w-full flex-col'}>
+        <section className={'flex w-full flex-col gap-2 border border-gray'}>
             <div className={cn('relative w-full flex items-center')}>
                 <SearchIcon
                     onClick={() => inputRef.current?.focus()}
@@ -26,7 +26,7 @@ export const SelectPlace = () => {
                     className="pl-8 rounded-3xl"
                 />
             </div>
-            <div className="w-full">
+            <div className="w-full grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {filteredPlaces.map((place) => (
                     <PlaceCard place={place} key={place.id} />
                 ))}
