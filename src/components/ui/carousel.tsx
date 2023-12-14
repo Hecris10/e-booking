@@ -6,11 +6,11 @@ const Carousel = ({ children }: { children: ReactElement[] }) => {
     return (
         <CarouselArk.Root>
             <CarouselArk.IndicatorGroup>
-                {children.map((_, index) => (
+                {/* {children.map((_, index) => (
                     <CarouselArk.Indicator key={index} index={index}>
                         {index + 1}
                     </CarouselArk.Indicator>
-                ))}
+                ))} */}
             </CarouselArk.IndicatorGroup>
             <CarouselArk.Viewport className="relative shadow-md rounded-lg overflow-hidden">
                 <CarouselArk.ItemGroup>

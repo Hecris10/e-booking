@@ -37,7 +37,7 @@ const tabs: AppTabListProps[] = [
 
 const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
     return (
-        <section className="w-full bg-gray   rounded-md max-w-[800px]">
+        <div className="w-full bg-gray rounded-md max-w-[1200px]">
             <Tabs defaultValue={tab} className="w-full px-2 py-3">
                 <TabsList className="w-full flex justify-between">
                     {tabs.map((t) => (
@@ -55,7 +55,7 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
                         </TabsTrigger>
                     ))}
                 </TabsList>
-                <div className="h-[60vh] mt-2 overflow-auto">
+                <div className="h-[80vh] mt-2 ">
                     <TabsContent value="current">
                         <CurrentBookings />
                     </TabsContent>
@@ -70,7 +70,7 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
                     </TabsContent>
                 </div>
             </Tabs>
-        </section>
+        </div>
     );
 };
 

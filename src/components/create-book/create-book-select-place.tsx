@@ -30,7 +30,7 @@ export const SelectPlace = () => {
                     className="pl-8 rounded-3xl"
                 />
             </div>
-            <div className="w-full grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <div className="w-full max-h-[75vh] overflow-auto grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {filteredPlaces.map((place) => (
                     <PlaceCard place={place} key={place.id} />
                 ))}

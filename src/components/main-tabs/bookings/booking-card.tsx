@@ -28,11 +28,9 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
                 </div>
                 <div className="w-full">
                     <h1 className="font-bold text-titlecolor">{booking.placeName}</h1>
-
                     <div className="flex gap-4">
                         <div>
                             <h3>{`Start`}</h3>
-
                             <p>{new Date(booking.startDate).toLocaleDateString()}</p>
                         </div>
                         <div>

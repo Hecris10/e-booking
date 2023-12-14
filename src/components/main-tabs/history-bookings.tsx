@@ -8,10 +8,12 @@ const HistoryBookings = () => {
     // filter for status === 'pending'
 
     return (
-        <div className="flex flex-col gap-5">
-            {allBookings.map((booking) => (
-                <BookingCard key={booking.id} booking={booking} />
-            ))}
+        <div className='className="flex h-full max-h-[80vh]  pb-4 overflow-auto flex-col gap-5"'>
+            <div className="flex h-full  overflow-auto flex-col gap-5">
+                {allBookings.map((booking) => (
+                    <BookingCard key={booking.id} booking={booking} />
+                ))}
+            </div>
         </div>
     );
 };

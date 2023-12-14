@@ -75,16 +75,23 @@ const CreateBookScheduler = () => {
             </Button>
             <article
                 className={cn(
-                    'bg-white mt-3 border rounded-3xl overflow-hidden shadow-lg py-3 px-3'
+                    'bg-white mt-3 border rounded-3xl max-h-[74vh] overflow-auto shadow-lg py-3 px-3'
                 )}>
                 <div>
-                    <h1 className="text-lg text-left font-bold">{place?.name}</h1>
-                    <Carousel>
-                        <Image alt="" src={PlaceImage} />
-                        <Image alt="" src={PlaceImage} />
-                        <Image alt="" src={PlaceImage} />
-                        <Image alt="" src={PlaceImage} />
-                    </Carousel>
+                    <div className="flex h-full w-full relative">
+                        <Carousel>
+                            <Image alt="" src={PlaceImage} />
+                            <Image alt="" src={PlaceImage} />
+                            <Image alt="" src={PlaceImage} />
+                            <Image alt="" src={PlaceImage} />
+                        </Carousel>
+                        <div className="flex justify-start py-3 pl-2 align-middle absolute w-full bg-ghost">
+                            <h1 className="text-2xl text-left text-gray font-bold p-1">
+                                {place?.name}
+                            </h1>
+                        </div>
+                    </div>
+
                     <p>{place?.description}</p>
                 </div>
                 <div className={cn(' text-white text-center py-2')}>
@@ -118,7 +125,7 @@ const CreateBookScheduler = () => {
                             disabled={blockedDates}
                         />
                     </div>
-                    <div className="flex flex-col w-full px-2 justify-between ">
+                    <div className="flex flex-col w-full px-4 justify-between ">
                         <div className="flex flex-col gap-3 w-full">
                             <div>
                                 <div>Costs</div>
