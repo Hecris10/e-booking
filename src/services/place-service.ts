@@ -1,3 +1,9 @@
+import {
+    BookingStatus,
+    getBookingsByPlaceLocalStorage,
+    getBookinsByUserWithPlaceByStatusLocalStorage,
+} from './booking-service';
+
 export interface IPlace {
     id: string;
     name: string;
@@ -5,7 +11,13 @@ export interface IPlace {
     description: string;
     amenities: string[];
     pricePerNight: number;
-    blockedDates: string[]; // Assuming date format is string for simplicity
+    blockedDates: IBlockDate[]; // Assuming date format is string for simplicity
+}
+
+interface IBlockDate {
+    id: number;
+    startDate: string;
+    endDate: string;
 }
 
 export enum PlaceType {
@@ -22,7 +34,7 @@ export const places: IPlace[] = [
         description: 'House 1 description',
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 100,
-        blockedDates: ['2021-01-01', '2021-01-02'],
+        blockedDates: [{ id: 1, startDate: '2021-01-01', endDate: '2021-01-02' }],
     },
     {
         id: '2',
@@ -31,7 +43,7 @@ export const places: IPlace[] = [
         description: 'House 2 description',
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 200,
-        blockedDates: ['2021-01-03', '2021-01-04'],
+        blockedDates: [{ id: 2, startDate: '2021-01-03', endDate: '2021-01-04' }],
     },
     {
         id: '3',
@@ -40,7 +52,7 @@ export const places: IPlace[] = [
         description: 'Apartment 1 description',
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 300,
-        blockedDates: ['2021-01-05', '2021-01-06'],
+        blockedDates: [{ id: 3, startDate: '2021-01-05', endDate: '2021-01-06' }],
     },
     {
         id: '4',
@@ -49,7 +61,7 @@ export const places: IPlace[] = [
         description: 'Apartment 2 description',
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 400,
-        blockedDates: ['2021-01-07', '2021-01-08'],
+        blockedDates: [{ id: 4, startDate: '2021-01-07', endDate: '2021-01-08' }],
     },
     {
         id: '5',
@@ -58,7 +70,7 @@ export const places: IPlace[] = [
         description: 'Hotel 1 description',
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 500,
-        blockedDates: ['2021-01-09', '2021-01-10'],
+        blockedDates: [{ id: 5, startDate: '2021-01-09', endDate: '2021-01-10' }],
     },
     {
         id: '6',
@@ -67,7 +79,7 @@ export const places: IPlace[] = [
         description: 'Hotel 2 description',
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 600,
-        blockedDates: ['2021-01-11', '2021-01-12'],
+        blockedDates: [{ id: 6, startDate: '2021-01-11', endDate: '2021-01-12' }],
     },
 ];
 
@@ -118,4 +130,60 @@ export function getPlacesByAmenityLocalStorage(amenity: string) {
 export function getBlockedDatesByPlaceIdLocalStorage(placeId: string) {
     const place = getPlaceLocalStorage(placeId);
     return place ? place.blockedDates : [];
+}
+
+export async function getPlaceUnavailableDatesLocalStorage(
+    placeId: string,
+    userId: number
+): Promise<Date[]> {
+    const dates: Date[] = [];
+    const place = getPlaceLocalStorage(placeId);
+    if (place) {
+        const bookings = await getBookingsByPlaceLocalStorage(placeId);
+        bookings
+            .filter((b) => b.placeId === placeId)
+            .forEach((b) => {
+                const startDate = new Date(b.startDate);
+                const endDate = new Date(b.endDate);
+                let currentDate = startDate;
+                while (currentDate <= endDate) {
+                    dates.push(currentDate);
+                    currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+                }
+            });
+        console.log('Date1: ', dates);
+
+        place?.blockedDates.forEach((b) => {
+            const startDate = new Date(b.startDate);
+            const endDate = new Date(b.endDate);
+            let currentDate = startDate;
+            while (currentDate <= endDate) {
+                dates.push(currentDate);
+                currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+            }
+        });
+
+        const userBookings = await getBookinsByUserWithPlaceByStatusLocalStorage(userId, [
+            BookingStatus.Pending,
+            BookingStatus.Confirmed,
+        ]);
+
+        userBookings
+            .filter((b) => b.placeId === placeId)
+            .forEach((b) => {
+                const startDate = new Date(b.startDate);
+                const endDate = new Date(b.endDate);
+                let currentDate = startDate;
+                while (currentDate <= endDate) {
+                    dates.push(currentDate);
+                    currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+                }
+            });
+
+        console.log('found place: ', place);
+        console.log('Date2: ', dates);
+        return dates;
+    }
+
+    return [];
 }

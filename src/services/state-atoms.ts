@@ -20,7 +20,7 @@ export interface IStates {
     canceledBookings: IBookingView[];
 }
 
-export const setStatesAtom = atom(null, (get, set, props: IStates) => {
+export const dispatchGlobalUserStatesAtom = atom(null, (get, set, props: IStates) => {
     const { user, places, allBookings, currentBookings, canceledBookings } = props;
     set(userAtom, user);
     set(placesAtom, places);
@@ -52,7 +52,7 @@ export const getStatesAtom = atom((get) => {
     };
 });
 
-export const setSelectPlaceAtom = atom(null, (get, set, place: IPlace) => {
+export const dispatchPlaceAtom = atom(null, (get, set, place: IPlace) => {
     set(selectedPlaceAtom, place);
     set(createBookingTabPosAtom, 'schedule');
 });

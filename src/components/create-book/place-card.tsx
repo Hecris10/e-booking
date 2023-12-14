@@ -4,14 +4,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import HotelImage from '~/../public/hotel.webp';
 import { cn, formatNumberToUSD } from '~/lib/utils';
 import { IPlace } from '~/services/place-service';
-import { setSelectPlaceAtom } from '~/services/state-atoms';
+import { dispatchPlaceAtom } from '~/services/state-atoms';
 import RateStars from '../rate-stars';
 import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 // card to hold place info and offer to book
 
 const PlaceCard = ({ place }: { place: IPlace }) => {
-    const setSelectedPlace = useSetAtom(setSelectPlaceAtom);
+    const setSelectedPlace = useSetAtom(dispatchPlaceAtom);
     // const isSelected = selected?.id === place.id;
 
     const searchParams = useSearchParams();

@@ -109,10 +109,14 @@ export async function getBookingsByUserIdLocalStorage(userId: number, dateRange?
     );
 }
 
-export async function getBookingsByUserByStatusLocalStorage(userId: number, status: BookingStatus) {
+export async function getBookingsByUserByStatusLocalStorage(
+    userId: number,
+    status: BookingStatus[]
+) {
     const bookings = await getBookingsLocalStorage();
-    return bookings.filter((b) => b.userId === userId.toString() && b.status === status);
+    return bookings.filter((b) => b.userId === userId.toString() && status.includes(b.status));
 }
+
 export async function getBookinsByUserLocalStorage(
     userId: number,
     dateRange?: Date[]
@@ -131,7 +135,7 @@ export async function getBookinsByUserLocalStorage(
 
 export async function getBookinsByUserWithPlaceByStatusLocalStorage(
     userId: number,
-    status: BookingStatus,
+    status: BookingStatus[],
     dateRange?: Date[]
 ): Promise<IBookingView[]> {
     const bookings = await getBookingsByUserByStatusLocalStorage(userId, status);
@@ -157,4 +161,9 @@ export async function updateBookingDatesLocalStorage(
         booking.endDate = endDate;
         await updateBookingLocalStorage(booking);
     }
+}
+
+export async function getBookingsByPlaceLocalStorage(placeId: string) {
+    const bookings = await getBookingsLocalStorage();
+    return bookings.filter((b) => b.placeId === placeId);
 }

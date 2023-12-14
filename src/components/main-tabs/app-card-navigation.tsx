@@ -1,5 +1,5 @@
 'use client';
-import CreateBookNavigation from '../create-book/create-book-navigation';
+import CreateBookFlow from '../create-book/create-book-flow';
 import { AddIcon } from '../icons/generic-icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CanceledBookings from './canceled-bookings';
@@ -66,7 +66,7 @@ const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
                         <CanceledBookings />
                     </TabsContent>
                     <TabsContent value="new">
-                        <CreateBookNavigation />
+                        <CreateBookFlow />
                     </TabsContent>
                 </div>
             </Tabs>

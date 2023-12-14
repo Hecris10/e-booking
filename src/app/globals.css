@@ -111,3 +111,14 @@ h5,
 h6 {
     @apply text-titlecolor;
 }
+
+.carousel-trigger:hover .carousel-button {
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+    color: black;
+}
+.carousel-trigger:active .carousel-button {
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+    color: black;
+}
