@@ -1,7 +1,7 @@
 'use client';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import PlaceImage from '~/../public/hotel.webp';
 import { Badge } from '~/components/ui/badge';
@@ -16,17 +16,20 @@ import {
     DialogTitle,
 } from '~/components/ui/dialog';
 import { toast } from '~/components/ui/use-toast';
-import { calculateRangeQuantity, formatNumberToUSD } from '~/lib/utils';
 import {
+    calculateRangeQuantity,
+    excludeFromRange,
+    formatNumberToUSD,
+    isDatesConfliting,
+} from '~/lib/utils';
+import {
+    BookingStatus,
     IScheduleUpdateBooking,
     updateScheduleBookingLocalStorage,
 } from '~/services/booking-service';
-import {
-    addBlockedDateLocalStorage,
-    getPlaceUnavailableDatesLocalStorage,
-    removedBlockedDateLocalStorage,
-} from '~/services/place-service';
+import { getPlaceUnavailableDatesLocalStorage } from '~/services/place-service';
 import { editBookingAtom, updateBookingsAtom, userAtom } from '~/services/state-atoms';
+import { BookingStatusComboBox } from './booking-status-combox';
 import ConfirmBookingModalDialog from './confirm-booking-modal';
 
 const EditBookingModal = () => {
@@ -34,6 +37,7 @@ const EditBookingModal = () => {
     const userId = useAtomValue(userAtom)?.id;
     const updateBookings = useSetAtom(updateBookingsAtom);
     const [blockedDates, setBlockedDates] = useState<Date[] | undefined>(undefined);
+    const status = useRef<BookingStatus | undefined>(booking?.status);
     const [period, setPeriod] = useState<DateRange | undefined>(
         booking
             ? ({
@@ -42,49 +46,35 @@ const EditBookingModal = () => {
               } as DateRange)
             : undefined
     );
-    const blockedDateId = useRef<number>(0);
+
+    const filteredBlockedDates = useMemo(() => {
+        if (booking && booking.startDate && booking.endDate && blockedDates) {
+            return excludeFromRange(
+                new Date(booking.startDate),
+                new Date(booking.endDate),
+                blockedDates
+            );
+        }
+        return blockedDates;
+    }, [blockedDates, booking]);
 
     const handleSelect = async (newPeriod: DateRange) => {
         if (!newPeriod || !newPeriod.from || !newPeriod.to) {
-            if (blockedDateId.current !== 0 && booking)
-                removedBlockedDateLocalStorage(booking.placeId, blockedDateId.current);
-            blockedDateId.current = 0;
+            console.log('newPeriod', newPeriod);
             return setPeriod(newPeriod);
         }
+        if (newPeriod && newPeriod.from && newPeriod.to) {
+            console.log('Blocked dates', blockedDates);
 
-        if (blockedDates && booking && newPeriod && newPeriod.from && newPeriod.to) {
-            const blockedDateInRange = blockedDates.some(
-                (blockedDate) => blockedDate >= newPeriod.from! && blockedDate <= newPeriod.to!
-            );
-
-            if (!blockedDateInRange) {
-                if (newPeriod.from && newPeriod.to) {
-                    const blockedId = await addBlockedDateLocalStorage({
-                        placeId: booking.id.toString(),
-                        startDate: newPeriod.from,
-                        endDate: newPeriod.to,
-                    });
-                    blockedDateId.current = blockedId!;
-                } else {
-                    await removedBlockedDateLocalStorage(booking.placeId, blockedDateId.current);
-                    blockedDateId.current = 0;
-                }
-
-                return setPeriod(newPeriod);
-            }
-            toast({
-                description: "You can't book in this period, please select another one.",
-            });
-        } else {
-            if (newPeriod.from && newPeriod.to && booking)
-                await addBlockedDateLocalStorage({
-                    placeId: booking?.placeId.toString(),
-                    startDate: newPeriod.from,
-                    endDate: newPeriod.to,
+            const isInRage = isDatesConfliting(newPeriod.from, newPeriod.to, filteredBlockedDates!);
+            console.log('isInRage', isInRage);
+            if (isInRage) {
+                return toast({
+                    description: "You can't book in this period, please select another one.",
                 });
-            else if (blockedDateId.current && booking)
-                await removedBlockedDateLocalStorage(booking?.placeId, blockedDateId.current);
-            blockedDateId.current = 0;
+            }
+            return setPeriod(newPeriod);
+        } else {
             setPeriod(newPeriod);
         }
     };
@@ -103,12 +93,11 @@ const EditBookingModal = () => {
     useEffect(() => {
         const getBlockedDates = async () => {
             const res = await getPlaceUnavailableDatesLocalStorage(booking?.placeId!, userId!);
-
-            const resAsArray = Array.from(res);
+            let resAsArray = Array.from(res);
             setBlockedDates(resAsArray);
         };
         if (booking && userId) getBlockedDates();
-    }, [booking, userId]);
+    }, [booking, userId, period]);
 
     const updateBooking = async () => {
         if (booking && period?.from && period?.to) {
@@ -118,6 +107,7 @@ const EditBookingModal = () => {
                 endDate: period.to,
                 pricePerNight: booking.pricePerNight,
                 totalPrice: totalPrice,
+                status: status.current || BookingStatus.Pending,
             };
             await updateScheduleBookingLocalStorage(dataReq);
             await updateBookings();
@@ -142,9 +132,26 @@ const EditBookingModal = () => {
                     <DialogDescription>{booking?.placeName}</DialogDescription>
                     <DialogDescription>{booking?.placeDescription}</DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-1 w-full">
                     <Image alt="" src={PlaceImage} />
-                    <DateRangePicker date={period} onSelect={setPeriod} disabled={blockedDates} />
+                    <DateRangePicker
+                        date={period}
+                        onSelect={(d) => handleSelect(d as DateRange)}
+                        disabledDates={filteredBlockedDates}
+                    />
+                    {booking?.status !== BookingStatus.Completed &&
+                    booking?.status !== BookingStatus.Canceled ? (
+                        <BookingStatusComboBox
+                            status={booking?.status}
+                            onChange={(newStatus) => (status.current = newStatus)}
+                        />
+                    ) : (
+                        <div className="mr-0 flex justify-end align-middle">
+                            <Badge className=" text-white bg-lightblue  hover:bg-lightblue shadow-md">
+                                {booking.status}
+                            </Badge>
+                        </div>
+                    )}
                     <div className="flex flex-col gap-3 w-full">
                         <div>
                             <div>Costs</div>

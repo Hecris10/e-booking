@@ -42,3 +42,24 @@ export const getDatesFromRange = (initialDate: Date, finalDate: Date) => {
     }
     return dates;
 };
+export const excludeFromRange = (initialDate: Date, finalDate: Date, dates: Date[]) => {
+    const normalizedInitialDate = new Date(initialDate.setHours(0, 0, 0, 0));
+    const normalizedFinalDate = new Date(finalDate.setHours(0, 0, 0, 0));
+    const normalizedDates = dates.map((date) => new Date(date.setHours(0, 0, 0, 0)));
+
+    const range = getDatesFromRange(normalizedInitialDate, normalizedFinalDate);
+    return normalizedDates.filter((d) => !range.some((r) => r.getTime() === d.getTime()));
+};
+export const isDatesConfliting = (initialDate: Date, finalDate: Date, dates: Date[]): boolean => {
+    const normalizedInitialDate = new Date(initialDate.setHours(0, 0, 0, 0));
+    const normalizedFinalDate = new Date(finalDate.setHours(0, 0, 0, 0));
+
+    const range = getDatesFromRange(normalizedInitialDate, normalizedFinalDate);
+
+    return range.some((d) =>
+        dates.find((date) => {
+            date.setHours(0, 0, 0, 0);
+            return d.toISOString() === date.toISOString();
+        })
+    );
+};

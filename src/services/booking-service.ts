@@ -25,6 +25,9 @@ export enum BookingStatus {
     Completed = 'Completed',
 }
 
+export const BookingStatusKeys = Object.keys(BookingStatus);
+export const BookingStatusValues = Object.values(BookingStatus);
+
 export function getBookingsLocalStorage(): IBooking[] {
     const bookings = localStorage.getItem('bookings');
     return bookings ? JSON.parse(bookings) : [];
@@ -143,6 +146,7 @@ export interface IScheduleNewBooking {
 export interface IScheduleUpdateBooking {
     id: string;
     startDate: Date;
+    status: BookingStatus;
     endDate: Date;
     pricePerNight: number;
     totalPrice: number;
@@ -171,6 +175,7 @@ export async function updateScheduleBookingLocalStorage(data: IScheduleUpdateBoo
         booking.endDate = data.endDate.toISOString();
         booking.pricePerNight = data.pricePerNight;
         booking.totalPrice = data.totalPrice;
+        booking.status = data.status;
         await updateBookingLocalStorage(booking);
     }
 }

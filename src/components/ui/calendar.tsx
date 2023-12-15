@@ -9,13 +9,23 @@ import { cn } from '~/lib/utils';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
-    const disabledDays = [
-        new Date(2022, 5, 10),
-        new Date(2022, 5, 12),
-        new Date(2022, 5, 20),
-        { from: new Date(2022, 4, 18), to: new Date(2022, 4, 29) },
-    ];
+const today = new Date();
+
+const modifiers = {
+    disabled: { before: today },
+};
+
+export type CalendarPickerProps = CalendarProps & {
+    disabledDates?: Date[];
+};
+
+function Calendar({
+    className,
+    classNames,
+    showOutsideDays = true,
+    disabledDates,
+    ...props
+}: CalendarPickerProps) {
     return (
         <DayPicker
             showOutsideDays={showOutsideDays}
@@ -56,6 +66,9 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
             components={{
                 IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
                 IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+            }}
+            modifiers={{
+                disabled: [{ before: today }, ...(disabledDates || [])],
             }}
             {...props}
         />

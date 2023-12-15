@@ -5,10 +5,9 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import PlaceImage from '~/../public/hotel.webp';
-import { calculateRangeQuantity, cn, formatNumberToUSD } from '~/lib/utils';
+import { calculateRangeQuantity, cn, formatNumberToUSD, isDatesConfliting } from '~/lib/utils';
 import { IScheduleNewBooking, scheduleBookingLocalStorage } from '~/services/booking-service';
 import {
-    addBlockedDateLocalStorage,
     getPlaceUnavailableDatesLocalStorage,
     removedBlockedDateLocalStorage,
 } from '~/services/place-service';
@@ -43,45 +42,21 @@ const CreateBookScheduler = () => {
 
     const handleSelect = async (newPeriod: DateRange) => {
         if (!newPeriod || !newPeriod.from || !newPeriod.to) {
-            if (blockedDateId.current !== 0)
-                removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
-            blockedDateId.current = 0;
+            console.log('newPeriod', newPeriod);
             return setPeriod(newPeriod);
         }
+        if (newPeriod && newPeriod.from && newPeriod.to && blockedDates) {
+            console.log('Blocked dates', blockedDates);
 
-        if (blockedDates && newPeriod && newPeriod.from && newPeriod.to) {
-            const blockedDateInRange = blockedDates.some(
-                (blockedDate) => blockedDate >= newPeriod.from! && blockedDate <= newPeriod.to!
-            );
-
-            if (!blockedDateInRange) {
-                if (newPeriod.from && newPeriod.to) {
-                    const blockedId = await addBlockedDateLocalStorage({
-                        placeId: place!.id.toString(),
-                        startDate: newPeriod.from,
-                        endDate: newPeriod.to,
-                    });
-                    blockedDateId.current = blockedId!;
-                } else {
-                    await removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
-                    blockedDateId.current = 0;
-                }
-
-                return setPeriod(newPeriod);
-            }
-            toast({
-                description: "You can't book in this period, please select another one.",
-            });
-        } else {
-            if (newPeriod.from && newPeriod.to)
-                await addBlockedDateLocalStorage({
-                    placeId: place!.id.toString(),
-                    startDate: newPeriod.from,
-                    endDate: newPeriod.to,
+            const isInRage = isDatesConfliting(newPeriod.from, newPeriod.to, blockedDates);
+            console.log('isInRage', isInRage);
+            if (isInRage) {
+                return toast({
+                    description: "You can't book in this period, please select another one.",
                 });
-            else if (blockedDateId.current)
-                await removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
-            blockedDateId.current = 0;
+            }
+            return setPeriod(newPeriod);
+        } else {
             setPeriod(newPeriod);
         }
     };
@@ -158,7 +133,7 @@ const CreateBookScheduler = () => {
                         <DateRangePicker
                             className="md:hidden lg:hidden"
                             placeHolder="Pick a period"
-                            disabled={blockedDates}
+                            disabledDates={blockedDates}
                             date={period}
                             onSelect={(d) => handleSelect(d as DateRange)}
                         />

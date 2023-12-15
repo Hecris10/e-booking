@@ -23,6 +23,9 @@ export enum PlaceType {
     Hotel = 'hotel',
 }
 
+export const PlaceTypeKeys = Object.keys(PlaceType);
+export const PlaceTypeValues = Object.values(PlaceType);
+
 export const places: IPlace[] = [
     {
         id: '1',
@@ -155,7 +158,7 @@ export async function getPlaceUnavailableDatesLocalStorage(
 
     // get all blocked dates for this place and append
 
-    return new Set(dates);
+    return new Set(dates.sort((a, b) => a.getTime() - b.getTime()));
 }
 
 export async function addBlockedDateLocalStorage({
@@ -167,7 +170,6 @@ export async function addBlockedDateLocalStorage({
     startDate: Date;
     endDate: Date;
 }) {
-    console.log('addBlockedDateLocalStorage: ', placeId, startDate, endDate);
     const place = getPlaceLocalStorage(placeId);
     if (place) {
         const newId = place.blockedDates.length + 1;

@@ -9,10 +9,16 @@ import { cn } from '~/lib/utils';
 import { Calendar } from './calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
+const today = new Date();
+
+const modifiers = {
+    disabled: { before: today },
+};
+
 const DateRangePicker = ({
     placeHolder,
     className,
-    disabled,
+    disabledDates,
     date,
     onSelect,
 }: {
@@ -21,7 +27,7 @@ const DateRangePicker = ({
     date: DateRange | undefined;
     onSelect: (date: DateRange | undefined) => void;
     className?: string;
-    disabled?: Date[];
+    disabledDates?: Date[];
 }) => {
     return (
         <div className={cn(className, 'grid gap-2')}>
@@ -58,7 +64,9 @@ const DateRangePicker = ({
                         selected={date}
                         onSelect={onSelect}
                         numberOfMonths={2}
-                        disabled={disabled}
+                        modifiers={{
+                            disabled: [{ before: today }, ...(disabledDates || [])],
+                        }}
                     />
                 </PopoverContent>
             </Popover>

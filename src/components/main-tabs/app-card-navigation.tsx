@@ -1,5 +1,5 @@
 'use client';
-import CreateBookFlow from '../create-book/create-book-flow';
+import CreateBookFlow from '../create-booking/create-book-flow';
 import { AddIcon } from '../icons/generic-icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CanceledBookings from './canceled-bookings';
