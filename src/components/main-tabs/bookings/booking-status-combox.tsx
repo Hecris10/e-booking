@@ -15,7 +15,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { cn } from '~/lib/utils';
 import { BookingStatus, BookingStatusKeys, BookingStatusValues } from '~/services/booking-service';
 
-const bookingStatusOption: ComboBoxSelectProps[] = BookingStatusValues.map((placeType, i) => ({
+const bookingStatusOption: ComboBoxSelectProps[] = BookingStatusValues.filter(
+    (status) =>
+        status.toLocaleLowerCase() !== 'concluded' && status.toLocaleLowerCase() !== 'canceled'
+).map((placeType, i) => ({
     value: placeType.toLocaleLowerCase(),
     label: BookingStatusKeys[i],
 }));
@@ -75,7 +78,7 @@ export function BookingStatusComboBox({
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search framework..." />
+                    <CommandInput placeholder="Search status..." />
                     <CommandEmpty>No framework found.</CommandEmpty>
                     <CommandGroup>
                         {bookingStatusOption.map((status) => (

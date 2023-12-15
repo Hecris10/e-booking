@@ -13,7 +13,7 @@ import { editBookingAtom } from '~/services/state-atoms';
 import { getCardStatusBadge, getCardStatusColor } from './badge-utils';
 
 const BookingCard = ({ booking }: { booking: IBookingView }) => {
-    const { transparentColor, highlightColor } = getCardStatusColor(booking.status);
+    const { bgColor, borderColor } = getCardStatusColor(booking.status);
 
     const setEditBooking = useSetAtom(editBookingAtom);
     const updateBookingDates = async (startDate: Date, endDate: Date) => {
@@ -26,15 +26,12 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
 
     return (
         <article
-            className={cn(
-                'bg-cardwhite border rounded-lg overflow-hidden shadow-lg',
-                highlightColor
-            )}>
+            className={cn('bg-cardwhite border rounded-lg overflow-hidden shadow-lg', borderColor)}>
             <div className="w-full h-full flex">
                 <div
                     className={cn(
                         'flex py-2 px-2 relative w-full h-full justify-start gap-3',
-                        transparentColor
+                        bgColor
                     )}>
                     <div className="h-full absolute top-0 left-0">
                         <ExpandableToggleCard
@@ -43,11 +40,7 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
                         />
                     </div>
                     <div className="flex w-full gap-3 ml-7">
-                        <div
-                            className={cn(
-                                'flex w-full h-full justify-start gap-3',
-                                transparentColor
-                            )}>
+                        <div className={cn('flex w-full h-full justify-start gap-3', bgColor)}>
                             <div>
                                 <Image
                                     width={200}

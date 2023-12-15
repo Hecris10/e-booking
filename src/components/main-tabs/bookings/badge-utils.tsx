@@ -28,32 +28,32 @@ export const getCardStatusBadge = (
 
 export const getCardStatusColor = (
     status: BookingStatus
-): { transparentColor: string; highlightColor: string } => {
+): { bgColor: string; borderColor: string } => {
     switch (status) {
         case BookingStatus.Pending:
             return {
-                transparentColor: 'bg-orange-50',
-                highlightColor: 'border-orange-400',
+                bgColor: 'bg-orange-50',
+                borderColor: 'border-orange-400',
             };
         case BookingStatus.Confirmed:
             return {
-                transparentColor: 'bg-green-50',
-                highlightColor: 'border-green-300',
+                bgColor: 'bg-green-50',
+                borderColor: 'border-green-300',
             };
         case BookingStatus.Canceled:
             return {
-                transparentColor: 'bg-red-50',
-                highlightColor: 'border-red-400',
+                bgColor: 'bg-red-50',
+                borderColor: 'border-red-400',
             };
         case BookingStatus.Completed:
             return {
-                transparentColor: 'bg-blue-50',
-                highlightColor: 'border-blue-400',
+                bgColor: 'bg-blue-50',
+                borderColor: 'border-blue-400',
             };
         default:
             return {
-                transparentColor: 'bg-gray-50',
-                highlightColor: 'border-white',
+                bgColor: 'bg-gray-50',
+                borderColor: 'border-white',
             };
     }
 };

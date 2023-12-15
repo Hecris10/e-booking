@@ -18,6 +18,7 @@ import {
 import { toast } from '~/components/ui/use-toast';
 import {
     calculateRangeQuantity,
+    cn,
     excludeFromRange,
     formatNumberToUSD,
     isDatesConfliting,
@@ -29,6 +30,7 @@ import {
 } from '~/services/booking-service';
 import { getPlaceUnavailableDatesLocalStorage } from '~/services/place-service';
 import { editBookingAtom, updateBookingsAtom, userAtom } from '~/services/state-atoms';
+import { getCardStatusColor } from './badge-utils';
 import { BookingStatusComboBox } from './booking-status-combox';
 import ConfirmBookingModalDialog from './confirm-booking-modal';
 
@@ -46,7 +48,7 @@ const EditBookingModal = () => {
               } as DateRange)
             : undefined
     );
-
+    const { bgColor, borderColor } = getCardStatusColor(booking?.status || BookingStatus.Pending);
     const filteredBlockedDates = useMemo(() => {
         if (booking && booking.startDate && booking.endDate && blockedDates) {
             return excludeFromRange(
@@ -126,7 +128,7 @@ const EditBookingModal = () => {
 
     return (
         <Dialog open={booking !== undefined}>
-            <DialogContent className="sm:max-w-[425px] bg-blue-50">
+            <DialogContent className={cn('sm:max-w-[425px]', bgColor, borderColor)}>
                 <DialogHeader>
                     <DialogTitle>Edit your Booking</DialogTitle>
                     <DialogDescription>{booking?.placeName}</DialogDescription>
