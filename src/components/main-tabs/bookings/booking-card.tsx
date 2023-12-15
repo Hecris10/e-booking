@@ -4,25 +4,13 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import HotelImage from '~/../public/hotel.webp';
 import { cn } from '~/lib/utils';
-import {
-    BookingStatus,
-    IBookingView,
-    updateBookingDatesLocalStorage,
-} from '~/services/booking-service';
+import { IBookingView } from '~/services/booking-service';
 import { editBookingAtom } from '~/services/state-atoms';
 import { getCardStatusBadge, getCardStatusColor } from './badge-utils';
 
 const BookingCard = ({ booking }: { booking: IBookingView }) => {
     const { bgColor, borderColor } = getCardStatusColor(booking.status);
-
     const setEditBooking = useSetAtom(editBookingAtom);
-    const updateBookingDates = async (startDate: Date, endDate: Date) => {
-        await updateBookingDatesLocalStorage(
-            booking.id,
-            startDate.toISOString(),
-            endDate.toISOString()
-        );
-    };
 
     return (
         <article
@@ -36,7 +24,12 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
                     <div className="h-full absolute top-0 left-0">
                         <ExpandableToggleCard
                             booking={booking}
-                            openModal={(value) => (value === 'edit' ? setEditBooking(booking) : {})}
+                            openModal={(mode) =>
+                                setEditBooking({
+                                    booking: booking,
+                                    mode: mode,
+                                })
+                            }
                         />
                     </div>
                     <div className="flex w-full gap-3 ml-7">
@@ -76,12 +69,10 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
 
 const ExpandableToggleCard = ({
     booking,
-
     openModal,
 }: {
     booking: IBookingView;
-
-    openModal: (value: 'edit' | 'cancel') => void;
+    openModal: (mode: 'edit' | 'delete') => void;
 }) => {
     const [open, setOpen] = useState(false);
     const editRef = useRef<HTMLDivElement>(null);
@@ -111,15 +102,11 @@ const ExpandableToggleCard = ({
                     className="bg-gray p-1 flex justify-center align-middle bg-transparent rounded-md hover:bg-slate-300 hover:scale-105 active:scale-95">
                     <Pencil className="w-8 h-8" />
                 </button>
-                {booking.status !== BookingStatus.Canceled &&
-                    booking.status !== BookingStatus.Completed &&
-                    BookingStatus.Completed && (
-                        <button
-                            onClick={() => openModal('cancel')}
-                            className=" bg-gray text-red-500 p-1 flex justify-center align-middle bg-transparent rounded-md hover:bg-slate-300 hover:scale-105 active:scale-95">
-                            <Trash2 className="w-8 h-8" />
-                        </button>
-                    )}
+                <button
+                    onClick={() => openModal('delete')}
+                    className="bg-gray p-1 flex justify-center align-middle bg-transparent rounded-md hover:bg-slate-300 hover:scale-105 active:scale-95">
+                    <Trash2 className="w-8 h-8 text-red-500" />
+                </button>
             </div>
         );
 

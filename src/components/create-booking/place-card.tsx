@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import HotelImage from '~/../public/hotel.webp';
 import { cn, formatNumberToUSD } from '~/lib/utils';
-import { IPlace } from '~/services/place-service';
+import { IPlace, getPlaceRateLocalStorage } from '~/services/place-service';
 import { dispatchPlaceAtom } from '~/services/state-atoms';
 import RateStars from '../rate-stars';
 import { Button } from '../ui/button';
@@ -28,6 +28,8 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
         setSelectedPlace(place);
     };
 
+    const currentRate = getPlaceRateLocalStorage(place.id);
+
     return (
         <Popover>
             <PopoverTrigger>
@@ -45,7 +47,7 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
                     />
                     <div>
                         <div className="flex flex-col align-top gap-2 mt-3">
-                            <RateStars defaultRate={0} isSelectable={false} />
+                            <RateStars defaultRate={currentRate} isSelectable={false} />
                             <h2 className="text-lg text-left font-bold">
                                 {formatNumberToUSD(place.pricePerNight)}
                                 <span className="font-normal text-sm italic">{` per night`}</span>

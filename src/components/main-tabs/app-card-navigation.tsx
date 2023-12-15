@@ -37,40 +37,42 @@ const tabs: AppTabListProps[] = [
 
 const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
     return (
-        <div className="w-full bg-gray rounded-md max-w-[1200px]">
-            <Tabs defaultValue={tab} className="w-full px-2 py-3">
-                <TabsList className="w-full flex justify-between">
-                    {tabs.map((t) => (
-                        <TabsTrigger
-                            className={
-                                t.type === 'text' ? 'w-[150px] shadow-md' : 'p-1 rounded-full'
-                            }
-                            key={t.tab}
-                            value={t.tab}>
-                            {t.type === 'icon' ? (
-                                t.icon
-                            ) : (
-                                <span className="text-sm">{t.label}</span>
-                            )}
-                        </TabsTrigger>
-                    ))}
-                </TabsList>
-                <div className="h-[80vh] mt-2 ">
-                    <TabsContent value="current">
-                        <CurrentBookings />
-                    </TabsContent>
-                    <TabsContent value="history">
-                        <HistoryBookings />
-                    </TabsContent>
-                    <TabsContent value="canceled">
-                        <CanceledBookings />
-                    </TabsContent>
-                    <TabsContent value="new">
-                        <CreateBookFlow />
-                    </TabsContent>
-                </div>
-            </Tabs>
-        </div>
+        <>
+            <div className="w-full bg-gray rounded-md max-w-[1200px]">
+                <Tabs defaultValue={tab} className="w-full px-2 py-3">
+                    <TabsList className="w-full flex justify-between">
+                        {tabs.map((t) => (
+                            <TabsTrigger
+                                className={
+                                    t.type === 'text' ? 'w-[150px] shadow-md' : 'p-1 rounded-full'
+                                }
+                                key={t.tab}
+                                value={t.tab}>
+                                {t.type === 'icon' ? (
+                                    t.icon
+                                ) : (
+                                    <span className="text-sm">{t.label}</span>
+                                )}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+                    <div className="h-[80vh] mt-2 ">
+                        <TabsContent value="current">
+                            <CurrentBookings />
+                        </TabsContent>
+                        <TabsContent value="history">
+                            <HistoryBookings />
+                        </TabsContent>
+                        <TabsContent value="canceled">
+                            <CanceledBookings />
+                        </TabsContent>
+                        <TabsContent value="new">
+                            <CreateBookFlow />
+                        </TabsContent>
+                    </div>
+                </Tabs>
+            </div>
+        </>
     );
 };
 

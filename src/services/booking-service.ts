@@ -179,3 +179,12 @@ export async function updateScheduleBookingLocalStorage(data: IScheduleUpdateBoo
         await updateBookingLocalStorage(booking);
     }
 }
+
+export async function cancelScheduleBookingLocalStorage(bookingId: string) {
+    console.log('cancelScheduleBookingLocalStorage', bookingId);
+    const booking = await getBookingLocalStorage(bookingId);
+    if (booking) {
+        booking.status = BookingStatus.Canceled;
+        await updateBookingLocalStorage(booking);
+    }
+}

@@ -1,4 +1,6 @@
 import { BookMarkedIcon } from 'lucide-react';
+import { ReactElement, useRef } from 'react';
+import RateStars from '~/components/rate-stars';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,30 +14,55 @@ import {
 } from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
 
+type ConfirmBookingModalDialogProps = {
+    startDate: Date | undefined;
+    endDate: Date | undefined;
+    headerText: string;
+    text: string;
+    confirmAction: (rate?: number) => void;
+    isRate?: boolean;
+    isCancel?: boolean;
+    children?: ReactElement;
+    confirmText: string;
+};
+
 const ConfirmBookingModalDialog = ({
     startDate,
     endDate,
+    text,
+    headerText,
     confirmAction,
-}: {
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    confirmAction: () => void;
-}) => {
+    confirmText,
+    isRate,
+    isCancel,
+    children,
+}: ConfirmBookingModalDialogProps) => {
+    const rate = useRef<number>(0);
+
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button predefinition="login" variant="default">
-                    <BookMarkedIcon className="mr-1 h-4 w-4 -translate-x-1" />
-                    Save
-                </Button>
+                {children ? (
+                    children
+                ) : (
+                    <Button predefinition="login" variant="default">
+                        <BookMarkedIcon className="mr-1 h-4 w-4 -translate-x-1" />
+                        Save
+                    </Button>
+                )}
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-blue-50">
                 {startDate && endDate ? (
                     <AlertDialogHeader>
-                        <AlertDialogTitle className="text-black">Are sure?</AlertDialogTitle>
-                        <AlertDialogDescription className="italic">
-                            {`Attention: You have 24 hours before the start date ${startDate.toLocaleDateString()} to confirm your booking`}
-                        </AlertDialogDescription>
+                        <AlertDialogTitle className="text-black">{headerText}</AlertDialogTitle>
+
+                        <AlertDialogDescription className="italic">{text}</AlertDialogDescription>
+                        {isRate && (
+                            <RateStars
+                                isSelectable
+                                onSelect={(updatedRate) => (rate.current = updatedRate)}
+                            />
+                        )}
                     </AlertDialogHeader>
                 ) : (
                     <AlertDialogHeader>
@@ -43,13 +70,13 @@ const ConfirmBookingModalDialog = ({
                             You should select a start and an end date!!!
                         </AlertDialogTitle>
                         {/* <AlertDialogDescription className="italic">
-                            {`Attention: You have 24 hours before the start date ${startDate.toLocaleDateString()} to confirm your booking`}
+                            {`Attention: You have 24 hours before the start date ${startDate?.toLocaleDateString()} to confirm your booking`}
                             .
                         </AlertDialogDescription> */}
                     </AlertDialogHeader>
                 )}
                 <AlertDialogFooter>
-                    {startDate && endDate && (
+                    {startDate && endDate && isCancel && (
                         <AlertDialogCancel asChild>
                             <Button
                                 className="bg-blue-50 border-none hover:border hover:border-gray hover:shadow-md"
@@ -60,9 +87,9 @@ const ConfirmBookingModalDialog = ({
                     )}
                     {startDate && endDate ? (
                         <AlertDialogAction
-                            onClick={confirmAction}
+                            onClick={() => confirmAction(rate.current)}
                             className="bg-yellow text-lightblue">
-                            Continue
+                            {confirmText}
                         </AlertDialogAction>
                     ) : (
                         <AlertDialogAction className="bg-yellow text-lightblue">

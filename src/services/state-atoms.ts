@@ -8,7 +8,9 @@ export type CreateBookingAtomProp = 'select' | 'schedule' | 'confirm';
 export const userAtom = atom<UserView | undefined>(undefined);
 export const placesAtom = atom<IPlace[]>([]);
 export const allBookingsAtom = atom<IBookingView[]>([]);
-export const editBookingAtom = atom<IBookingView | undefined>(undefined);
+export const editBookingAtom = atom<{ booking: IBookingView; mode: 'edit' | 'delete' } | undefined>(
+    undefined
+);
 export const selectedPlaceAtom = atom<IPlace | undefined>(undefined);
 export const createBookingTabPosAtom = atom<CreateBookingAtomProp>('select');
 export interface IStates {

@@ -18,11 +18,30 @@ const RateStars = (props: RaceStarsProps) => {
         }
     };
 
+    const rateLabel = (rate: number) => {
+        switch (rate) {
+            case 0:
+                return '';
+            case 1:
+                return 'Bad';
+            case 2:
+                return 'Ok';
+            case 3:
+                return 'Good';
+            case 4:
+                return 'Great';
+            case 5:
+                return 'Excellent';
+            default:
+                return 'Ok';
+        }
+    };
+
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center align-middle flex-col">
             <div
                 className={cn(
-                    'flex items-center gap-1 space-x-1 text-gray-400 text-3xl',
+                    'flex items-center gap-1 mx-auto text-gray-400 text-3xl',
                     isSelectable && 'cursor-pointer'
                 )}>
                 {Array.from(Array(5).keys()).map((r) => (
@@ -32,12 +51,21 @@ const RateStars = (props: RaceStarsProps) => {
                         className={cn(
                             isSelectable && 'hover:scale-125',
                             'transform transition-all duration-200',
-                            r < rate ? 'fill-yellow text-yellow' : 'text-gray',
+                            r < rate
+                                ? 'fill-yellow text-yellow'
+                                : isSelectable
+                                ? 'text-black'
+                                : 'text-gray',
                             isSelectable && r >= rate && 'hover:text-black'
                         )}
                     />
                 ))}
             </div>
+            {isSelectable && rate > 0 && (
+                <div className="flex w-full text-center justify-center align-middle">
+                    {rateLabel(rate)}
+                </div>
+            )}
         </div>
     );
 };

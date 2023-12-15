@@ -16,7 +16,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <body className={cn(inter.className, 'w-full h-screen')}>
                 <JotaiProvider>
-                    {children} <Toaster />
+                    {children}
+                    <Toaster />
                 </JotaiProvider>
             </body>
         </html>

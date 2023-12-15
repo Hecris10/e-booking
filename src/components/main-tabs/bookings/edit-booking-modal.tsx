@@ -1,7 +1,8 @@
 'use client';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { Calendar } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import PlaceImage from '~/../public/hotel.webp';
 import { Badge } from '~/components/ui/badge';
@@ -35,11 +36,13 @@ import { BookingStatusComboBox } from './booking-status-combox';
 import ConfirmBookingModalDialog from './confirm-booking-modal';
 
 const EditBookingModal = () => {
-    const [booking, setBooking] = useAtom(editBookingAtom);
+    const [bookingEdit, setBookingEdit] = useAtom(editBookingAtom);
+    const booking = bookingEdit?.booking;
     const userId = useAtomValue(userAtom)?.id;
     const updateBookings = useSetAtom(updateBookingsAtom);
     const [blockedDates, setBlockedDates] = useState<Date[] | undefined>(undefined);
-    const status = useRef<BookingStatus | undefined>(booking?.status);
+    const [status, setStatus] = useState<BookingStatus | undefined>(booking?.status);
+
     const [period, setPeriod] = useState<DateRange | undefined>(
         booking
             ? ({
@@ -48,7 +51,8 @@ const EditBookingModal = () => {
               } as DateRange)
             : undefined
     );
-    const { bgColor, borderColor } = getCardStatusColor(booking?.status || BookingStatus.Pending);
+
+    const { bgColor, borderColor } = getCardStatusColor(status || BookingStatus.Pending);
     const filteredBlockedDates = useMemo(() => {
         if (booking && booking.startDate && booking.endDate && blockedDates) {
             return excludeFromRange(
@@ -81,14 +85,22 @@ const EditBookingModal = () => {
         }
     };
 
+    const handleConfirm = async () => {
+        if (status === BookingStatus.Confirmed) {
+            await updateBooking();
+        }
+    };
+
     useEffect(() => {
         if (booking) {
             setPeriod({
                 from: new Date(booking.startDate),
                 to: new Date(booking.endDate),
             });
+            setStatus(booking.status);
         } else {
             setPeriod(undefined);
+            setStatus(undefined);
         }
     }, [booking]);
 
@@ -109,7 +121,7 @@ const EditBookingModal = () => {
                 endDate: period.to,
                 pricePerNight: booking.pricePerNight,
                 totalPrice: totalPrice,
-                status: status.current || BookingStatus.Pending,
+                status: status || BookingStatus.Pending,
             };
             await updateScheduleBookingLocalStorage(dataReq);
             await updateBookings();
@@ -120,6 +132,15 @@ const EditBookingModal = () => {
         }
     };
 
+    const dialogText =
+        status === BookingStatus.Confirmed
+            ? 'Your booking will be confirmed!'
+            : status === BookingStatus.Canceled
+            ? `You can't undone this action!`
+            : status === BookingStatus.Pending
+            ? `Attention: You have 24 hours before the start date ${period?.from?.toLocaleDateString()} to confirm your booking`
+            : '';
+
     const daysQuantity = calculateRangeQuantity(period);
     const totalPrice =
         booking?.startDate !== period?.to || booking?.endDate !== period?.to
@@ -127,8 +148,13 @@ const EditBookingModal = () => {
             : booking?.totalPrice ?? 0;
 
     return (
-        <Dialog open={booking !== undefined}>
-            <DialogContent className={cn('sm:max-w-[425px]', bgColor, borderColor)}>
+        <Dialog open={bookingEdit !== undefined && bookingEdit.mode === 'edit'}>
+            <DialogContent
+                className={cn(
+                    'sm:max-w-[425px] transition-all duration-1000',
+                    bgColor,
+                    borderColor
+                )}>
                 <DialogHeader>
                     <DialogTitle>Edit your Booking</DialogTitle>
                     <DialogDescription>{booking?.placeName}</DialogDescription>
@@ -136,16 +162,26 @@ const EditBookingModal = () => {
                 </DialogHeader>
                 <div className="grid gap-4 py-1 w-full">
                     <Image alt="" src={PlaceImage} />
-                    <DateRangePicker
-                        date={period}
-                        onSelect={(d) => handleSelect(d as DateRange)}
-                        disabledDates={filteredBlockedDates}
-                    />
+                    {booking?.status !== BookingStatus.Canceled &&
+                    booking?.status !== BookingStatus.Completed ? (
+                        <DateRangePicker
+                            date={period}
+                            onSelect={(d) => handleSelect(d as DateRange)}
+                            disabledDates={filteredBlockedDates}
+                        />
+                    ) : (
+                        <div className="flex gap-1">
+                            <Calendar />{' '}
+                            {`${new Date(booking?.startDate).toLocaleDateString()} - ${new Date(
+                                booking?.endDate
+                            ).toLocaleDateString()}`}{' '}
+                        </div>
+                    )}
                     {booking?.status !== BookingStatus.Completed &&
                     booking?.status !== BookingStatus.Canceled ? (
                         <BookingStatusComboBox
-                            status={booking?.status}
-                            onChange={(newStatus) => (status.current = newStatus)}
+                            status={status}
+                            onChange={(newStatus) => setStatus(newStatus)}
                         />
                     ) : (
                         <div className="mr-0 flex justify-end align-middle">
@@ -176,13 +212,24 @@ const EditBookingModal = () => {
                     <Button
                         className="bg-blue-50 border-none hover:border hover:border-gray hover:shadow-md"
                         variant={'ghost'}
-                        onClick={() => setBooking(undefined)}>
+                        onClick={() => setBookingEdit(undefined)}>
                         Close
                     </Button>
                     <ConfirmBookingModalDialog
                         startDate={period?.from}
                         endDate={period?.to}
                         confirmAction={updateBooking}
+                        isRate={status === BookingStatus.Completed}
+                        isCancel
+                        headerText={
+                            status === BookingStatus.Completed
+                                ? 'Share with us your experience'
+                                : status === BookingStatus.Confirmed
+                                ? 'Confirmed'
+                                : 'Are you sure?'
+                        }
+                        text={dialogText}
+                        confirmText={status !== BookingStatus.Completed ? 'Okay' : 'Continue'}
                     />
                 </DialogFooter>
             </DialogContent>

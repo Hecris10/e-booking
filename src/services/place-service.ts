@@ -8,9 +8,15 @@ export interface IPlace {
     description: string;
     amenities: string[];
     pricePerNight: number;
-    blockedDates: IBlockDate[]; // Assuming date format is string for simplicity
+    blockedDates: IBlockDate[];
+    rates: IRatePlace[];
 }
 
+export interface IRatePlace {
+    bookingId: number;
+    placeId: string;
+    rate: number;
+}
 interface IBlockDate {
     id: number;
     startDate: string;
@@ -35,6 +41,7 @@ export const places: IPlace[] = [
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 100,
         blockedDates: [{ id: 1, startDate: '2021-01-01', endDate: '2021-01-02' }],
+        rates: [{ bookingId: 1, placeId: '1', rate: 5 }],
     },
     {
         id: '2',
@@ -44,6 +51,7 @@ export const places: IPlace[] = [
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 200,
         blockedDates: [{ id: 2, startDate: '2021-01-03', endDate: '2021-01-04' }],
+        rates: [{ bookingId: 2, placeId: '2', rate: 4 }],
     },
     {
         id: '3',
@@ -53,6 +61,7 @@ export const places: IPlace[] = [
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 300,
         blockedDates: [{ id: 3, startDate: '2021-01-05', endDate: '2021-01-06' }],
+        rates: [{ bookingId: 3, placeId: '3', rate: 3 }],
     },
     {
         id: '4',
@@ -62,6 +71,7 @@ export const places: IPlace[] = [
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 400,
         blockedDates: [{ id: 4, startDate: '2021-01-07', endDate: '2021-01-08' }],
+        rates: [{ bookingId: 4, placeId: '4', rate: 2 }],
     },
     {
         id: '5',
@@ -71,6 +81,7 @@ export const places: IPlace[] = [
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 500,
         blockedDates: [{ id: 5, startDate: '2021-01-09', endDate: '2021-01-10' }],
+        rates: [{ bookingId: 5, placeId: '5', rate: 1 }],
     },
     {
         id: '6',
@@ -80,6 +91,7 @@ export const places: IPlace[] = [
         amenities: ['wifi', 'kitchen'],
         pricePerNight: 600,
         blockedDates: [{ id: 6, startDate: '2021-01-11', endDate: '2021-01-12' }],
+        rates: [{ bookingId: 6, placeId: '6', rate: 5 }],
     },
 ];
 
@@ -189,6 +201,31 @@ export async function removedBlockedDateLocalStorage(placeId: string, blockedDat
     if (place) {
         const newBlockedDates = place.blockedDates.filter((b) => b.id !== blockedDateId);
         place.blockedDates = newBlockedDates;
+        updatePlaceLocalStorage(place);
+    }
+}
+
+export function getPlaceRateLocalStorage(placeId: string) {
+    const place = getPlaceLocalStorage(placeId);
+    if (place && place.rates) {
+        const rates = place.rates;
+        const total = rates.reduce((acc, rate) => acc + rate.rate, 0);
+        const average = total / rates.length;
+        return average;
+    }
+    return 0;
+}
+
+export function addNewPlaceRateLocalStorage(data: IRatePlace) {
+    const { bookingId, placeId, rate } = data;
+    const place = getPlaceLocalStorage(placeId);
+    if (place) {
+        const newRate: IRatePlace = {
+            bookingId,
+            placeId,
+            rate,
+        };
+        place.rates.push(newRate);
         updatePlaceLocalStorage(place);
     }
 }

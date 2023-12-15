@@ -181,6 +181,10 @@ const CreateBookScheduler = () => {
                                 confirmAction={handleBook}
                                 endDate={period?.to}
                                 startDate={period?.from}
+                                text={`Attention: You have 24 hours before the start date ${period?.from?.toLocaleDateString()} to confirm your booking`}
+                                confirmText={'Continue'}
+                                isCancel
+                                headerText={'Are you sure?'}
                             />
                         }
                     </div>

@@ -16,8 +16,7 @@ import { cn } from '~/lib/utils';
 import { BookingStatus, BookingStatusKeys, BookingStatusValues } from '~/services/booking-service';
 
 const bookingStatusOption: ComboBoxSelectProps[] = BookingStatusValues.filter(
-    (status) =>
-        status.toLocaleLowerCase() !== 'concluded' && status.toLocaleLowerCase() !== 'canceled'
+    (status) => status.toLocaleLowerCase() !== 'concluded'
 ).map((placeType, i) => ({
     value: placeType.toLocaleLowerCase(),
     label: BookingStatusKeys[i],
