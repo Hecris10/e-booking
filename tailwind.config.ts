@@ -20,7 +20,7 @@ module.exports = {
                 lightblue: '#0086B0',
                 lightblue2: '#02A8DC',
                 gray: '#F0F0F2',
-                darkgray: '#787878',
+                darkgray: '#565656',
                 yellow: '#FFE81E',
                 titlecolor: '#5C5C5C',
                 cardwhite: '#ffc8000e',

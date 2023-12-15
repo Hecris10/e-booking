@@ -1,24 +1,26 @@
 import { BookingStatus } from '~/services/booking-service';
 import {
-    ArchivedBadge,
     CanceledBadge,
     ConcludedBadge,
     ConfirmedBadge,
     PendingBadge,
 } from './booking-status-badge';
 
-export const getCardStatusBadge = (status: BookingStatus): React.ReactElement => {
+export const getCardStatusBadge = (
+    status: BookingStatus,
+    className?: string
+): React.ReactElement => {
     switch (status) {
         case BookingStatus.Pending:
-            return <PendingBadge />;
+            return <PendingBadge className={className} />;
         case BookingStatus.Confirmed:
-            return <ConfirmedBadge />;
+            return <ConfirmedBadge className={className} />;
         case BookingStatus.Completed:
-            return <ConcludedBadge />;
+            return <ConcludedBadge className={className} />;
         case BookingStatus.Canceled:
-            return <CanceledBadge />;
-        case BookingStatus.Archived:
-            return <ArchivedBadge />;
+            return <CanceledBadge className={className} />;
+        // case BookingStatus.Archived:
+        //     return <ArchivedBadge className={className} />;
         default:
             return <></>;
     }

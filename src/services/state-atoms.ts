@@ -8,7 +8,7 @@ export type CreateBookingAtomProp = 'select' | 'schedule' | 'confirm';
 export const userAtom = atom<UserView | undefined>(undefined);
 export const placesAtom = atom<IPlace[]>([]);
 export const allBookingsAtom = atom<IBookingView[]>([]);
-
+export const editBookingAtom = atom<IBookingView | undefined>(undefined);
 export const selectedPlaceAtom = atom<IPlace | undefined>(undefined);
 export const createBookingTabPosAtom = atom<CreateBookingAtomProp>('select');
 export interface IStates {
@@ -28,6 +28,9 @@ export const cleanStatesAtom = atom(null, (get, set) => {
     set(userAtom, undefined);
     set(placesAtom, []);
     set(allBookingsAtom, []);
+    set(editBookingAtom, undefined);
+    set(selectedPlaceAtom, undefined);
+    set(createBookingTabPosAtom, 'select');
 });
 
 export const getStatesAtom = atom((get) => {
@@ -48,10 +51,10 @@ export const dispatchPlaceAtom = atom(null, (get, set, place: IPlace) => {
 });
 
 export const updateBookingsAtom = atom(null, async (get, set) => {
-    console.log('updateBookingsAtom');
     const userId = get(userAtom)?.id;
     if (userId) {
         const bookings = await getBookinsByUserLocalStorage(userId);
         set(allBookingsAtom, bookings);
+        set(editBookingAtom, undefined);
     }
 });

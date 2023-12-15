@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { DateRange } from 'react-day-picker';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -19,3 +20,25 @@ export function formatTextToTitleCase(text: string): string {
 export function formatNumberToUSD(value: number): string {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 }
+
+export const calculateRangeQuantity = (period: DateRange | undefined) => {
+    if (period && period.from && period.to) {
+        // if the period is the same day, return 1
+        if (period.from.toDateString() === period.to.toDateString()) return 1;
+
+        const days = Math.abs(period.to.getTime() - period.from.getTime());
+        const daysQuantity = Math.ceil(days / (1000 * 60 * 60 * 24));
+        return daysQuantity;
+    }
+    return 0;
+};
+
+export const getDatesFromRange = (initialDate: Date, finalDate: Date) => {
+    const dates: Date[] = [];
+    let currentDate = new Date(initialDate);
+    while (currentDate <= finalDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+};

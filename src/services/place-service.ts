@@ -1,8 +1,5 @@
-import {
-    BookingStatus,
-    getBookingsByPlaceLocalStorage,
-    getBookinsByUserWithPlaceByStatusLocalStorage,
-} from './booking-service';
+import { getDatesFromRange } from '~/lib/utils';
+import { getBookingsByPlaceLocalStorage, getBookingsByUserIdLocalStorage } from './booking-service';
 
 export interface IPlace {
     id: string;
@@ -135,57 +132,30 @@ export function getBlockedDatesByPlaceIdLocalStorage(placeId: string) {
 export async function getPlaceUnavailableDatesLocalStorage(
     placeId: string,
     userId: number
-): Promise<Date[]> {
-    const dates: Date[] = [];
-    const place = getPlaceLocalStorage(placeId);
-    if (place) {
-        const bookings = await getBookingsByPlaceLocalStorage(placeId);
-        bookings
-            .filter((b) => b.placeId === placeId)
-            .forEach((b) => {
-                const startDate = new Date(b.startDate);
-                const endDate = new Date(b.endDate);
-                let currentDate = startDate;
-                while (currentDate <= endDate) {
-                    dates.push(currentDate);
-                    currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-                }
-            });
-        console.log('Date1: ', dates);
+): Promise<Set<Date>> {
+    let dates: Date[] = [];
+    // get all bookings for this place
+    const bookings = await getBookingsByPlaceLocalStorage(placeId);
 
-        place?.blockedDates.forEach((b) => {
-            const startDate = new Date(b.startDate);
-            const endDate = new Date(b.endDate);
-            let currentDate = startDate;
-            while (currentDate <= endDate) {
-                dates.push(currentDate);
-                currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-            }
-        });
+    // get all bookis from user
+    const userBookings = await getBookingsByUserIdLocalStorage(userId);
 
-        const userBookings = await getBookinsByUserWithPlaceByStatusLocalStorage(userId, [
-            BookingStatus.Pending,
-            BookingStatus.Confirmed,
-        ]);
+    const allBookings = bookings.concat(userBookings);
+    // get all dates for this place and append
+    allBookings.forEach((b) => {
+        const range = getDatesFromRange(new Date(b.startDate), new Date(b.endDate));
+        dates = dates.concat(range);
+    });
+    // get blocked dates from the place and append
+    const blockedDates = getBlockedDatesByPlaceIdLocalStorage(placeId);
+    blockedDates.forEach((b) => {
+        const range = getDatesFromRange(new Date(b.startDate), new Date(b.endDate));
+        dates = dates.concat(range);
+    });
 
-        userBookings
-            .filter((b) => b.placeId === placeId)
-            .forEach((b) => {
-                const startDate = new Date(b.startDate);
-                const endDate = new Date(b.endDate);
-                let currentDate = startDate;
-                while (currentDate <= endDate) {
-                    dates.push(currentDate);
-                    currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-                }
-            });
+    // get all blocked dates for this place and append
 
-        console.log('found place: ', place);
-        console.log('Date2: ', dates);
-        return dates;
-    }
-
-    return [];
+    return new Set(dates);
 }
 
 export async function addBlockedDateLocalStorage({

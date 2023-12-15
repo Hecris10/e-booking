@@ -6,11 +6,15 @@ export interface IBooking {
     placeId: string;
     status: BookingStatus;
     startDate: string; // Assuming date format is string for simplicity
-    endDate: string; // Assuming date format is string for simplicity
+    endDate: string;
+    totalPrice: number;
+    pricePerNight: number;
 }
 
 export interface IBookingView extends IBooking {
     placeName: string;
+    placeId: string;
+    placeDescription: string;
     placeAddress: string;
 }
 
@@ -19,51 +23,7 @@ export enum BookingStatus {
     Confirmed = 'Confirmed',
     Canceled = 'Canceled',
     Completed = 'Completed',
-    Archived = 'Archived',
 }
-
-export const bookings: IBooking[] = [
-    {
-        id: '1',
-        userId: '1',
-        placeId: '1',
-        status: BookingStatus.Confirmed,
-        startDate: '2021-01-01',
-        endDate: '2021-01-03',
-    },
-    {
-        id: '2',
-        userId: '1',
-        placeId: '2',
-        status: BookingStatus.Pending,
-        startDate: '2021-01-04',
-        endDate: '2021-01-06',
-    },
-    {
-        id: '3',
-        userId: '1',
-        placeId: '3',
-        status: BookingStatus.Completed,
-        startDate: '2021-01-07',
-        endDate: '2021-01-09',
-    },
-    {
-        id: '4',
-        userId: '1',
-        placeId: '4',
-        status: BookingStatus.Canceled,
-        startDate: '2021-01-10',
-        endDate: '2021-01-12',
-    },
-    {
-        id: '5',
-        userId: '1',
-        placeId: '5',
-        status: BookingStatus.Archived,
-        startDate: '2021-01-13',
-        endDate: '2021-01-15',
-    },
-];
 
 export function getBookingsLocalStorage(): IBooking[] {
     const bookings = localStorage.getItem('bookings');
@@ -127,7 +87,9 @@ export async function getBookinsByUserLocalStorage(
         const place = places.find((p) => p.id === b.placeId);
         return {
             ...b,
+            placeId: place?.id || '',
             placeName: place?.name || '',
+            placeDescription: place?.description || '',
             placeAddress: '',
         };
     });
@@ -144,7 +106,9 @@ export async function getBookinsByUserWithPlaceByStatusLocalStorage(
         const place = places.find((p) => p.id === b.placeId);
         return {
             ...b,
+            placeId: place?.id || '',
             placeName: place?.name || '',
+            placeDescription: place?.description || '',
             placeAddress: '',
         };
     });
@@ -173,18 +137,40 @@ export interface IScheduleNewBooking {
     placeId: string;
     startDate: Date;
     endDate: Date;
+    pricePerNight: number;
+    totalPrice: number;
+}
+export interface IScheduleUpdateBooking {
+    id: string;
+    startDate: Date;
+    endDate: Date;
+    pricePerNight: number;
+    totalPrice: number;
 }
 
 export async function scheduleBookingLocalStorage(data: IScheduleNewBooking): Promise<IBooking> {
-    const lasBookingId = await getBookingsLocalStorage().length;
+    const lastBookingId = await getBookingsLocalStorage().length;
     const booking: IBooking = {
-        id: (lasBookingId + 1).toString(),
+        id: (lastBookingId + 1).toString(),
         userId: data.userId,
         placeId: data.placeId,
         status: BookingStatus.Pending,
         startDate: data.startDate.toISOString(),
         endDate: data.endDate.toISOString(),
+        pricePerNight: data.pricePerNight,
+        totalPrice: data.totalPrice,
     };
     addBookingLocalStorage(booking);
     return booking;
+}
+
+export async function updateScheduleBookingLocalStorage(data: IScheduleUpdateBooking) {
+    const booking = await getBookingLocalStorage(data.id);
+    if (booking) {
+        booking.startDate = data.startDate.toISOString();
+        booking.endDate = data.endDate.toISOString();
+        booking.pricePerNight = data.pricePerNight;
+        booking.totalPrice = data.totalPrice;
+        await updateBookingLocalStorage(booking);
+    }
 }

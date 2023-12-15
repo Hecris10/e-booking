@@ -1,11 +1,11 @@
 import { useAtomValue, useSetAtom } from 'jotai/react';
 
-import { BookMarkedIcon, ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import PlaceImage from '~/../public/hotel.webp';
-import { cn, formatNumberToUSD } from '~/lib/utils';
+import { calculateRangeQuantity, cn, formatNumberToUSD } from '~/lib/utils';
 import { IScheduleNewBooking, scheduleBookingLocalStorage } from '~/services/booking-service';
 import {
     addBlockedDateLocalStorage,
@@ -18,17 +18,8 @@ import {
     updateBookingsAtom,
     userAtom,
 } from '~/services/state-atoms';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '../ui/alert-dialog';
+
+import ConfirmBookingModalDialog from '../main-tabs/bookings/confirm-booking-modal';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
@@ -39,25 +30,15 @@ import { toast } from '../ui/use-toast';
 const CreateBookScheduler = () => {
     const place = useAtomValue(selectedPlaceAtom);
     const setSelectedTab = useSetAtom(createBookingTabPosAtom);
-    const updateBookins = useSetAtom(updateBookingsAtom);
+    const updateBookings = useSetAtom(updateBookingsAtom);
     const userId = useAtomValue(userAtom)?.id;
     const [period, setPeriod] = useState<DateRange | undefined>(undefined);
     const [blockedDates, setBlockedDates] = useState<Date[] | undefined>(undefined);
     const blockedDateId = useRef<number>(0);
 
     // calculate total days from period
-    const calculateRangeQuantity = () => {
-        if (period && period.from && period.to) {
-            // if the period is the same day, return 1
-            if (period.from.toDateString() === period.to.toDateString()) return 1;
 
-            const days = Math.abs(period.to.getTime() - period.from.getTime());
-            const daysQuantity = Math.ceil(days / (1000 * 60 * 60 * 24));
-            return daysQuantity;
-        }
-        return 0;
-    };
-    const daysQuantity = calculateRangeQuantity();
+    const daysQuantity = calculateRangeQuantity(period);
     const total = place?.pricePerNight ? place.pricePerNight * daysQuantity : 0;
 
     const handleSelect = async (newPeriod: DateRange) => {
@@ -112,17 +93,26 @@ const CreateBookScheduler = () => {
                 placeId: place.id,
                 startDate: period.from,
                 endDate: period.to,
+                pricePerNight: place.pricePerNight,
+                totalPrice: total,
             };
 
             await scheduleBookingLocalStorage(reqBody);
-            await updateBookins();
+            if (blockedDateId.current)
+                await removedBlockedDateLocalStorage(place!.id, blockedDateId.current);
+            await updateBookings();
+            toast({
+                description: 'Booking created successfully',
+                type: 'background',
+            });
         }
     };
 
     useEffect(() => {
         const getBlockedDates = async () => {
             const res = await getPlaceUnavailableDatesLocalStorage(place!.id, userId!);
-            setBlockedDates(res);
+            const resAsArray = Array.from(res);
+            setBlockedDates(resAsArray);
         };
         if (place && userId) getBlockedDates();
     }, [place, userId]);
@@ -197,7 +187,7 @@ const CreateBookScheduler = () => {
                             <div className="flex justify-between">
                                 <span className="font-medium">Price per day:</span>
                                 <Badge className="font-medium text-black bg-white hover:bg-white shadow-md">
-                                    $100
+                                    {formatNumberToUSD(place?.pricePerNight ?? 0)}
                                 </Badge>
                             </div>
                             <div className="flex justify-between">
@@ -222,69 +212,6 @@ const CreateBookScheduler = () => {
                 </div>
             </article>
         </>
-    );
-};
-
-const ConfirmBookingModalDialog = ({
-    startDate,
-    endDate,
-    confirmAction,
-}: {
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    confirmAction: () => void;
-}) => {
-    return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
-                <Button predefinition="login" className="mt-8" variant="default">
-                    <BookMarkedIcon className="mr-1 h-4 w-4 -translate-x-1" />
-                    Save
-                </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="bg-blue-50">
-                {startDate && endDate ? (
-                    <AlertDialogHeader>
-                        <AlertDialogTitle className="text-black">Are sure?</AlertDialogTitle>
-                        <AlertDialogDescription className="italic">
-                            {`Attention: You have 24 hours before the start date ${startDate.toLocaleDateString()} to confirm your booking`}
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                ) : (
-                    <AlertDialogHeader>
-                        <AlertDialogTitle className="text-black">
-                            You should select a start and an end date!!!
-                        </AlertDialogTitle>
-                        {/* <AlertDialogDescription className="italic">
-                            {`Attention: You have 24 hours before the start date ${startDate.toLocaleDateString()} to confirm your booking`}
-                            .
-                        </AlertDialogDescription> */}
-                    </AlertDialogHeader>
-                )}
-                <AlertDialogFooter>
-                    {startDate && endDate && (
-                        <AlertDialogCancel asChild>
-                            <Button
-                                className="bg-blue-50 border-none hover:border hover:border-gray hover:shadow-md"
-                                variant={'ghost'}>
-                                Cancel
-                            </Button>
-                        </AlertDialogCancel>
-                    )}
-                    {startDate && endDate ? (
-                        <AlertDialogAction
-                            onClick={confirmAction}
-                            className="bg-yellow text-lightblue">
-                            Continue
-                        </AlertDialogAction>
-                    ) : (
-                        <AlertDialogAction className="bg-yellow text-lightblue">
-                            Okay
-                        </AlertDialogAction>
-                    )}
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
     );
 };
 
