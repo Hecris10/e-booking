@@ -13,6 +13,9 @@ import {
     AlertDialogTrigger,
 } from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
+import { BookingStatus } from '~/services/booking-service';
+import { getCardStatusColor } from './badge-utils';
 
 type ConfirmBookingModalDialogProps = {
     startDate: Date | undefined;
@@ -24,6 +27,7 @@ type ConfirmBookingModalDialogProps = {
     isCancel?: boolean;
     children?: ReactElement;
     confirmText: string;
+    isDanger?: boolean;
 };
 
 const ConfirmBookingModalDialog = ({
@@ -36,8 +40,11 @@ const ConfirmBookingModalDialog = ({
     isRate,
     isCancel,
     children,
+    isDanger,
 }: ConfirmBookingModalDialogProps) => {
     const rate = useRef<number>(0);
+
+    const { bgColor, borderColor } = getCardStatusColor(BookingStatus.Canceled);
 
     return (
         <AlertDialog>
@@ -51,7 +58,8 @@ const ConfirmBookingModalDialog = ({
                     </Button>
                 )}
             </AlertDialogTrigger>
-            <AlertDialogContent className="bg-blue-50">
+            <AlertDialogContent
+                className={cn(isDanger ? bgColor + ' ' + borderColor : 'bg-blue-50')}>
                 {startDate && endDate ? (
                     <AlertDialogHeader>
                         <AlertDialogTitle className="text-black">{headerText}</AlertDialogTitle>

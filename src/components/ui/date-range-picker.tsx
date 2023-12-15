@@ -63,7 +63,7 @@ const DateRangePicker = ({
                         className="w-full"
                         selected={date}
                         onSelect={onSelect}
-                        numberOfMonths={2}
+                        numberOfMonths={1}
                         modifiers={{
                             disabled: [{ before: today }, ...(disabledDates || [])],
                         }}

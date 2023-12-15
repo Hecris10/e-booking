@@ -32,7 +32,7 @@ const CancelBookingModal = () => {
         <Dialog open={booking !== undefined && booking.mode === 'delete'}>
             <DialogContent
                 className={cn(
-                    'sm:max-w-[425px] transition-all duration-1000',
+                    'sm:max-w-[425px] w-[95%] transition-all duration-1000',
                     bgColor,
                     borderColor
                 )}>
@@ -43,12 +43,14 @@ const CancelBookingModal = () => {
 
                 <DialogFooter>
                     <Button
-                        className="bg-blue-50 border-none hover:border hover:border-gray hover:shadow-md"
+                        className="bg-transparent border-none hover:border hover:border-gray hover:shadow-md"
                         variant={'ghost'}
                         onClick={() => setBooking(undefined)}>
                         Close
                     </Button>
-                    <Button onClick={handleCancelBooking}>Confirm</Button>
+                    <Button predefinition="login" onClick={handleCancelBooking}>
+                        Confirm
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

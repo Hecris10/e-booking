@@ -151,7 +151,7 @@ const EditBookingModal = () => {
         <Dialog open={bookingEdit !== undefined && bookingEdit.mode === 'edit'}>
             <DialogContent
                 className={cn(
-                    'sm:max-w-[425px] transition-all duration-1000',
+                    'sm:max-w-[425px] w-[95%] transition-all duration-1000',
                     bgColor,
                     borderColor
                 )}>
@@ -210,13 +210,14 @@ const EditBookingModal = () => {
                 </div>
                 <DialogFooter>
                     <Button
-                        className="bg-blue-50 border-none hover:border hover:border-gray hover:shadow-md"
+                        className="bg-transparent border-none hover:border hover:border-gray hover:shadow-md"
                         variant={'ghost'}
                         onClick={() => setBookingEdit(undefined)}>
                         Close
                     </Button>
                     <ConfirmBookingModalDialog
                         startDate={period?.from}
+                        isDanger={status === BookingStatus.Canceled}
                         endDate={period?.to}
                         confirmAction={updateBooking}
                         isRate={status === BookingStatus.Completed}
