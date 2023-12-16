@@ -24,13 +24,14 @@ import {
     formatNumberToUSD,
     isDatesConfliting,
 } from '~/lib/utils';
+
+import { BookingStatus, IBookingView } from '~/services/booking-service';
 import {
-    BookingStatus,
-    IScheduleUpdateBooking,
-    updateScheduleBookingLocalStorage,
-} from '~/services/booking-service';
-import { getPlaceUnavailableDatesLocalStorage } from '~/services/place-service';
-import { editBookingAtom, updateBookingsAtom, userAtom } from '~/services/state-atoms';
+    editBookingAtom,
+    getUnavailableDatesAtom,
+    updateBookAtom,
+    userAtom,
+} from '~/services/state-atoms';
 import { getCardStatusColor } from './badge-utils';
 import { BookingStatusComboBox } from './booking-status-combox';
 import ConfirmBookingModalDialog from './confirm-booking-modal';
@@ -39,7 +40,8 @@ const EditBookingModal = () => {
     const [bookingEdit, setBookingEdit] = useAtom(editBookingAtom);
     const booking = bookingEdit?.booking;
     const userId = useAtomValue(userAtom)?.id;
-    const updateBookings = useSetAtom(updateBookingsAtom);
+    const getUnavaiableDates = useSetAtom(getUnavailableDatesAtom);
+    const updateBooking = useSetAtom(updateBookAtom);
     const [blockedDates, setBlockedDates] = useState<Date[] | undefined>(undefined);
     const [status, setStatus] = useState<BookingStatus | undefined>(booking?.status);
 
@@ -69,25 +71,20 @@ const EditBookingModal = () => {
             console.log('newPeriod', newPeriod);
             return setPeriod(newPeriod);
         }
-        if (newPeriod && newPeriod.from && newPeriod.to) {
+        if (newPeriod && newPeriod.from && newPeriod.to && blockedDates) {
             console.log('Blocked dates', blockedDates);
 
-            const isInRage = isDatesConfliting(newPeriod.from, newPeriod.to, filteredBlockedDates!);
-            console.log('isInRage', isInRage);
+            const isInRage = isDatesConfliting(newPeriod.from, newPeriod.to, blockedDates);
+
             if (isInRage) {
-                return toast({
+                toast({
                     description: "You can't book in this period, please select another one.",
                 });
+                return setPeriod(undefined);
             }
             return setPeriod(newPeriod);
         } else {
             setPeriod(newPeriod);
-        }
-    };
-
-    const handleConfirm = async () => {
-        if (status === BookingStatus.Confirmed) {
-            await updateBooking();
         }
     };
 
@@ -106,25 +103,22 @@ const EditBookingModal = () => {
 
     useEffect(() => {
         const getBlockedDates = async () => {
-            const res = await getPlaceUnavailableDatesLocalStorage(booking?.placeId!, userId!);
-            let resAsArray = Array.from(res);
-            setBlockedDates(resAsArray);
+            const res = getUnavaiableDates(booking!.placeId);
+            setBlockedDates(Array.from(res));
         };
         if (booking && userId) getBlockedDates();
-    }, [booking, userId, period]);
+    }, [booking, userId, getUnavaiableDates]);
 
-    const updateBooking = async () => {
-        if (booking && period?.from && period?.to) {
-            const dataReq: IScheduleUpdateBooking = {
-                id: booking.id,
-                startDate: period.from,
-                endDate: period.to,
-                pricePerNight: booking.pricePerNight,
-                totalPrice: totalPrice,
-                status: status || BookingStatus.Pending,
+    const handleBookingUpdate = (rate?: number) => {
+        if (booking && period?.from && period?.to && status) {
+            const dataReq: IBookingView = {
+                ...booking,
+                startDate: period.from.toISOString(),
+                endDate: period.to.toISOString(),
+                status: status,
             };
-            await updateScheduleBookingLocalStorage(dataReq);
-            await updateBookings();
+            updateBooking(dataReq, rate);
+
             toast({
                 description: 'Booking updated successfully',
                 type: 'background',
@@ -219,7 +213,7 @@ const EditBookingModal = () => {
                         startDate={period?.from}
                         isDanger={status === BookingStatus.Canceled}
                         endDate={period?.to}
-                        confirmAction={updateBooking}
+                        confirmAction={(rate) => handleBookingUpdate(rate)}
                         isRate={status === BookingStatus.Completed}
                         isCancel
                         headerText={

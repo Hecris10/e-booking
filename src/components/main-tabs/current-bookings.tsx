@@ -4,16 +4,20 @@ import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { BookingStatus, IBookingView } from '~/services/booking-service';
 import { allBookingsAtom } from '~/services/state-atoms';
+import BookingCard from '../bookings/booking-card';
+import Ghost from '../ghost';
 import { Input } from '../ui/input';
-import BookingCard from './bookings/booking-card';
 
 const CurrentBookings = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [search, setSearch] = useState<string>('');
-
-    const currentBookings: IBookingView[] = useAtomValue(allBookingsAtom)
-        .filter((b) => b.status === BookingStatus.Confirmed || b.status === BookingStatus.Pending)
-        .filter((booking) => booking.placeName.toLowerCase().includes(search.toLowerCase()));
+    const allBookings = useAtomValue(allBookingsAtom);
+    const currentBookings: IBookingView[] = allBookings.filter(
+        (b) =>
+            (b.status === BookingStatus.Confirmed || b.status === BookingStatus.Pending) &&
+            b.placeName.toLowerCase().includes(search.toLowerCase())
+    );
+    console.log(currentBookings);
 
     return (
         <div className={'flex w-full flex-col gap-2 border border-gray'}>
@@ -30,9 +34,18 @@ const CurrentBookings = () => {
                 />
             </div>
             <div className="flex h-full  overflow-auto flex-col gap-5">
-                {currentBookings.map((booking) => (
-                    <BookingCard key={booking.id} booking={booking} />
-                ))}
+                {currentBookings.length > 0 ? (
+                    currentBookings.map((booking) => (
+                        <BookingCard key={booking.id} booking={booking} />
+                    ))
+                ) : (
+                    <div>
+                        <h1 className="text-lg text-center">
+                            {search.length > 0 ? 'Not found' : 'Nothing here!!!'}
+                        </h1>
+                        <Ghost />
+                    </div>
+                )}
             </div>
         </div>
     );

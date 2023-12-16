@@ -1,9 +1,8 @@
 import { useSetAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import HotelImage from '~/../public/hotel.webp';
-import { cn, formatNumberToUSD } from '~/lib/utils';
-import { IPlace, getPlaceRateLocalStorage } from '~/services/place-service';
+import { cn, formatNumberToUSD, getPlaceRate } from '~/lib/utils';
+import { IPlace } from '~/services/place-service';
 import { dispatchPlaceAtom } from '~/services/state-atoms';
 import RateStars from '../rate-stars';
 import { Button } from '../ui/button';
@@ -28,7 +27,7 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
         setSelectedPlace(place);
     };
 
-    const currentRate = getPlaceRateLocalStorage(place.id);
+    const currentRate = getPlaceRate(place);
 
     return (
         <Popover>
@@ -43,7 +42,9 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
                     <Image
                         className="w-full mx-auto rounded-lg"
                         alt={place.name}
-                        src={HotelImage}
+                        width={300}
+                        height={300}
+                        src={place.images[0]}
                     />
                     <div>
                         <div className="flex flex-col align-top gap-2 mt-3">

@@ -17,6 +17,7 @@ const modifiers = {
 
 export type CalendarPickerProps = CalendarProps & {
     disabledDates?: Date[];
+    disableBefore?: true;
 };
 
 function Calendar({
@@ -24,6 +25,7 @@ function Calendar({
     classNames,
     showOutsideDays = true,
     disabledDates,
+    disableBefore,
     ...props
 }: CalendarPickerProps) {
     return (
@@ -68,7 +70,9 @@ function Calendar({
                 IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
             }}
             modifiers={{
-                disabled: [{ before: today }, ...(disabledDates || [])],
+                disabled: disableBefore
+                    ? [{ before: today }, ...(disabledDates || [])]
+                    : [...(disabledDates || [])],
             }}
             {...props}
         />

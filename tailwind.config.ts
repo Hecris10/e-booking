@@ -26,6 +26,7 @@ module.exports = {
                 cardwhite: '#ffc8000e',
                 statuspending: '#ffc80000',
                 ghost: '#cec7c723',
+                graytransparent: 'rgba(187, 176, 182, 0.34)',
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',

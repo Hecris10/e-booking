@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { DateRange } from 'react-day-picker';
 import { twMerge } from 'tailwind-merge';
+import { IPlace } from '~/services/place-service';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -62,4 +63,11 @@ export const isDatesConfliting = (initialDate: Date, finalDate: Date, dates: Dat
             return d.toISOString() === date.toISOString();
         })
     );
+};
+
+export const getPlaceRate = (place: IPlace) => {
+    const { rates } = place;
+    if (rates.length === 0 || !rates) return 0;
+    const totalRate = rates.reduce((acc, rate) => acc + rate.rate, 0);
+    return totalRate / rates.length;
 };

@@ -16,7 +16,7 @@ export default async function AppPage({ params, searchParams }: PageProps) {
     if (!isAuth.sucess) redirect('/');
     return (
         <main className="px-6 flex flex-col items-center w-full h-screen gap-5">
-            <AppCardNavigation tab={tab} />
+            <AppCardNavigation />
         </main>
     );
 }

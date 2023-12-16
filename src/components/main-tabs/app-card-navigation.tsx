@@ -1,4 +1,6 @@
 'use client';
+import { useAtom } from 'jotai';
+import { mainTabAtom } from '~/services/state-atoms';
 import CreateBookFlow from '../create-booking/create-book-flow';
 import { AddIcon } from '../icons/generic-icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
@@ -35,11 +37,15 @@ const tabs: AppTabListProps[] = [
     { tab: 'new', icon: <AddIcon />, type: 'icon' },
 ];
 
-const AppCardNavigation = ({ tab }: { tab: AppTabs }) => {
+const AppCardNavigation = () => {
+    const [tab, setTab] = useAtom(mainTabAtom);
     return (
         <>
             <div className="w-full bg-gray rounded-md max-w-[1200px]">
-                <Tabs defaultValue={tab} className="w-full px-2 py-3">
+                <Tabs
+                    value={tab}
+                    onValueChange={(e) => setTab(e as AppTabs)}
+                    className="w-full px-2 py-3">
                     <TabsList className="w-full flex justify-between">
                         {tabs.map((t) => (
                             <TabsTrigger

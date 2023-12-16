@@ -21,6 +21,7 @@ const DateRangePicker = ({
     disabledDates,
     date,
     onSelect,
+    disableBefore,
 }: {
     placeHolder?: string;
     defaultValue?: DateRange;
@@ -28,6 +29,7 @@ const DateRangePicker = ({
     onSelect: (date: DateRange | undefined) => void;
     className?: string;
     disabledDates?: Date[];
+    disableBefore?: true;
 }) => {
     return (
         <div className={cn(className, 'grid gap-2')}>
@@ -64,9 +66,8 @@ const DateRangePicker = ({
                         selected={date}
                         onSelect={onSelect}
                         numberOfMonths={1}
-                        modifiers={{
-                            disabled: [{ before: today }, ...(disabledDates || [])],
-                        }}
+                        disableBefore={disableBefore}
+                        disabledDates={disabledDates}
                     />
                 </PopoverContent>
             </Popover>

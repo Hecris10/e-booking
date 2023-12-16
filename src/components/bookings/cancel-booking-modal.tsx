@@ -8,23 +8,21 @@ import {
     DialogTitle,
 } from '~/components/ui/dialog';
 import { cn } from '~/lib/utils';
-import { BookingStatus, cancelScheduleBookingLocalStorage } from '~/services/booking-service';
+import { BookingStatus } from '~/services/booking-service';
 import { getCardStatusColor } from './badge-utils';
 
 import { useAtom, useSetAtom } from 'jotai';
-import { editBookingAtom, updateBookingsAtom } from '~/services/state-atoms';
+import { editBookingAtom, updateBookAtom } from '~/services/state-atoms';
 
 const CancelBookingModal = () => {
     const [booking, setBooking] = useAtom(editBookingAtom);
     const { bgColor, borderColor } = getCardStatusColor(BookingStatus.Canceled);
 
-    const updateBooking = useSetAtom(updateBookingsAtom);
+    const updateBooking = useSetAtom(updateBookAtom);
 
     const handleCancelBooking = async () => {
         if (booking) {
-            await cancelScheduleBookingLocalStorage(booking.booking.id);
-            await updateBooking();
-            setBooking(undefined);
+            await updateBooking({ ...booking.booking, status: BookingStatus.Canceled });
         }
     };
 

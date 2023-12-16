@@ -1,8 +1,8 @@
 import { Carousel as CarouselArk } from '@ark-ui/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 
-const Carousel = ({ children }: { children: ReactElement[] }) => {
+const Carousel = ({ children }: { children: ReactNode | ReactNode[] }) => {
     return (
         <CarouselArk.Root>
             <CarouselArk.IndicatorGroup>
@@ -12,10 +12,13 @@ const Carousel = ({ children }: { children: ReactElement[] }) => {
                     </CarouselArk.Indicator>
                 ))} */}
             </CarouselArk.IndicatorGroup>
-            <CarouselArk.Viewport className="relative shadow-md rounded-lg overflow-hidden">
+            <CarouselArk.Viewport className="relative">
                 <CarouselArk.ItemGroup>
-                    {children.map((item, index) => (
-                        <CarouselArk.Item key={index} index={index}>
+                    {React.Children.map(children, (item, index) => (
+                        <CarouselArk.Item
+                            className="flex w-full h-full justify-center align-middle m-auto"
+                            key={index}
+                            index={index}>
                             {item}
                         </CarouselArk.Item>
                     ))}

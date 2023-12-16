@@ -1,4 +1,4 @@
-import { ModalProvider } from '~/components/main-tabs/bookings/modal-provider';
+import { ModalProvider } from '~/components/bookings/modal-provider';
 import NavBar from '~/components/nav-bar';
 import AuthProvider from '~/components/providers/auth-provider';
 
