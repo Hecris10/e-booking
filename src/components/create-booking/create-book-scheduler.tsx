@@ -1,94 +1,19 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai/react';
-
 import { ChevronLeft } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
-import { calculateRangeQuantity, cn, formatNumberToUSD, isDatesConfliting } from '~/lib/utils';
-import { IScheduleNewBooking } from '~/services/booking-service';
-
-import {
-    createBookingTabPosAtom,
-    getUnavailableDatesAtom,
-    mainTabAtom,
-    newBookAtom,
-    selectedPlaceAtom,
-    userAtom,
-} from '~/services/state-atoms';
+import { cn, formatNumberToUSD } from '~/lib/utils';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import ConfirmBookingModalDialog from '../bookings/confirm-booking-modal';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
 import Carousel from '../ui/carousel';
 import DateRangePicker from '../ui/date-range-picker';
-import { toast } from '../ui/use-toast';
+import { useHandleScheduler } from './create-book-scheduler-hooks';
 
 const CreateBookScheduler = () => {
-    const router = useRouter();
-    const place = useAtomValue(selectedPlaceAtom);
-    const setSelectedBookTab = useSetAtom(createBookingTabPosAtom);
-    const [selectedMainTab, setSelectedMainTab] = useAtom(mainTabAtom);
-    const getUnavaiableDates = useSetAtom(getUnavailableDatesAtom);
-    const setNewBooking = useSetAtom(newBookAtom);
-    const userId = useAtomValue(userAtom)?.id;
-    const [period, setPeriod] = useState<DateRange | undefined>(undefined);
-    const [blockedDates, setBlockedDates] = useState<Date[] | undefined>(undefined);
-
-    // calculate total days from period
-
-    const daysQuantity = calculateRangeQuantity(period);
-    const total = place?.pricePerNight ? place.pricePerNight * daysQuantity : 0;
-
-    const handleSelect = async (newPeriod: DateRange) => {
-        if (!newPeriod || !newPeriod.from || !newPeriod.to) {
-            return setPeriod(newPeriod);
-        }
-        if (newPeriod && newPeriod.from && newPeriod.to && blockedDates) {
-            const isInRage = isDatesConfliting(newPeriod.from, newPeriod.to, blockedDates);
-
-            if (isInRage) {
-                toast({
-                    description: "You can't book in this period, please select another one.",
-                });
-                return setPeriod(undefined);
-            }
-            return setPeriod(newPeriod);
-        } else {
-            setPeriod(newPeriod);
-        }
-    };
-
-    const handleBook = async () => {
-        if (period && period.from && period.to && userId && place) {
-            const reqBody: IScheduleNewBooking = {
-                userId: userId.toString(),
-                placeId: place.id,
-                startDate: period.from,
-                endDate: period.to,
-                pricePerNight: place.pricePerNight,
-                totalPrice: total,
-            };
-
-            setNewBooking(reqBody);
-            setSelectedMainTab('current');
-            setSelectedBookTab('select');
-            router.push('/app');
-            toast({
-                description: 'Booking created successfully',
-                type: 'background',
-            });
-        }
-    };
-
-    useEffect(() => {
-        const getBlockedDates = async () => {
-            const res = getUnavaiableDates(place!.id);
-            setBlockedDates(Array.from(res));
-        };
-        if (place && userId) getBlockedDates();
-    }, [place, userId, getUnavaiableDates, selectedMainTab]);
+    const { setSelectedBookTab, place, blockedDates, period, handleSelect, handleBook, total } =
+        useHandleScheduler();
 
     return (
         <>
@@ -185,21 +110,15 @@ const CreateBookScheduler = () => {
                                 </Badge>
                             </div>
                         </div>
-                        {/* <Button predefinition="login" className="mt-8" variant="default">
-                            <BookMarkedIcon className="mr-1 h-4 w-4 -translate-x-1" />
-                            Save
-                        </Button> */}
-                        {
-                            <ConfirmBookingModalDialog
-                                confirmAction={handleBook}
-                                endDate={period?.to}
-                                startDate={period?.from}
-                                text={`Attention: You have 24 hours before the start date ${period?.from?.toLocaleDateString()} to confirm your booking`}
-                                confirmText={'Continue'}
-                                isCancel
-                                headerText={'Are you sure?'}
-                            />
-                        }
+                        <ConfirmBookingModalDialog
+                            confirmAction={handleBook}
+                            endDate={period?.to}
+                            startDate={period?.from}
+                            text={`Attention: You have 24 hours before the start date ${period?.from?.toLocaleDateString()} to confirm your booking`}
+                            confirmText={'Continue'}
+                            isCancel
+                            headerText={'Are you sure?'}
+                        />
                     </div>
                 </div>
             </article>
