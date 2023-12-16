@@ -5,7 +5,7 @@ export const AddIcon = ({ className }: { className?: string }) => (
     <div
         className={cn(
             className,
-            'p-1 bg-lightblue rounded-full h-10 w-10 flex justify-center align-middle shadow-lg'
+            ' bg-lightblue rounded-full w-10 h-8 flex justify-center align-middle shadow-lg'
         )}>
         <Plus className="text-white m-auto" />
     </div>

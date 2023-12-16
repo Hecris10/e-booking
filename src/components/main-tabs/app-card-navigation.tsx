@@ -46,11 +46,13 @@ const AppCardNavigation = () => {
                     value={tab}
                     onValueChange={(e) => setTab(e as AppTabs)}
                     className="w-full px-2 py-3">
-                    <TabsList className="w-full flex justify-between">
+                    <TabsList className="w-full grid grid-cols-2 gap-3 md:flex md:justify-between">
                         {tabs.map((t) => (
                             <TabsTrigger
                                 className={
-                                    t.type === 'text' ? 'w-[150px] shadow-md' : 'p-1 rounded-full'
+                                    t.type === 'text'
+                                        ? 'md:w-[150px] shadow-md'
+                                        : 'h-10 w-10 p-1 rounded-full'
                                 }
                                 key={t.tab}
                                 value={t.tab}>
@@ -62,7 +64,7 @@ const AppCardNavigation = () => {
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                    <div className="h-[80vh] mt-2 ">
+                    <div className="h-[80vh] mt-14 md:mt-2">
                         <TabsContent value="current">
                             <CurrentBookings />
                         </TabsContent>
