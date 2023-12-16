@@ -66,7 +66,9 @@ const RegisterForm = (): ReactElement => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+        <form
+            className="bg-gray rounded-xl w-full px-10 py-7 flex flex-col gap-5 max-w-[400px]"
+            onSubmit={handleSubmit(onSubmit)}>
             <div className="form-element">
                 <Input
                     {...register('name', {

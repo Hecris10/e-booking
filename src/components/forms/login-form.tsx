@@ -43,6 +43,7 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
             {errors.emailOrPhone?.type === 'manual' && (
                 <ErrorMessage name={errors.emailOrPhone.message || ''} />
             )}
+            <h2>Login into your account</h2>
             <div className="form-element">
                 <Input
                     {...register('emailOrPhone', {

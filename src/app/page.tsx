@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next/types';
+import GreatLogo from '~/../public/e-booking.png';
 import LoginForm from '~/components/forms/login-form';
 import { cn } from '~/lib/utils';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
@@ -14,10 +16,8 @@ export default async function Login() {
     const isAuth = await isUserAuthAction();
     if (isAuth.sucess) redirect('/app');
     return (
-        <div className="px-6 flex flex-col  items-center w-full h-full gap-5">
-            <h1 className="text-white text-center mt-5 leading-normal text-[20px] font-[700]">
-                LOGIN
-            </h1>
+        <div className="px-6 flex flex-col mt-[5vh] md:mt-[10vh] items-center w-full h-full gap-5">
+            <Image alt="E-booking logo" width={400} src={GreatLogo} />
             <LoginForm>
                 <Link href="/recover">
                     <p className="text-darkgray underline text-center">Forgot password?</p>

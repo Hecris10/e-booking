@@ -21,10 +21,10 @@ export default function Register() {
                     <Link
                         title="Login"
                         className={cn(
-                            'hover:scale-105 active:scale-90',
-                            'bg-yellow text-lightblue text-md rounded-xl w-full text-center p-1 font-extrabold text-[20px]'
+                            'hover:underline text-white',
+                            'text-md rounded-xl w-full text-center p-1 font-extrabold text-[20px]'
                         )}
-                        href={'/login'}>
+                        href={'/'}>
                         Voltar para login
                     </Link>
                 </div>
