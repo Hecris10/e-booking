@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Register() {
     return (
-        <main className="background-gradient px-6 flex flex-col  items-center w-full h-screen gap-5">
+        <main className="px-6 flex flex-col  items-center w-full h-screen gap-5">
             <h1 className="text-white text-center mt-5 leading-normal text-[20px] font-[700]">
                 Registration
             </h1>

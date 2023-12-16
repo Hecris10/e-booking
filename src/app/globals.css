@@ -75,10 +75,10 @@
     }
 }
 
-main {
-    @apply w-full;
-    height: calc(100vh - 112px);
+.window-height {
+    height: calc(100vh);
 }
+
 .background-gradient {
     background: linear-gradient(203deg, #00536e 16.58%, #007da5 47.14%);
 }

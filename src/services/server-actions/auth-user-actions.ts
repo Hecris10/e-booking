@@ -31,3 +31,9 @@ export async function isUserAuthAction(): Promise<LoginReturnType> {
         user,
     };
 }
+
+export async function logOut(currentRoute: string) {
+    const cookieStore = cookies();
+    cookieStore.delete('e-booking-token');
+    redirect(currentRoute);
+}

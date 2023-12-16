@@ -171,7 +171,7 @@ const CreateBookScheduler = () => {
                         </div>
                     </div>
                     <div className="flex flex-col w-full px-4 justify-between ">
-                        <div className="flex flex-col gap-3 w-full">
+                        <div className="flex flex-col gap-3 w-full mb-4 md:mb-0 lg:mb-0">
                             <div>
                                 <div>Costs</div>
                             </div>
