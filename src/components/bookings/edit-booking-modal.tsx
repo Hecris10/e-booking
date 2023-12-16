@@ -4,7 +4,7 @@ import { Calendar } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
-import PlaceImage from '~/../public/hotel.webp';
+
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import DateRangePicker from '~/components/ui/date-range-picker';
@@ -151,11 +151,22 @@ const EditBookingModal = () => {
                 )}>
                 <DialogHeader>
                     <DialogTitle>Edit your Booking</DialogTitle>
-                    <DialogDescription>{booking?.placeName}</DialogDescription>
-                    <DialogDescription>{booking?.placeDescription}</DialogDescription>
+                    <DialogDescription className="text-lg font-bold">
+                        {booking?.placeName}
+                    </DialogDescription>
+                    <DialogDescription className="italic">
+                        {booking?.placeDescription}
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-1 w-full">
-                    <Image alt="" src={PlaceImage} />
+                    <Image
+                        className="rounded-md w-full h-full"
+                        alt={booking?.placeName || ''}
+                        width={300}
+                        priority
+                        height={125}
+                        src={booking?.placeImages[0] || ''}
+                    />
                     {booking?.status !== BookingStatus.Canceled &&
                     booking?.status !== BookingStatus.Completed ? (
                         <DateRangePicker

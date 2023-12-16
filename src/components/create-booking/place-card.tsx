@@ -49,7 +49,7 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
                     <div>
                         <div className="flex flex-col align-top gap-2 mt-3">
                             <RateStars defaultRate={currentRate} isSelectable={false} />
-                            <h2 className="text-lg text-left font-bold">
+                            <h2 className="text-lg text-right font-bold">
                                 {formatNumberToUSD(place.pricePerNight)}
                                 <span className="font-normal text-sm italic">{` per night`}</span>
                             </h2>
@@ -59,7 +59,7 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
             </PopoverTrigger>
             <PopoverContent>
                 <div>
-                    <p>{place.description}</p>
+                    <p className="italic">{place.description}</p>
                 </div>
                 <Button onClick={handleSelection} className="w-full" predefinition="login">
                     Select
