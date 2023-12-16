@@ -17,7 +17,6 @@ const CurrentBookings = () => {
             (b.status === BookingStatus.Confirmed || b.status === BookingStatus.Pending) &&
             b.placeName.toLowerCase().includes(search.toLowerCase())
     );
-    console.log(currentBookings);
 
     return (
         <div className={'flex w-full flex-col gap-2 border border-gray'}>

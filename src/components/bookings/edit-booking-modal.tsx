@@ -68,12 +68,9 @@ const EditBookingModal = () => {
 
     const handleSelect = async (newPeriod: DateRange) => {
         if (!newPeriod || !newPeriod.from || !newPeriod.to) {
-            console.log('newPeriod', newPeriod);
             return setPeriod(newPeriod);
         }
         if (newPeriod && newPeriod.from && newPeriod.to && blockedDates) {
-            console.log('Blocked dates', blockedDates);
-
             const isInRage = isDatesConfliting(newPeriod.from, newPeriod.to, blockedDates);
 
             if (isInRage) {

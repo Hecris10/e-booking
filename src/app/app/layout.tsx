@@ -4,7 +4,7 @@ import NavBar from '~/components/nav-bar';
 import AuthProvider from '~/components/providers/auth-provider';
 
 export const metadata: Metadata = {
-    title: 'E-booking',
+    title: 'E-booking | Book your next vacation with E-booking',
     description: 'Book your next vacation with E-booking',
 };
 
