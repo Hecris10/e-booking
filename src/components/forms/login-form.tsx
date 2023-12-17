@@ -8,6 +8,7 @@ import { Input } from '~/components/ui/input';
 import TooltipComponent from '~/components/ui/tooltip';
 import { authUserAction } from '~/services/server-actions/auth-user-actions';
 import { loginLocalStorage } from '~/services/user-service';
+import Spinner from '../spinner';
 
 export interface IUserLogin {
     emailOrPhone: string;
@@ -20,7 +21,7 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
         reset,
         setError,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValidating },
     } = useForm<IUserLogin>();
 
     const onSubmit = async (data: IUserLogin) => {
@@ -57,6 +58,7 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
                 />
                 {errors.emailOrPhone?.type === 'required' && <ErrorMessage name="Required field" />}
             </div>
+
             <div className="form-element">
                 <Input
                     {...register('password', {
@@ -69,8 +71,18 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
                 />
                 {errors.password?.type === 'required' && <ErrorMessage name="Required field" />}
             </div>
-            <Button className="w-full mt-6" type="submit" size="default" predefinition="login">
-                Login
+            <Button
+                className="w-full relative mt-6"
+                type="submit"
+                size="default"
+                predefinition="login">
+                Login{' '}
+                {isValidating && (
+                    <div className="absolute right-4">
+                        {' '}
+                        <Spinner />
+                    </div>
+                )}
             </Button>
             <TooltipComponent label="Forgor password?">{children}</TooltipComponent>
         </form>

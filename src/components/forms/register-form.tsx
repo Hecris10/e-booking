@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { emailValidation } from '~/lib/utils';
 import { addUserLocalStorage, userExistsLocalStorage } from '~/services/user-service';
 import { ErrorMessage } from '../error-message';
+import Spinner from '../spinner';
 import { Button } from '../ui/button';
 import DatePicker from '../ui/date-picker';
 import { Input } from '../ui/input';
@@ -47,7 +48,7 @@ const RegisterForm = (): ReactElement => {
         clearErrors,
         setValue,
         setError,
-        formState: { errors, isLoading },
+        formState: { errors, isValidating },
     } = useForm<IUserRegister>();
     const router = useRouter();
     const onSubmit = async (data: IUserRegister) => {
@@ -189,12 +190,17 @@ const RegisterForm = (): ReactElement => {
                 )}
             </div>
             <Button
-                disabled={isLoading}
-                className="w-full mt-5"
+                className="w-full relative mt-6"
                 type="submit"
                 size="default"
                 predefinition="login">
-                Register
+                Register{' '}
+                {isValidating && (
+                    <div className="absolute right-4">
+                        {' '}
+                        <Spinner />
+                    </div>
+                )}
             </Button>
         </form>
     );
