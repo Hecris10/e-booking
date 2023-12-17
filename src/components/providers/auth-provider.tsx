@@ -2,7 +2,7 @@
 
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getBookinsByUserLocalStorage } from '~/services/booking-service';
 
 import { getPlacesLocalStorage, initialPlaces } from '~/services/place-service';
@@ -12,7 +12,7 @@ import { IStates, cleanStatesAtom, dispatchGlobalUserStatesAtom } from '~/servic
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
     // const [isAuthenticated, setIsAuthenticaed] = useState(false);
     const router = useRouter();
-    const [initilized, setInitilized] = useState(false);
+
     const setGlobalStates = useSetAtom(dispatchGlobalUserStatesAtom);
     const cleanGlobalStates = useSetAtom(cleanStatesAtom);
 
@@ -34,8 +34,11 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 user,
                 allBookings,
                 places,
+                loading: false,
             };
-            setGlobalStates(globalStates);
+            setTimeout(() => {
+                setGlobalStates(globalStates);
+            }, 2000);
         };
         auth();
 

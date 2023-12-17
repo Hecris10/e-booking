@@ -16,17 +16,20 @@ export const editBookingAtom = atom<{ booking: IBookingView; mode: 'edit' | 'del
 export const selectedPlaceAtom = atom<IPlace | undefined>(undefined);
 export const createBookingTabPosAtom = atom<CreateBookingAtomProp>('select');
 export const mainTabAtom = atom<AppTabs>('current');
+export const loadingAtom = atom(true);
 export interface IStates {
     user: UserView | undefined;
     places: IPlace[];
     allBookings: IBookingView[];
+    loading: boolean;
 }
 
 export const dispatchGlobalUserStatesAtom = atom(null, (get, set, props: IStates) => {
-    const { user, places, allBookings } = props;
+    const { user, places, allBookings, loading } = props;
     set(userAtom, user);
     set(placesAtom, places);
     set(allBookingsAtom, allBookings);
+    set(loadingAtom, loading);
 });
 
 export const cleanStatesAtom = atom(null, (get, set) => {

@@ -1,3 +1,4 @@
+'use client';
 import { useAtomValue } from 'jotai';
 import { SearchIcon } from 'lucide-react';
 import { useRef, useState } from 'react';

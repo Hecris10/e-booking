@@ -4,16 +4,17 @@ import { BookingStatus, IBookingView } from '~/services/booking-service';
 import { SearchIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
-import { allBookingsAtom } from '~/services/state-atoms';
+import { allBookingsAtom, loadingAtom } from '~/services/state-atoms';
 import BookingCard from '../bookings/booking-card';
 import Ghost from '../ghost';
 import { Input } from '../ui/input';
+import AppCardSkeleton from './app-card-skeleton';
 
 const CanceledBookings = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [search, setSearch] = useState<string>('');
     const allBookings = useAtomValue(allBookingsAtom);
-
+    const isLoading = useAtomValue(loadingAtom);
     const currentBookings: IBookingView[] = allBookings.filter(
         (b) =>
             b.status === BookingStatus.Canceled &&
@@ -35,7 +36,9 @@ const CanceledBookings = () => {
                 />
             </div>
             <div className="flex h-full  overflow-auto flex-col gap-5">
-                {currentBookings.length > 0 ? (
+                {isLoading ? (
+                    <AppCardSkeleton />
+                ) : currentBookings.length > 0 ? (
                     currentBookings.map((booking) => (
                         <BookingCard key={booking.id} booking={booking} />
                     ))
