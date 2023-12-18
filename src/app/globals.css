@@ -76,7 +76,7 @@
 }
 
 .window-height {
-    height: calc(100vh);
+    height: 100vh;
 }
 
 .background-gradient {
