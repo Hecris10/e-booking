@@ -129,12 +129,15 @@ export const getUnavailableDatesAtom = atom(null, (get, set, placeId: string) =>
     const processBookings = (bookings1: IBookingView[], bookings2: IBookingView[]) => {
         bookings1.forEach((b, index) => {
             const range1 = getDatesFromRange(new Date(b.startDate), new Date(b.endDate));
-            const range2 = getDatesFromRange(
-                new Date(bookings2[index].startDate),
-                new Date(bookings2[index].endDate)
-            );
             addDatesToSet(range1);
-            addDatesToSet(range2);
+
+            if (bookings2[index]) {
+                const range2 = getDatesFromRange(
+                    new Date(bookings2[index].startDate),
+                    new Date(bookings2[index].endDate)
+                );
+                addDatesToSet(range2);
+            }
         });
         return bookings1.length;
     };

@@ -43,6 +43,21 @@ export const initialPlaces: IPlace[] = [
             'https://y0hbjiz1v2x58pmn.public.blob.vercel-storage.com/4-82b7WRmFoMjkQQeBJlWqf9exHQK5dG.png',
         ],
     },
+    {
+        id: '2',
+        name: 'Yuca Valley',
+        type: PlaceType.House,
+        description: 'Yucca Valley Oasis w/ Private Hot Tub!',
+        pricePerNight: 200,
+        rates: [{ bookingId: 45, placeId: '2', rate: 2 }],
+        images: [
+            'https://y0hbjiz1v2x58pmn.public.blob.vercel-storage.com/front-1kQJkGdG9ZehC5UiU4KvPPcLiIqsXr.png',
+            'https://y0hbjiz1v2x58pmn.public.blob.vercel-storage.com/2-MNpbHOj9oZ9L6fmWX95irjB4f8gkoi.png',
+            'https://y0hbjiz1v2x58pmn.public.blob.vercel-storage.com/3-tYZHJu7X2Wl1OwAO2jkJ7kaYbsnXnM.png',
+            'https://y0hbjiz1v2x58pmn.public.blob.vercel-storage.com/4-zG7spOGmQOwx0f4yeoUzYke247nPr6.png',
+            'https://y0hbjiz1v2x58pmn.public.blob.vercel-storage.com/5-YwRjwVveo2FqyRxylVULjI6UiLljwn.png',
+        ],
+    },
 ];
 
 export function getPlacesLocalStorage(): IPlace[] {

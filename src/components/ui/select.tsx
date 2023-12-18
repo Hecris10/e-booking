@@ -157,11 +157,15 @@ export const SelectComponent = ({
     defaultValue,
     onChange,
     placeholder,
+    id,
+    name,
 }: {
     options: SelectItemType[];
     defaultValue?: string;
     placeholder?: string;
     onChange: (value: string) => void;
+    id?: string;
+    name?: string;
 }) => {
     const [selectedItem, setSelectedItem] = useState<string | undefined>(defaultValue);
 
@@ -172,13 +176,13 @@ export const SelectComponent = ({
 
     return (
         <Select onValueChange={handleChange} value={selectedItem}>
-            <SelectTrigger className={cn('input-standard')}>
+            <SelectTrigger id={id} name={name} className={cn('input-standard')}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
                 {options.map((item) => (
                     <SelectItem key={item.value} value={item.value}>
-                        {item.label}
+                        <p id={item.value || ''}>{item.label}</p>
                     </SelectItem>
                 ))}
             </SelectContent>
