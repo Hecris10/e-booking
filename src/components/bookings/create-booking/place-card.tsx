@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image';
+import Carousel from '~/components/ui/carousel';
 import { cn, formatNumberToUSD, getPlaceRate } from '~/lib/utils';
 import { IPlace } from '~/services/place-service';
 import { dispatchPlaceAtom } from '~/state/state-atoms';
@@ -25,6 +26,11 @@ const PlaceCard = ({
     };
 
     const currentRate = getPlaceRate(place);
+
+    const imagesShowCarousel =
+        place.images.length > 1
+            ? [...place.images.slice(1, place.images.length - 1), place.images[0]]
+            : place.images;
 
     return (
         <Popover>
@@ -52,8 +58,23 @@ const PlaceCard = ({
                     </div>
                 </article>
             </PopoverTrigger>
-            <PopoverContent>
+            <PopoverContent className="md:w-full md:min-w-[250px] md:max-w-[600px]">
                 <div>
+                    <div className="hidden md:block">
+                        <Carousel>
+                            {imagesShowCarousel.map((image, index) => (
+                                <div className="w-full " key={index}>
+                                    <Image
+                                        className="mx-auto rounded-lg w-[300px] h-[250px] md:object-scale-down"
+                                        alt={place?.name}
+                                        src={image}
+                                        placeholder="blur"
+                                        fetchPriority="high"
+                                    />
+                                </div>
+                            )) || <></>}
+                        </Carousel>
+                    </div>
                     <p className="italic">{place.description}</p>
                 </div>
                 <Button onClick={handleSelection} className="w-full" predefinition="login">

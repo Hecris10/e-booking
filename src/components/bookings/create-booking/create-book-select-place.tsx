@@ -31,7 +31,7 @@ export const SelectPlace = () => {
                 <Input
                     ref={inputRef}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder={'Search the best place for you...'}
+                    placeholder={'Search the stay place for you...'}
                     className="pl-8 rounded-3xl"
                 />
             </div>
