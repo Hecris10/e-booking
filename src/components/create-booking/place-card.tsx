@@ -1,6 +1,5 @@
-import { useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { cn, formatNumberToUSD, getPlaceRate } from '~/lib/utils';
 import { IPlace } from '~/services/place-service';
 import { dispatchPlaceAtom } from '~/services/state-atoms';
@@ -9,19 +8,17 @@ import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 // card to hold place info and offer to book
 
-const PlaceCard = ({ place }: { place: IPlace }) => {
-    const setSelectedPlace = useSetAtom(dispatchPlaceAtom);
+const PlaceCard = ({
+    place,
+    isSelected,
+    onClick,
+}: {
+    place: IPlace;
+    isSelected: boolean;
+    onClick: () => void;
+}) => {
+    const [selectedPlace, setSelectedPlace] = useAtom(dispatchPlaceAtom);
     // const isSelected = selected?.id === place.id;
-
-    const searchParams = useSearchParams();
-
-    const router = useRouter();
-    const placeParam = searchParams.get('place');
-    const isSelected = placeParam === place.id.toString();
-
-    const handleCardClick = () => {
-        router.push(`/app?place=${place.id}`);
-    };
 
     const handleSelection = () => {
         setSelectedPlace(place);
@@ -33,7 +30,7 @@ const PlaceCard = ({ place }: { place: IPlace }) => {
         <Popover>
             <PopoverTrigger>
                 <article
-                    onClick={() => !isSelected && handleCardClick()}
+                    onClick={() => !isSelected && onClick()}
                     className={cn(
                         'bg-white py-2 px-4 w-full rounded-lg cursor-pointer transition-all duration-300 transform scale-95',
                         isSelected && 'scale-100 shadow-2xl cursor-default'

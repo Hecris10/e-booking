@@ -2,13 +2,13 @@ import { atom } from 'jotai';
 import { AppTabs } from '~/components/main-tabs/app-card-navigation';
 import { getDatesFromRange } from '~/lib/utils';
 import { BookingStatus, IBookingView, IScheduleNewBooking } from './booking-service';
-import { IPlace, IRatePlace } from './place-service';
+import { IPlace, IRatePlace, initialPlaces } from './place-service';
 import { UserView } from './user-service';
 
 export type CreateBookingAtomProp = 'select' | 'schedule' | 'confirm';
 
 export const userAtom = atom<UserView | undefined>(undefined);
-export const placesAtom = atom<IPlace[]>([]);
+export const placesAtom = atom<IPlace[]>(initialPlaces);
 export const allBookingsAtom = atom<IBookingView[]>([]);
 export const editBookingAtom = atom<{ booking: IBookingView; mode: 'edit' | 'delete' } | undefined>(
     undefined

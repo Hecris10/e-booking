@@ -64,7 +64,7 @@ export const useHandleScheduler = () => {
             setNewBooking(reqBody);
             setSelectedMainTab('current');
             setSelectedBookTab('select');
-            router.push('/app');
+            router.push && router.push('/app');
             toast({
                 description: 'Booking created successfully',
                 type: 'background',

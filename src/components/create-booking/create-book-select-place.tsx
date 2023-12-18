@@ -10,8 +10,10 @@ import PlaceCard from './place-card';
 
 export const SelectPlace = () => {
     const places: IPlace[] = useAtomValue(placesAtom);
+
     const inputRef = useRef<HTMLInputElement>(null);
     const [seach, setSearch] = useState<string>('');
+    const [selectedPlace, setSelectedPlace] = useState<IPlace | null>(null);
 
     const filteredPlaces = places.filter((place) =>
         place.name.toLowerCase().includes(seach.toLowerCase())
@@ -33,7 +35,13 @@ export const SelectPlace = () => {
             </div>
             <div className="w-full max-h-[75vh] overflow-auto grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {filteredPlaces.map((place) => (
-                    <PlaceCard place={place} key={place.id} />
+                    <PlaceCard
+                        isSelected={selectedPlace?.id === place.id}
+                        onClick={() => setSelectedPlace(place)}
+                        data-testid="place-card"
+                        place={place}
+                        key={place.id}
+                    />
                 ))}
             </div>
         </section>

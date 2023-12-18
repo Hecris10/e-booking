@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { getBookinsByUserLocalStorage } from '~/services/booking-service';
 
-import { getPlacesLocalStorage, initialPlaces } from '~/services/place-service';
+import { initialPlaces } from '~/services/place-service';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
 import { IStates, cleanStatesAtom, dispatchGlobalUserStatesAtom } from '~/services/state-atoms';
 
@@ -23,13 +23,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 return router.push('/');
             }
             const { user } = isAuth;
-            const placesLocalStorage = localStorage.getItem('places');
-            if (!placesLocalStorage || placesLocalStorage.length === 0) {
-                localStorage.setItem('places', JSON.stringify(initialPlaces));
-            }
             const allBookings = await getBookinsByUserLocalStorage(user.id.toString());
-
-            const places = await getPlacesLocalStorage();
+            const places = initialPlaces;
             const globalStates: IStates = {
                 user,
                 allBookings,
