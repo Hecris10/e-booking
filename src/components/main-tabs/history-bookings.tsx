@@ -7,7 +7,7 @@ import { allBookingsAtom, loadingAtom } from '~/state/state-atoms';
 
 import BookingCard from '../bookings/booking-card';
 import AppCardSkeleton from '../bookings/booking-card-skeleton';
-import Ghost from '../ghost';
+import AddNewBooking from '../bookings/create-booking/add-new-booking';
 import { Input } from '../ui/input';
 
 const HistoryBookings = () => {
@@ -40,12 +40,11 @@ const HistoryBookings = () => {
                     currentBookings.map((booking) => (
                         <BookingCard key={booking.id} booking={booking} />
                     ))
+                ) : search.length === 0 ? (
+                    <AddNewBooking />
                 ) : (
                     <div>
-                        <h1 className="text-lg text-center">
-                            {search.length > 0 ? 'Not found' : 'Nothing here!!!'}
-                        </h1>
-                        <Ghost />
+                        <h1 className="text-lg text-center italic">Not found</h1>
                     </div>
                 )}
             </div>

@@ -1,11 +1,11 @@
 import { atom } from 'jotai';
-import { AppTabs } from '~/components/main-tabs/main-tab-navigation';
 import { getDatesFromRange } from '~/lib/utils';
 import { BookingStatus, IBookingView, IScheduleNewBooking } from '../services/booking-service';
 import { IPlace, IRatePlace, initialPlaces } from '../services/place-service';
 import { UserView } from '../services/user-service';
 
 export type CreateBookingAtomProp = 'select' | 'schedule' | 'confirm';
+export type AppTabs = 'current' | 'history' | 'canceled' | 'new';
 
 export const userAtom = atom<UserView | undefined>(undefined);
 export const placesAtom = atom<IPlace[]>(initialPlaces);
@@ -15,8 +15,8 @@ export const editBookingAtom = atom<{ booking: IBookingView; mode: 'edit' | 'del
 );
 export const selectedPlaceAtom = atom<IPlace | undefined>(undefined);
 export const createBookingTabPosAtom = atom<CreateBookingAtomProp>('select');
-export const mainTabAtom = atom<AppTabs>('current');
-export const loadingAtom = atom(true);
+export const mainTabAtom = atom<AppTabs>('new');
+export const loadingAtom = atom<boolean>(true);
 export interface IStates {
     user: UserView | undefined;
     places: IPlace[];
@@ -113,6 +113,12 @@ export const updateBookAtom = atom(null, (get, set, booking: IBookingView, place
             return place;
         });
         set(placesAtom, updatedPlaces);
+        if (booking.status === BookingStatus.Completed) {
+            set(mainTabAtom, 'history');
+        }
+        if (booking.status === BookingStatus.Canceled) {
+            set(mainTabAtom, 'canceled');
+        }
     }
 });
 

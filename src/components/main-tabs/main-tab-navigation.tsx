@@ -1,14 +1,11 @@
 'use client';
 import { useAtom } from 'jotai';
-import { mainTabAtom } from '~/state/state-atoms';
-import { AddIcon } from '../icons/generic-icons';
+import { AppTabs, mainTabAtom } from '~/state/state-atoms';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CanceledBookings from './canceled-bookings';
 import CreateBookFlowTab from './create-book-flow-tab';
 import CurrentBookings from './current-bookings';
 import HistoryBookings from './history-bookings';
-
-export type AppTabs = 'current' | 'history' | 'canceled' | 'new';
 
 type IconTab = {
     type: 'icon';
@@ -31,17 +28,17 @@ const a: AppTabListProps = {
 };
 
 const tabs: AppTabListProps[] = [
-    { tab: 'current', label: 'Current bookings', type: 'text' },
+    { tab: 'new', label: 'Stays', type: 'text' },
+    { tab: 'current', label: 'My bookings', type: 'text' },
     { tab: 'history', label: 'History', type: 'text' },
     { tab: 'canceled', label: 'Canceled', type: 'text' },
-    { tab: 'new', icon: <AddIcon />, type: 'icon' },
 ];
 
 const MainTabNavigation = () => {
     const [tab, setTab] = useAtom(mainTabAtom);
     return (
         <>
-            <div className="w-full bg-gray py-2 rounded-md max-w-[1200px]">
+            <div className="w-full bg-gray py-2 px-2 rounded-md max-w-[1200px]">
                 <Tabs
                     value={tab}
                     onValueChange={(e) => setTab(e as AppTabs)}
@@ -65,7 +62,10 @@ const MainTabNavigation = () => {
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                    <div className="max-h-[80vh] mt-14 mb-2 md:mt-2">
+                    <div className="max-h-[80vh] min-h-[60vh] mt-14 mb-2 md:mt-2">
+                        <TabsContent value="new">
+                            <CreateBookFlowTab />
+                        </TabsContent>
                         <TabsContent value="current">
                             <CurrentBookings />
                         </TabsContent>
@@ -74,9 +74,6 @@ const MainTabNavigation = () => {
                         </TabsContent>
                         <TabsContent value="canceled">
                             <CanceledBookings />
-                        </TabsContent>
-                        <TabsContent value="new">
-                            <CreateBookFlowTab />
                         </TabsContent>
                     </div>
                 </Tabs>

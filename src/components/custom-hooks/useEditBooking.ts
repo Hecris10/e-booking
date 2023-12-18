@@ -64,6 +64,23 @@ export const useEditBooking = () => {
         }
     };
 
+    const handleBookingUpdate = (rate?: number) => {
+        if (booking && period?.from && period?.to && status) {
+            const dataReq: IBookingView = {
+                ...booking,
+                startDate: period.from.toISOString(),
+                endDate: period.to.toISOString(),
+                status: status,
+            };
+            updateBooking(dataReq, rate);
+
+            toast({
+                description: 'Booking updated successfully',
+                type: 'background',
+            });
+        }
+    };
+
     useEffect(() => {
         if (booking) {
             setPeriod({
@@ -84,23 +101,6 @@ export const useEditBooking = () => {
         };
         if (booking && userId) getBlockedDates();
     }, [booking, userId, getUnavaiableDates]);
-
-    const handleBookingUpdate = (rate?: number) => {
-        if (booking && period?.from && period?.to && status) {
-            const dataReq: IBookingView = {
-                ...booking,
-                startDate: period.from.toISOString(),
-                endDate: period.to.toISOString(),
-                status: status,
-            };
-            updateBooking(dataReq, rate);
-
-            toast({
-                description: 'Booking updated successfully',
-                type: 'background',
-            });
-        }
-    };
 
     const dialogText =
         status === BookingStatus.Confirmed

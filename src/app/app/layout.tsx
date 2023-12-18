@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <main className="mx-auto max-w-[1200px]">
+        <main className="mx-auto px-2 max-w-[1200px]">
             <NavBar />
             <AuthProvider>
                 <ModalProvider>{children}</ModalProvider>

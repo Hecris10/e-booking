@@ -38,7 +38,6 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
                                     className="rounded-md w-full max-w-[200px] h-full"
                                     alt={booking.placeName}
                                     placeholder="blur"
-                                    priority
                                     src={booking.placeImages[0]}
                                 />
                             </div>

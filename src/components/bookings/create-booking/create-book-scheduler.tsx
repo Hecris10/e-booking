@@ -39,7 +39,7 @@ const CreateBookScheduler = () => {
                                         alt={place?.name}
                                         src={image}
                                         placeholder="blur"
-                                        priority
+                                        fetchPriority="high"
                                     />
                                 </div>
                             )) || <></>}
