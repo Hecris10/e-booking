@@ -63,6 +63,13 @@ export const dispatchPlaceAtom = atom(null, (get, set, place: IPlace) => {
     set(createBookingTabPosAtom, 'schedule');
 });
 
+export const deleteBookingAtom = atom(null, (get, set, booking: IBookingView) => {
+    const bookings = get(allBookingsAtom);
+    const updatedBookings = bookings.filter((b) => b.id !== booking.id);
+    set(allBookingsAtom, updatedBookings);
+    set(editBookingAtom, undefined);
+});
+
 export const newBookAtom = atom(null, (get, set, newSchedule: IScheduleNewBooking) => {
     const bookings = get(allBookingsAtom);
     const place = get(placesAtom).find((p) => p.id === newSchedule.placeId);

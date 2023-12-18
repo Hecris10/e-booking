@@ -1,7 +1,7 @@
 'use client';
 import { useAtom } from 'jotai';
 import { editBookingAtom } from '~/services/state-atoms';
-import CancelBookingModal from './cancel-booking-modal';
+import DeleteBookingModal from './cancel-booking-modal';
 import EditBookingModal from './edit-booking-modal';
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     return (
         <>
             <EditBookingModal />
-            <CancelBookingModal />
+            <DeleteBookingModal />
             {children}
         </>
     );

@@ -12,17 +12,17 @@ import { BookingStatus } from '~/services/booking-service';
 import { getCardStatusColor } from './badge-utils';
 
 import { useAtom, useSetAtom } from 'jotai';
-import { editBookingAtom, updateBookAtom } from '~/services/state-atoms';
+import { deleteBookingAtom, editBookingAtom } from '~/services/state-atoms';
 
-const CancelBookingModal = () => {
+const DeleteBookingModal = () => {
     const [booking, setBooking] = useAtom(editBookingAtom);
-    const { bgColor, borderColor } = getCardStatusColor(BookingStatus.Canceled);
+    const deletBooking = useSetAtom(deleteBookingAtom);
 
-    const updateBooking = useSetAtom(updateBookAtom);
+    const { bgColor, borderColor } = getCardStatusColor(BookingStatus.Canceled);
 
     const handleCancelBooking = async () => {
         if (booking) {
-            await updateBooking({ ...booking.booking, status: BookingStatus.Canceled });
+            deletBooking({ ...booking.booking, status: BookingStatus.Canceled });
         }
     };
 
@@ -55,4 +55,4 @@ const CancelBookingModal = () => {
     );
 };
 
-export default CancelBookingModal;
+export default DeleteBookingModal;
