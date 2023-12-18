@@ -22,6 +22,7 @@ export default async function Login() {
                 {/* <Link href="/recover">
                     <p className="text-darkgray underline text-center">Forgot password?</p>
                 </Link> */}
+                <></>
             </LoginForm>
             <div className="flex w-full flex-col max-w-[400px] mt-10 px-10 gap-5">
                 <p className="text-white text-center">Not registered yet?</p>
