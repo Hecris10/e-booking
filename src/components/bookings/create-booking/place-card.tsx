@@ -28,11 +28,11 @@ const PlaceCard = ({
 
     return (
         <Popover>
-            <PopoverTrigger>
+            <PopoverTrigger className="flex justify-center align-middle h-full mt-0 p-0">
                 <article
                     onClick={() => !isSelected && onClick()}
                     className={cn(
-                        'bg-white py-2 px-4 w-full rounded-lg cursor-pointer transition-all duration-300 transform scale-95',
+                        'bg-white py-2 px-4 w-full mt-0 rounded-lg h-full cursor-pointer transition-all duration-300 transform scale-95',
                         isSelected && 'scale-100 shadow-2xl cursor-default'
                     )}>
                     <h1 className="text-lg text-left font-bold">{place.name}</h1>
@@ -43,7 +43,7 @@ const PlaceCard = ({
                         height={300}
                         src={place.images[0]}
                     />
-                    <div>
+                    <div className="flex w-full mx-auto mb-0 justify-center align-middle">
                         <div className="flex flex-col align-top gap-2 mt-3">
                             <RateStars defaultRate={currentRate} isSelectable={false} />
                             <h2 className="text-lg text-right font-bold">
