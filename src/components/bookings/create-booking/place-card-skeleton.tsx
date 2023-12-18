@@ -2,7 +2,7 @@ import { Skeleton } from '~/components/ui/skeleton';
 
 const PlaceCardsSkeleton = () => {
     return (
-        <div className="w-full grid p-2 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="w-full max-h-[75vh] overflow-auto mt-0 grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
             <div className="flex w-full flex-col gap-3 bg-slate-300 animate-pulse p-3 rounded-lg ">
                 <Skeleton className="w-full h-6" />
                 <Skeleton className="w-full h-[200px]" />
