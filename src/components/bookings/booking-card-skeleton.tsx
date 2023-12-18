@@ -1,6 +1,6 @@
 import { Skeleton } from '../ui/skeleton';
 
-const AppCardsSkeleton = () => {
+const BookinCardsSkeleton = () => {
     return (
         <div className="flex flex-col gap-3 align-middle justify-start">
             <div className="bg-slate-300 animate-pulse gap-3 border h-[150px] rounded-lg flex align-middle justify-start overflow-hidden shadow-lg px-2 py-2">
@@ -28,4 +28,4 @@ const AppCardsSkeleton = () => {
     );
 };
 
-export default AppCardsSkeleton;
+export default BookinCardsSkeleton;

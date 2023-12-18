@@ -1,9 +1,9 @@
 import { useAtomValue } from 'jotai';
 import { createBookingTabPosAtom } from '~/state/state-atoms';
-import CreateBookScheduler from './create-book-scheduler';
-import { SelectPlace } from './create-book-select-place';
+import CreateBookScheduler from '../bookings/create-booking/create-book-scheduler';
+import { SelectPlace } from '../bookings/create-booking/create-book-select-place';
 
-export default function CreateBookFlow() {
+export default function CreateBookFlowTab() {
     const selectedTab = useAtomValue(createBookingTabPosAtom);
 
     if (selectedTab === 'select') return <SelectPlace />;

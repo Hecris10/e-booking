@@ -6,9 +6,9 @@ import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { allBookingsAtom, loadingAtom } from '~/state/state-atoms';
 import BookingCard from '../bookings/booking-card';
+import AppCardSkeleton from '../bookings/booking-card-skeleton';
 import Ghost from '../ghost';
 import { Input } from '../ui/input';
-import AppCardSkeleton from './app-card-skeleton';
 
 const CanceledBookings = () => {
     const inputRef = useRef<HTMLInputElement>(null);

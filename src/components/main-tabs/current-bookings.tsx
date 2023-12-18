@@ -5,9 +5,9 @@ import { cn } from '~/lib/utils';
 import { BookingStatus, IBookingView } from '~/services/booking-service';
 import { allBookingsAtom, loadingAtom } from '~/state/state-atoms';
 import BookingCard from '../bookings/booking-card';
+import BookinCardsSkeleton from '../bookings/booking-card-skeleton';
 import Ghost from '../ghost';
 import { Input } from '../ui/input';
-import AppCardsSkeleton from './app-card-skeleton';
 
 const CurrentBookings = () => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ const CurrentBookings = () => {
             </div>
             <div className="flex h-full  overflow-auto flex-col gap-5">
                 {loading ? (
-                    <AppCardsSkeleton />
+                    <BookinCardsSkeleton />
                 ) : currentBookings.length > 0 ? (
                     currentBookings.map((booking) => (
                         <BookingCard key={booking.id} booking={booking} />

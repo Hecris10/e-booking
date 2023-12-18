@@ -1,10 +1,10 @@
 'use client';
 import { useAtom } from 'jotai';
 import { mainTabAtom } from '~/state/state-atoms';
-import CreateBookFlow from '../bookings/create-booking/create-book-flow';
 import { AddIcon } from '../icons/generic-icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CanceledBookings from './canceled-bookings';
+import CreateBookFlowTab from './create-book-flow-tab';
 import CurrentBookings from './current-bookings';
 import HistoryBookings from './history-bookings';
 
@@ -76,7 +76,7 @@ const MainTabNavigation = () => {
                             <CanceledBookings />
                         </TabsContent>
                         <TabsContent value="new">
-                            <CreateBookFlow />
+                            <CreateBookFlowTab />
                         </TabsContent>
                     </div>
                 </Tabs>
