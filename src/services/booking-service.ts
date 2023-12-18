@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image';
 import { getPlacesLocalStorage } from './place-service';
 
 export interface IBooking {
@@ -15,7 +16,7 @@ export interface IBookingView extends IBooking {
     placeName: string;
     placeId: string;
     placeDescription: string;
-    placeImages: string[];
+    placeImages: StaticImageData[];
 }
 
 export enum BookingStatus {

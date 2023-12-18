@@ -4,6 +4,10 @@
 
 This project is a modern web application built with Next.js, TypeScript, and Tailwind CSS. It leverages the power of server-side rendering provided by Next.js to deliver a fast, efficient, and SEO-friendly user experience. The application is styled with Tailwind CSS, a utility-first CSS framework, and uses ARK UI and ShadcnUI for additional UI components.
 
+## Live Demo
+
+You can view the live version of this project at [https://e-booking-eight.vercel.app/](https://e-booking-eight.vercel.app/). This version of the project is hosted on Vercel and is the production build of the application.
+
 ## Installation
 
 To get started with this project, follow these steps:
