@@ -92,7 +92,8 @@ context('Delete bookings', () => {
 
         // check if the total price is right and visible
         cy.get('p[id="daily-price"]').contains('$3,198.00').should('be.visible');
-
+        // scroll to the bottom of the page
+        cy.get('article').scrollTo('bottom');
         // check if the button is visible
         cy.get('button').contains('Save').should('be.visible').click();
 
@@ -164,6 +165,8 @@ context('Delete bookings', () => {
         cy.get('article').scrollTo('bottom');
         // check if the toast is visible
 
+        // scroll to the bottom of the page
+        cy.get('article').scrollTo('bottom');
         // check if the button is visible
         cy.get('button').contains('Save').should('be.visible').click();
 
