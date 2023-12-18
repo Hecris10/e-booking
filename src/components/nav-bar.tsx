@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import GreatLogo from '~/../public/e-booking.png';
 import { formatTextToTitleCase } from '~/lib/utils';
-import { userAtom } from '~/services/state-atoms';
+import { userAtom } from '~/state/state-atoms';
 import NavMenu from './nav-menu';
 import { UserAvatar } from './ui/avatar';
 import { Skeleton } from './ui/skeleton';

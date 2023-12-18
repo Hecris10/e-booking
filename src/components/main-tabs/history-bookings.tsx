@@ -3,7 +3,7 @@ import { SearchIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { IBookingView } from '~/services/booking-service';
-import { allBookingsAtom, loadingAtom } from '~/services/state-atoms';
+import { allBookingsAtom, loadingAtom } from '~/state/state-atoms';
 
 import BookingCard from '../bookings/booking-card';
 import Ghost from '../ghost';

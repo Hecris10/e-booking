@@ -4,8 +4,8 @@ import { SearchIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { IPlace } from '~/services/place-service';
-import { placesAtom } from '~/services/state-atoms';
-import { Input } from '../ui/input';
+import { placesAtom } from '~/state/state-atoms';
+import { Input } from '../../ui/input';
 import PlaceCard from './place-card';
 
 export const SelectPlace = () => {

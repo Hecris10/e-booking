@@ -3,17 +3,17 @@ import { DateRange } from 'react-day-picker';
 import { cn, formatNumberToUSD } from '~/lib/utils';
 
 import Image from 'next/image';
-import ConfirmBookingModalDialog from '../bookings/confirm-booking-modal';
-import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
-import { Calendar } from '../ui/calendar';
-import Carousel from '../ui/carousel';
-import DateRangePicker from '../ui/date-range-picker';
-import { useHandleScheduler } from './create-book-scheduler-hooks';
+import { useCreateBooking } from '../../custom-hooks/useCreateBooking';
+import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
+import { Calendar } from '../../ui/calendar';
+import Carousel from '../../ui/carousel';
+import DateRangePicker from '../../ui/date-range-picker';
+import ConfirmBookingModalDialog from '../confirm-booking-modal';
 
 const CreateBookScheduler = () => {
     const { setSelectedBookTab, place, blockedDates, period, handleSelect, handleBook, total } =
-        useHandleScheduler();
+        useCreateBooking();
 
     return (
         <>

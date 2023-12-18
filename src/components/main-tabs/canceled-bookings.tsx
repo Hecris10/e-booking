@@ -4,7 +4,7 @@ import { BookingStatus, IBookingView } from '~/services/booking-service';
 import { SearchIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { cn } from '~/lib/utils';
-import { allBookingsAtom, loadingAtom } from '~/services/state-atoms';
+import { allBookingsAtom, loadingAtom } from '~/state/state-atoms';
 import BookingCard from '../bookings/booking-card';
 import Ghost from '../ghost';
 import { Input } from '../ui/input';

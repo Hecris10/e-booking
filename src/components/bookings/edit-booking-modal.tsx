@@ -17,9 +17,9 @@ import {
 import { cn, formatNumberToUSD } from '~/lib/utils';
 
 import { BookingStatus } from '~/services/booking-service';
+import { useEditBooking } from '../custom-hooks/useEditBooking';
 import { BookingStatusComboBox } from './booking-status-combox';
 import ConfirmBookingModalDialog from './confirm-booking-modal';
-import { useEditModal } from './edit-modal-hooks';
 
 const EditBookingModal = () => {
     const {
@@ -36,7 +36,7 @@ const EditBookingModal = () => {
         handleSelect,
         dialogText,
         totalPrice,
-    } = useEditModal();
+    } = useEditBooking();
     return (
         <Dialog open={bookingEdit !== undefined && bookingEdit.mode === 'edit'}>
             <DialogContent

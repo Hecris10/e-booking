@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import AppCardNavigation, { AppTabs } from '~/components/main-tabs/app-card-navigation';
+import MainTabNavigation, { AppTabs } from '~/components/main-tabs/main-tab-navigation';
 import { PageProps } from '~/lib/global-types';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
 
@@ -16,7 +16,7 @@ export default async function AppPage({ params, searchParams }: PageProps) {
     if (!isAuth.sucess) redirect('/');
     return (
         <main className="flex flex-col items-center w-full h-screen gap-5">
-            <AppCardNavigation />
+            <MainTabNavigation />
         </main>
     );
 }

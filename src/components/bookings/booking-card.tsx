@@ -3,7 +3,7 @@ import { Calendar } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '~/lib/utils';
 import { IBookingView } from '~/services/booking-service';
-import { editBookingAtom } from '~/services/state-atoms';
+import { editBookingAtom } from '~/state/state-atoms';
 import { getCardStatusBadge, getCardStatusColor } from './badge-utils';
 import ExpandableToggleBookinCard from './expand-toggle-booking-card';
 

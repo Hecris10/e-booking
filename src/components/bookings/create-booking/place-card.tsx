@@ -2,10 +2,10 @@ import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { cn, formatNumberToUSD, getPlaceRate } from '~/lib/utils';
 import { IPlace } from '~/services/place-service';
-import { dispatchPlaceAtom } from '~/services/state-atoms';
-import RateStars from '../rate-stars';
-import { Button } from '../ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { dispatchPlaceAtom } from '~/state/state-atoms';
+import RateStars from '../../rate-stars';
+import { Button } from '../../ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 // card to hold place info and offer to book
 
 const PlaceCard = ({

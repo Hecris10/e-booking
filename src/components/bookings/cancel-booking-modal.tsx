@@ -12,7 +12,7 @@ import { BookingStatus } from '~/services/booking-service';
 import { getCardStatusColor } from './badge-utils';
 
 import { useAtom, useSetAtom } from 'jotai';
-import { deleteBookingAtom, editBookingAtom } from '~/services/state-atoms';
+import { deleteBookingAtom, editBookingAtom } from '~/state/state-atoms';
 
 const DeleteBookingModal = () => {
     const [booking, setBooking] = useAtom(editBookingAtom);

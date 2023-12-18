@@ -10,14 +10,14 @@ import {
     newBookAtom,
     selectedPlaceAtom,
     userAtom,
-} from '~/services/state-atoms';
+} from '~/state/state-atoms';
 
 import { useRouter } from 'next/navigation';
 import { calculateRangeQuantity, isDatesConfliting } from '~/lib/utils';
 import { IScheduleNewBooking } from '~/services/booking-service';
 import { toast } from '../ui/use-toast';
 
-export const useHandleScheduler = () => {
+export const useCreateBooking = () => {
     const router = useRouter();
     const place = useAtomValue(selectedPlaceAtom);
     const setSelectedBookTab = useSetAtom(createBookingTabPosAtom);

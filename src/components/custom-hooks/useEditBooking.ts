@@ -12,10 +12,10 @@ import {
     getUnavailableDatesAtom,
     updateBookAtom,
     userAtom,
-} from '~/services/state-atoms';
-import { getCardStatusColor } from './badge-utils';
+} from '~/state/state-atoms';
+import { getCardStatusColor } from '../bookings/badge-utils';
 
-export const useEditModal = () => {
+export const useEditBooking = () => {
     const [bookingEdit, setBookingEdit] = useAtom(editBookingAtom);
     const booking = bookingEdit?.booking;
     const userId = useAtomValue(userAtom)?.id;

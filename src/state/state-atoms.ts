@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
-import { AppTabs } from '~/components/main-tabs/app-card-navigation';
+import { AppTabs } from '~/components/main-tabs/main-tab-navigation';
 import { getDatesFromRange } from '~/lib/utils';
-import { BookingStatus, IBookingView, IScheduleNewBooking } from './booking-service';
-import { IPlace, IRatePlace, initialPlaces } from './place-service';
-import { UserView } from './user-service';
+import { BookingStatus, IBookingView, IScheduleNewBooking } from '../services/booking-service';
+import { IPlace, IRatePlace, initialPlaces } from '../services/place-service';
+import { UserView } from '../services/user-service';
 
 export type CreateBookingAtomProp = 'select' | 'schedule' | 'confirm';
 

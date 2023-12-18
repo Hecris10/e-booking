@@ -7,7 +7,7 @@ import { getBookinsByUserLocalStorage } from '~/services/booking-service';
 
 import { initialPlaces } from '~/services/place-service';
 import { isUserAuthAction } from '~/services/server-actions/auth-user-actions';
-import { IStates, cleanStatesAtom, dispatchGlobalUserStatesAtom } from '~/services/state-atoms';
+import { IStates, cleanStatesAtom, dispatchGlobalUserStatesAtom } from '~/state/state-atoms';
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
     // const [isAuthenticated, setIsAuthenticaed] = useState(false);

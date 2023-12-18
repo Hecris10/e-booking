@@ -1,7 +1,7 @@
 'use client';
 import { useAtom } from 'jotai';
-import { mainTabAtom } from '~/services/state-atoms';
-import CreateBookFlow from '../create-booking/create-book-flow';
+import { mainTabAtom } from '~/state/state-atoms';
+import CreateBookFlow from '../bookings/create-booking/create-book-flow';
 import { AddIcon } from '../icons/generic-icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CanceledBookings from './canceled-bookings';
@@ -37,7 +37,7 @@ const tabs: AppTabListProps[] = [
     { tab: 'new', icon: <AddIcon />, type: 'icon' },
 ];
 
-const AppCardNavigation = () => {
+const MainTabNavigation = () => {
     const [tab, setTab] = useAtom(mainTabAtom);
     return (
         <>
@@ -85,4 +85,4 @@ const AppCardNavigation = () => {
     );
 };
 
-export default AppCardNavigation;
+export default MainTabNavigation;

@@ -1,6 +1,6 @@
 'use client';
 import { useAtom } from 'jotai';
-import { editBookingAtom } from '~/services/state-atoms';
+import { editBookingAtom } from '~/state/state-atoms';
 import DeleteBookingModal from './cancel-booking-modal';
 import EditBookingModal from './edit-booking-modal';
 
