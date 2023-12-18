@@ -41,7 +41,7 @@ const MainTabNavigation = () => {
     const [tab, setTab] = useAtom(mainTabAtom);
     return (
         <>
-            <div className="w-full bg-gray rounded-md max-w-[1200px]">
+            <div className="w-full bg-gray py-2 rounded-md max-w-[1200px]">
                 <Tabs
                     value={tab}
                     onValueChange={(e) => setTab(e as AppTabs)}
@@ -65,7 +65,7 @@ const MainTabNavigation = () => {
                             </TabsTrigger>
                         ))}
                     </TabsList>
-                    <div className="h-[80vh] mt-14 md:mt-2">
+                    <div className="max-h-[80vh] mt-14 mb-2 md:mt-2">
                         <TabsContent value="current">
                             <CurrentBookings />
                         </TabsContent>

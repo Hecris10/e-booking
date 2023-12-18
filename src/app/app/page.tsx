@@ -15,8 +15,8 @@ export default async function AppPage({ params, searchParams }: PageProps) {
     const isAuth = await isUserAuthAction();
     if (!isAuth.sucess) redirect('/');
     return (
-        <main className="flex flex-col items-center w-full h-screen gap-5">
+        <div className="flex flex-col items-center w-full h-screen gap-5">
             <MainTabNavigation />
-        </main>
+        </div>
     );
 }

@@ -14,15 +14,13 @@ const inter = Inter({ subsets: ['latin'] });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body
-                className={cn(
-                    inter.className,
-                    'background-gradient h-full mx-auto w-[97%] window-height overflow-hidden'
-                )}>
-                <JotaiProvider>
-                    {children}
-                    <Toaster />
-                </JotaiProvider>
+            <body className={cn(inter.className)}>
+                <main className="background-gradient h-screen overflow-auto">
+                    <JotaiProvider>
+                        {children}
+                        <Toaster />
+                    </JotaiProvider>
+                </main>
             </body>
         </html>
     );

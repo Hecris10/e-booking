@@ -16,7 +16,7 @@ export default async function Login() {
     const isAuth = await isUserAuthAction();
     if (isAuth.sucess) redirect('/app');
     return (
-        <div className="px-6 flex flex-col mt-[5vh] md:mt-[10vh] items-center w-full h-full gap-5">
+        <div className="px-6 flex flex-col pt-[5vh] items-center w-full h-full gap-5">
             <Image alt="E-booking logo" width={400} src={GreatLogo} />
             <LoginForm>
                 <Link href="/recover">

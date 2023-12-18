@@ -33,7 +33,7 @@ const HistoryBookings = () => {
                     className="pl-8 rounded-3xl"
                 />
             </div>
-            <div className="flex h-full  overflow-auto flex-col gap-5">
+            <div className="w-full max-h-[75vh] overflow-auto grid grid-cols-1 gap-2">
                 {isLoading ? (
                     <AppCardSkeleton />
                 ) : currentBookings.length > 0 ? (

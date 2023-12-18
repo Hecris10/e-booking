@@ -72,6 +72,7 @@ const RegisterForm = (): ReactElement => {
         <form
             className="bg-gray rounded-xl w-full px-10 py-7 flex flex-col gap-5 max-w-[400px]"
             onSubmit={handleSubmit(onSubmit)}>
+            <h2>Register your account</h2>
             <div className="form-element">
                 <Input
                     {...register('name', {
