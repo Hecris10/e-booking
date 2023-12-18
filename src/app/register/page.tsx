@@ -24,7 +24,7 @@ export default function Register() {
                             'text-md rounded-xl w-full text-center p-1 font-extrabold text-[20px]'
                         )}
                         href={'/'}>
-                        Voltar para login
+                        Return to login
                     </Link>
                 </div>
             </div>
