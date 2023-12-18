@@ -39,7 +39,7 @@ const DeleteBookingModal = () => {
                     <DialogDescription>{`This action CAN NOT be undone!!!`}</DialogDescription>
                 </DialogHeader>
 
-                <DialogFooter>
+                <DialogFooter className="w-full flex gap-2 justify-end">
                     <Button
                         className="bg-transparent border-none hover:border hover:border-gray hover:shadow-md"
                         variant={'ghost'}
