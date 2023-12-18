@@ -11,6 +11,7 @@ import { Button } from '../ui/button';
 import DatePicker from '../ui/date-picker';
 import { Input } from '../ui/input';
 import { SelectComponent, SelectItemType } from '../ui/select';
+import { toast } from '../ui/use-toast';
 export interface IUserRegister {
     name: string;
     phone: string;
@@ -62,6 +63,7 @@ const RegisterForm = (): ReactElement => {
         }
 
         await addUserLocalStorage(data);
+        toast({ description: 'User registered successfully' });
         router.push('/');
         clearErrors();
     };
@@ -120,6 +122,8 @@ const RegisterForm = (): ReactElement => {
                     {...register('birthDate', {
                         required: true,
                     })}
+                    id="birth-date"
+                    placeHolder="Birth date"
                     onChange={(date) => setValue('birthDate', date?.toISOString() || '')}
                 />
                 {errors.birthDate?.type === 'required' && <ErrorMessage name="Required field" />}
@@ -129,6 +133,8 @@ const RegisterForm = (): ReactElement => {
                     {...register('gender', {
                         required: true,
                     })}
+                    name="gender"
+                    id="gender"
                     placeholder="Gender"
                     options={genderOptions}
                     onChange={(gender) => setValue('gender', gender)}

@@ -14,24 +14,36 @@ const DatePicker = ({
     defaultValue,
     placeHolder,
     disabledDates,
+    id,
+    name,
 }: {
     onChange: (date: Date | undefined) => void;
     placeHolder?: string;
     defaultValue?: Date;
     disabledDates?: Date[];
+    id?: string;
+    name?: string;
 }) => {
     const [date, setDate] = useState<Date | undefined>(defaultValue);
-
+    const [open, setOpen] = useState(false);
     const onSelect = (date: Date | undefined) => {
         setDate(date);
         onChange(date);
     };
 
+    const handleSelect = (date: Date | undefined) => {
+        onSelect(date);
+        setOpen(false);
+    };
+
     return (
-        <Popover>
+        <Popover modal open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant={'outline'}
+                    onClick={() => setOpen(open)}
+                    id={id}
+                    name={name}
                     className={cn(
                         'w-full justify-start text-left font-normal',
                         !date && 'text-muted-foreground'
@@ -45,7 +57,7 @@ const DatePicker = ({
                     disabled={disabledDates}
                     mode="single"
                     selected={date}
-                    onSelect={onSelect}
+                    onSelect={handleSelect}
                     initialFocus
                 />
             </PopoverContent>

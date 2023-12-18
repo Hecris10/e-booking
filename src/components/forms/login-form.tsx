@@ -11,7 +11,7 @@ import { loginLocalStorage } from '~/services/user-service';
 import Spinner from '../spinner';
 
 export interface IUserLogin {
-    emailOrPhone: string;
+    email: string;
     password: string;
 }
 
@@ -25,12 +25,12 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
     } = useForm<IUserLogin>();
 
     const onSubmit = async (data: IUserLogin) => {
-        const hasLogged = await loginLocalStorage(data.emailOrPhone, data.password);
+        const hasLogged = await loginLocalStorage(data.email, data.password);
         if (hasLogged.sucess) {
             const { user } = hasLogged;
             await authUserAction(user);
         } else {
-            setError('emailOrPhone', {
+            setError('email', {
                 type: 'manual',
                 message: 'Email or password incorrect',
             });
@@ -41,22 +41,21 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
         <form
             onSubmit={handleSubmit(onSubmit)}
             className="bg-gray rounded-xl w-full px-10 py-7 flex flex-col gap-5 max-w-[400px]">
-            {errors.emailOrPhone?.type === 'manual' && (
-                <ErrorMessage name={errors.emailOrPhone.message || ''} />
-            )}
+            {errors.email?.type === 'manual' && <ErrorMessage name={errors.email.message || ''} />}
             <h2>Login into your account</h2>
             <div className="form-element">
                 <Input
-                    {...register('emailOrPhone', {
+                    {...register('email', {
                         required: true,
                     })}
                     required
                     type="email"
-                    placeholder="Email or phone"
-                    name="emailOrPhone"
-                    title={'Email or phone'}
+                    id="email"
+                    placeholder="Email"
+                    name="email"
+                    title={'Email'}
                 />
-                {errors.emailOrPhone?.type === 'required' && <ErrorMessage name="Required field" />}
+                {errors.email?.type === 'required' && <ErrorMessage name="Required field" />}
             </div>
 
             <div className="form-element">
@@ -66,6 +65,7 @@ const LoginForm = ({ children }: { children: ReactElement }) => {
                     })}
                     type="password"
                     required
+                    name="password"
                     placeholder="Password"
                     title="Password"
                 />
