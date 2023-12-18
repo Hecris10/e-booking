@@ -55,6 +55,7 @@ const AppCardNavigation = () => {
                                         : 'h-10 w-10 p-1 rounded-full'
                                 }
                                 key={t.tab}
+                                id={t.tab}
                                 value={t.tab}>
                                 {t.type === 'icon' ? (
                                     t.icon

@@ -99,14 +99,19 @@ const CreateBookScheduler = () => {
                             </div>
                             <div className="flex justify-between">
                                 <span className="font-medium">Price per day:</span>
-                                <Badge className="font-medium text-black bg-white hover:bg-white shadow-md">
-                                    {formatNumberToUSD(place?.pricePerNight ?? 0)}
+                                <Badge className="bg-white hover:bg-white shadow-md">
+                                    <p className="font-medium text-black" id="daily-price">
+                                        {formatNumberToUSD(place?.pricePerNight ?? 0)}
+                                    </p>
                                 </Badge>
                             </div>
                             <div className="flex justify-between">
                                 <span className="font-medium text-lg">Total:</span>
-                                <Badge className=" text-white bg-lightblue  hover:bg-lightblue shadow-md">
-                                    {formatNumberToUSD(total)}
+                                <Badge className="bg-lightblue  hover:bg-lightblue shadow-md">
+                                    <p className=" text-white" id="daily-price">
+                                        {' '}
+                                        {formatNumberToUSD(total)}
+                                    </p>
                                 </Badge>
                             </div>
                         </div>

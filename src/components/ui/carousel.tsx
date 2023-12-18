@@ -12,7 +12,7 @@ const Carousel = ({ children }: { children: ReactNode | ReactNode[] }) => {
                     </CarouselArk.Indicator>
                 ))} */}
             </CarouselArk.IndicatorGroup>
-            <CarouselArk.Viewport className="relative">
+            <CarouselArk.Viewport className="relative overflow-hidden">
                 <CarouselArk.ItemGroup>
                     {React.Children.map(children, (item, index) => (
                         <CarouselArk.Item

@@ -40,6 +40,7 @@ const ExpandableToggleBookinCard = ({
                 {booking.status !== BookingStatus.Canceled &&
                     booking.status !== BookingStatus.Completed && (
                         <button
+                            name="delete"
                             onClick={() => openModal('delete')}
                             className="bg-gray p-1 flex justify-center align-middle bg-transparent rounded-md hover:backdrop-blur-md backdrop-sepia-0 hover:scale-105 active:scale-95">
                             <Trash2 className="w-8 h-8 text-red-500" />
@@ -50,10 +51,9 @@ const ExpandableToggleBookinCard = ({
 
     return (
         <div className="flex h-full align-middle ">
-            <ChevronRight
-                onClick={() => setOpen(true)}
-                className="my-auto text-slate-300 hover:text-slate-500 transform transition-all duration-300 w-10 h-10 rounded-lg cursor-pointer hover:scale-110  active:scale-90"
-            />
+            <button name="options-booking" onClick={() => setOpen(true)}>
+                <ChevronRight className="my-auto text-slate-300 hover:text-slate-500 transform transition-all duration-300 w-10 h-10 rounded-lg cursor-pointer hover:scale-110  active:scale-90" />
+            </button>
         </div>
     );
 };
