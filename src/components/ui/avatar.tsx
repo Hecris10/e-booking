@@ -48,7 +48,7 @@ export const UserAvatar = ({ src, userName }: { src: string; userName: string })
     return (
         <Avatar className="avatar">
             <AvatarImage src={src} alt={userName} />
-            <AvatarFallback>{userName}</AvatarFallback>
+            <AvatarFallback>{userName.toUpperCase()}</AvatarFallback>
         </Avatar>
     );
 };
