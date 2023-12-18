@@ -23,6 +23,16 @@ The application will be running at `http://localhost:3000`.
 
 Once the application is running, you can use it by navigating to `http://localhost:3000` in your web browser and exploring its features.
 
+### Authentication
+
+To access the application, you need to register an account. You can do this by navigating to the `/register` route and filling out the registration form. All registered users will be stored in the local storage of your browser for persistence.
+
+### Login
+
+After registering, you can log in to the application. When a user logs in, the session is handled with cookies. This means that even if you close the browser or turn off your computer, you will still be logged in when you return to the application, until you log out or clear your cookies.
+
+Remember to log out when you are done using the application, especially if you are using a public computer.
+
 ## UI Libraries
 
 This project uses the following UI libraries:
@@ -81,6 +91,10 @@ Here's an example of how Jotai is used in this project:
 
 ## Testing
 
-This project uses [Cypress](https://www.cypress.io/) for end-to-end testing. To run the tests, use the following command:
+This project uses [Cypress](https://www.cypress.io/) for end-to-end testing. To run the tests, you need to start the development server and Cypress in two different terminal instances:
 
-pnpm cypress
+1. Start the development server:
+
+```bash
+pnpm dev
+```
