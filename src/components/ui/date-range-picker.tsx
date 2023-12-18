@@ -3,6 +3,7 @@
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
+import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
@@ -31,12 +32,20 @@ const DateRangePicker = ({
     disabledDates?: Date[];
     disableBefore?: true;
 }) => {
+    const [open, setOpen] = useState(false);
+
+    const handleSlect = (date: DateRange | undefined) => {
+        onSelect(date);
+        if (date?.from && date?.to) setOpen(false);
+    };
+
     return (
         <div className={cn(className, 'grid gap-2')}>
-            <Popover>
+            <Popover modal open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
                         id="date"
+                        onClick={() => setOpen(open)}
                         variant={'outline'}
                         className={cn(
                             'w-full justify-start text-left font-normal',
@@ -64,7 +73,7 @@ const DateRangePicker = ({
                         defaultMonth={date?.from}
                         className="w-full"
                         selected={date}
-                        onSelect={onSelect}
+                        onSelect={handleSlect}
                         numberOfMonths={1}
                         disableBefore={disableBefore}
                         disabledDates={disabledDates}

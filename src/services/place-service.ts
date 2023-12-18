@@ -47,7 +47,8 @@ export const initialPlaces: IPlace[] = [
         id: '2',
         name: 'Yuca Valley',
         type: PlaceType.House,
-        description: 'Yucca Valley Oasis w/ Private Hot Tub!',
+        description:
+            'Yucca Valley Oasis w/ Private Hot Tub! is located in Yucca Valley. The air-conditioned accommodation is 29 km from Palm Springs, and guests benefit from private parking available on site and free WiFi.',
         pricePerNight: 200,
         rates: [{ bookingId: 45, placeId: '2', rate: 2 }],
         images: [

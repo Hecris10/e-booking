@@ -33,6 +33,7 @@ const ExpandableToggleBookinCard = ({
                 ref={editRef}
                 className="flex  left-0 top-0 h-full p-1 flex-col justify-between bg-graytransparent">
                 <button
+                    name="edit"
                     onClick={() => openModal('edit')}
                     className="bg-gray p-1 flex justify-center align-middle bg-transparent rounded-md hover:backdrop-blur-md backdrop-sepia-0 hover:scale-105 active:scale-95">
                     <Pencil className="w-8 h-8" />
