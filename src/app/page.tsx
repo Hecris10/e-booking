@@ -19,9 +19,9 @@ export default async function Login() {
         <div className="px-6 flex flex-col pt-[5vh] items-center w-full h-full gap-5">
             <Image alt="E-booking logo" width={400} src={GreatLogo} />
             <LoginForm>
-                <Link href="/recover">
+                {/* <Link href="/recover">
                     <p className="text-darkgray underline text-center">Forgot password?</p>
-                </Link>
+                </Link> */}
             </LoginForm>
             <div className="flex w-full flex-col max-w-[400px] mt-10 px-10 gap-5">
                 <p className="text-white text-center">Not registered yet?</p>
