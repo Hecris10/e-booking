@@ -69,6 +69,7 @@ const EditBookingModal = () => {
                             date={period}
                             onSelect={(d) => handleSelect(d as DateRange)}
                             disabledDates={filteredBlockedDates}
+                            disableBefore
                         />
                     ) : (
                         <div className="flex gap-1">
