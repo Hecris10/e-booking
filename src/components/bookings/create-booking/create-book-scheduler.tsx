@@ -38,8 +38,7 @@ const CreateBookScheduler = () => {
                                         className="mx-auto rounded-lg w-full h-full md:object-scale-down"
                                         alt={place?.name}
                                         src={image}
-                                        width={800}
-                                        height={500}
+                                        placeholder="blur"
                                         priority
                                     />
                                 </div>

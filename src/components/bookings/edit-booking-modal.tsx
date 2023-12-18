@@ -58,9 +58,8 @@ const EditBookingModal = () => {
                     <Image
                         className="rounded-md w-full h-full"
                         alt={booking?.placeName || ''}
-                        width={300}
+                        placeholder="blur"
                         priority
-                        height={125}
                         src={booking?.placeImages[0] || ''}
                     />
                     {booking?.status !== BookingStatus.Canceled &&

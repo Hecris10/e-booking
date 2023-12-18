@@ -39,8 +39,7 @@ const PlaceCard = ({
                     <Image
                         className="w-full mx-auto rounded-lg"
                         alt={place.name}
-                        width={300}
-                        height={300}
+                        placeholder="blur"
                         src={place.images[0]}
                     />
                     <div className="flex w-full mx-auto mb-0 justify-center align-middle">

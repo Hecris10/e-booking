@@ -35,11 +35,10 @@ const BookingCard = ({ booking }: { booking: IBookingView }) => {
                         <div className={cn('flex w-full h-full justify-start gap-3', bgColor)}>
                             <div className="my-auto p-0">
                                 <Image
-                                    className="rounded-md"
+                                    className="rounded-md w-full max-w-[200px] h-full"
                                     alt={booking.placeName}
-                                    width={200}
+                                    placeholder="blur"
                                     priority
-                                    height={125}
                                     src={booking.placeImages[0]}
                                 />
                             </div>

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function Register() {
     return (
         <div className="px-6 flex flex-col pt-[5vh] items-center w-full h-full gap-5">
-            <Image alt="E-booking logo" width={400} src={GreatLogo} />
+            <Image alt="E-booking logo" src={GreatLogo} />
             <div className="w-full flex flex-col gap-3 max-w-[400px]">
                 <RegisterForm />
                 <div className="px-10 mt-5 flex w-full">
