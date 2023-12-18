@@ -36,7 +36,9 @@ export const SelectPlace = () => {
                 />
             </div>
             {isLoading !== true ? (
-                <div className="w-full max-h-[75vh] overflow-auto mt-0 grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                <div
+                    id="select-places"
+                    className="w-full max-h-[75vh] overflow-auto mt-0 grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     {filteredPlaces.map((place) => (
                         <PlaceCard
                             isSelected={selectedPlace?.id === place.id}

@@ -47,7 +47,7 @@ context('Delete bookings', () => {
         cy.get('button[type="submit"]').should('be.visible').click();
 
         // check if an element with text Current bookings is visible
-        cy.get('span').contains('Current bookings').should('be.visible');
+        cy.get('span').contains('Stays').should('be.visible');
 
         // go to bookings tab getting button with id new
         cy.get('button[id="new"]').click();
@@ -55,6 +55,7 @@ context('Delete bookings', () => {
         //select the first option by clikcingin the text
         cy.get('h1').contains('Copa Cabana Palace').click();
 
+        cy.get('div[id="select-places"').scrollTo('bottom');
         // check if the popover is visible
         cy.get('p')
             .contains(
@@ -69,6 +70,8 @@ context('Delete bookings', () => {
 
         // scroll to the bottom of the page
         cy.get('article').scrollTo('bottom');
+
+        ('select-places');
 
         // check if the price per day is right and visible
         // if the value is in dollar format, value is 1599
@@ -107,7 +110,7 @@ context('Delete bookings', () => {
         cy.get('div').contains('Booking created successfully').should('be.visible');
 
         // chick if was redirected to the current bookings page
-        cy.get('span').contains('Current bookings').should('be.visible');
+        cy.get('span').contains('Stays').should('be.visible');
         // check if the booking is visible
         cy.get('h1').contains('Copa Cabana Palace').should('be.visible');
 
@@ -117,6 +120,7 @@ context('Delete bookings', () => {
         cy.get('h1').contains('Copa Cabana Palace').click();
 
         // check if the popover is visible
+        cy.get('div[id="select-places"').scrollTo('bottom');
         cy.get('p')
             .contains(
                 'Facing Copacabana Beach, this refined art deco hotel from 1923 is 10 km from Santos Dumont Airport and 13 km from the iconic Christ the Redeemer statue.'

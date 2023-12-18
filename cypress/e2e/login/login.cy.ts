@@ -120,6 +120,6 @@ context('Registration and Login', () => {
         cy.get('button[type="submit"]').should('be.visible').click();
 
         // check if an element with text Current bookings is visible
-        cy.get('span').contains('Current bookings').should('be.visible');
+        cy.get('span').contains('Stays').should('be.visible');
     });
 });

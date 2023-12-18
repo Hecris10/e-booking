@@ -47,7 +47,7 @@ context('Edit bookings', () => {
         cy.get('button[type="submit"]').should('be.visible').click();
 
         // check if an element with text Current bookings is visible
-        cy.get('span').contains('Current bookings').should('be.visible');
+        cy.get('span').contains('Stays').should('be.visible');
 
         // go to bookings tab getting button with id new
         cy.get('button[id="new"]').click();
@@ -56,6 +56,7 @@ context('Edit bookings', () => {
         cy.get('h1').contains('Copa Cabana Palace').click();
 
         // check if the popover is visible
+        cy.get('div[id="select-places"').scrollTo('bottom');
         cy.get('p')
             .contains(
                 'Facing Copacabana Beach, this refined art deco hotel from 1923 is 10 km from Santos Dumont Airport and 13 km from the iconic Christ the Redeemer statue.'
@@ -106,7 +107,7 @@ context('Edit bookings', () => {
         cy.get('div').contains('Booking created successfully').should('be.visible');
 
         // chick if was redirected to the current bookings page
-        cy.get('span').contains('Current bookings').should('be.visible');
+        cy.get('span').contains('Stays').should('be.visible');
         // check if the booking is visible
         cy.get('h1').contains('Copa Cabana Palace').should('be.visible');
 
@@ -116,6 +117,7 @@ context('Edit bookings', () => {
         cy.get('h1').contains('Yuca Valley').click();
 
         // check if the popover is visible
+        cy.get('div[id="select-places"').scrollTo('bottom');
         cy.get('p')
             .contains('Yucca Valley Oasis w/ Private Hot Tub! is located in Yucca Valley.')
             .should('be.visible');
