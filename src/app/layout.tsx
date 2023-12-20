@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
 import JotaiProvider from '~/components/providers/jotai-provider';
 import { Toaster } from '~/components/ui/toaster';
@@ -18,6 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <main className="background-gradient h-screen overflow-auto">
                     <JotaiProvider>
                         {children}
+                        <Analytics />
+
                         <Toaster />
                     </JotaiProvider>
                 </main>
