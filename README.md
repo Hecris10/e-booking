@@ -23,7 +23,7 @@ You can view the live version of this project at [https://e-booking-eight.vercel
 
 To get started with this project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/username/project.git`
+1. Clone the repository: `git clone https://github.com/hecris10/e-booking.git`
 2. Navigate to the project directory: `cd project`
 3. Install dependencies with pnpm: `pnpm install`
 4. Start the development server: `pnpm run dev`
