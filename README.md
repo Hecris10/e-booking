@@ -108,4 +108,5 @@ This project uses [Cypress](https://www.cypress.io/) for end-to-end testing. To 
 
 ```bash
 pnpm dev
+pnpm cypress
 ```
