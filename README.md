@@ -8,6 +8,17 @@ This project is a modern web application built with Next.js, TypeScript, and Tai
 
 You can view the live version of this project at [https://e-booking-eight.vercel.app/](https://e-booking-eight.vercel.app/). This version of the project is hosted on Vercel and is the production build of the application.
 
+## Screenshots
+
+![Login Page](/assets/login.png)
+![Home Page](/assets/home.png)
+![Select stay](/assets/select.png)
+![Home Page 2](/assets/home-2.png)
+![Delete](/assets/delete.png)
+![Edit](/assets/edit-booking.png)
+![Rating](/assets/rate.png)
+![Home Page 3](/assets/home-3.png)
+
 ## Installation
 
 To get started with this project, follow these steps:
